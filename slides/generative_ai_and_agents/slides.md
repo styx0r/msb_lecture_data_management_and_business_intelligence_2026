@@ -430,8 +430,8 @@ Limitations of LLMs: Stale knowledge
 Example (outdated fact):
 
 ```
-Q: What are the latest 2025 KPIs for our company?
-A: I don't have access to your 2025 data unless you provide it.
+Q: What are the latest 2026 KPIs for our company?
+A: I don't have access to your 2026 data unless you provide it.
 ```
 
 --
