@@ -1,0 +1,20 @@
+# Notebooks (colab/)
+pandas
+numpy
+matplotlib
+scipy
+scikit-learn
+requests
+sqlalchemy
+pandasql
+torch  # CPU build via --extra-index-url in Dockerfile
+
+# Jupyter
+ipykernel
+jupyterlab
+jupytext
+
+# Exam scripts (exam/)
+python-docx
+markdown
+weasyprint
