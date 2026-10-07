@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Who am I?</title>
+
+    <!-- Reveal.js CSS -->
+    <link rel="stylesheet" href="../reveal.js/dist/reset.css" />
+    <link rel="stylesheet" href="../reveal.js/dist/reveal.css" />
+    <link rel="stylesheet" href="../reveal.js/dist/theme/black.css" />
+
+    <!-- Latex -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_HTML"></script>
+    <!-- Theme for syntax highlighting -->
+    <link rel="stylesheet" href="../reveal.js/plugin/highlight/monokai.css" />
+
+    <style>
+      :root {
+        --accent: #ffa726;
+        --green: #90ee90;
+        --blue: #4fc3f7;
+        --red: #ef5350;
+        --muted: #9e9e9e;
+        --card: rgba(255, 255, 255, 0.06);
+        --card-border: rgba(255, 255, 255, 0.14);
+      }
+
+      .reveal h3 { font-size: 1.25em; margin-bottom: 0.5em; }
+      .reveal .accent { color: var(--accent); }
+      .reveal .green { color: var(--green); }
+      .reveal .blue { color: var(--blue); }
+      .reveal .red { color: var(--red); }
+      .reveal .muted { color: var(--muted); }
+
+      .reveal h2.hero {
+        font-size: 2.6em;
+        letter-spacing: 0.02em;
+        margin-bottom: 0.1em;
+      }
+      .reveal p.tagline {
+        font-size: 0.75em;
+        color: var(--muted);
+        margin-top: 0;
+      }
+
+      /* ---------- timeline ---------- */
+      .timeline {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        position: relative;
+        width: 100%;
+        margin: 2.2em 0 0 0;
+      }
+      .timeline::before {
+        content: "";
+        position: absolute;
+        top: 15px;
+        left: 6%;
+        right: 6%;
+        height: 3px;
+        background: var(--card-border);
+      }
+      .timeline .node {
+        position: relative;
+        flex: 1;
+        text-align: center;
+        font-size: 0.55em;
+        color: var(--muted);
+      }
+      .timeline .node .dot {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        margin: 0 auto 0.6em auto;
+        background: #222;
+        border: 3px solid var(--card-border);
+        transition: all 0.4s ease;
+      }
+      .timeline .node .year {
+        font-size: 0.85em;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      .timeline .node .label {
+        color: #ddd;
+        font-weight: 600;
+        margin-top: 0.2em;
+      }
+      .timeline .node .sub {
+        font-size: 0.85em;
+      }
+      .timeline .node.active .dot {
+        background: var(--accent);
+        border-color: var(--accent);
+        box-shadow: 0 0 24px var(--accent);
+      }
+      .timeline .node.active .label {
+        color: var(--accent);
+      }
+      .timeline.compact {
+        margin: 0 0 0.8em 0;
+      }
+      .timeline.compact::before {
+        top: 10px;
+      }
+      .timeline.compact .node {
+        font-size: 0.42em;
+      }
+      .timeline.compact .node .dot {
+        width: 22px;
+        height: 22px;
+        border-width: 2px;
+        margin-bottom: 0.4em;
+      }
+
+      /* ---------- cards ---------- */
+      .cards {
+        display: flex;
+        gap: 1em;
+        justify-content: center;
+        align-items: stretch;
+        width: 100%;
+      }
+      .card {
+        flex: 1;
+        background: var(--card);
+        border: 1px solid var(--card-border);
+        border-radius: 14px;
+        padding: 0.6em 0.8em;
+        text-align: left;
+        font-size: 0.5em;
+      }
+      .card h4 {
+        margin: 0 0 0.4em 0;
+        font-size: 1.2em;
+        color: var(--accent);
+        text-transform: none;
+      }
+      .card ul {
+        margin: 0;
+        padding-left: 1.1em;
+      }
+      .card li {
+        margin: 0.15em 0;
+      }
+      .card .big {
+        font-size: 2em;
+        line-height: 1;
+        margin-bottom: 0.3em;
+        color: #ddd;
+        font-family: monospace;
+      }
+      .card.green h4 { color: var(--green); }
+      .card.blue h4 { color: var(--blue); }
+      .card.red h4 { color: var(--red); }
+
+      /* ---------- misc ---------- */
+      .reveal .cite {
+        margin-top: 0.6em;
+        font-size: 0.38em;
+        color: var(--muted);
+        text-align: left;
+        line-height: 1.3;
+      }
+      .reveal .cite a {
+        color: var(--muted);
+      }
+      .reveal .fig {
+        background: transparent;
+        max-height: 430px;
+        margin: 0 auto;
+      }
+      .reveal .takeaway {
+        display: inline-block;
+        margin-top: 0.6em;
+        padding: 0.3em 0.9em;
+        border-left: 5px solid var(--accent);
+        background: var(--card);
+        font-size: 0.65em;
+        text-align: left;
+      }
+      .reveal .pill {
+        display: inline-block;
+        padding: 0.15em 0.7em;
+        margin: 0.15em;
+        border-radius: 999px;
+        border: 1px solid var(--card-border);
+        background: var(--card);
+        font-size: 0.55em;
+        color: #ddd;
+      }
+      .reveal .two-col {
+        display: flex;
+        gap: 1.5em;
+        text-align: left;
+        font-size: 0.7em;
+      }
+      .reveal .two-col > div {
+        flex: 1;
+      }
+      .reveal .two-col h4 {
+        text-transform: none;
+        margin-bottom: 0.3em;
+      }
+      .reveal table.pubs {
+        font-size: 0.42em;
+        width: 100%;
+      }
+      .reveal table.pubs td {
+        padding: 0.25em 0.5em;
+        border-bottom: 1px solid var(--card-border);
+        vertical-align: top;
+      }
+      .reveal table.pubs td.year {
+        color: var(--accent);
+        white-space: nowrap;
+      }
+      .reveal .bigq {
+        font-size: 1.6em;
+        line-height: 1.25;
+      }
+      .reveal .poll {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.6em 1.5em;
+        font-size: 0.7em;
+        text-align: left;
+        margin-top: 0.8em;
+      }
+      .reveal .poll div::before {
+        content: "";
+        display: inline-block;
+        width: 0.7em;
+        height: 0.7em;
+        border: 2px solid var(--accent);
+        border-radius: 4px;
+        margin-right: 0.5em;
+        vertical-align: middle;
+      }
+      .reveal .modelmap {
+        font-size: 0.55em;
+      }
+      .reveal .mathbox {
+        flex: 1 1 auto;
+        min-width: 0;
+        font-size: 0.55em;
+        text-align: left;
+      }
+      .reveal .mathbox .MathJax_Display {
+        font-size: 0.9em;
+      }
+      .reveal small.note {
+        display: block;
+        color: var(--muted);
+        font-size: 0.5em;
+        margin-top: 0.6em;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <!-- ======================= COVER ======================= -->
+        <section id="cover-placeholder"></section>
+
+        <!-- ======================= HERO + TIMELINE ======================= -->
+        <section data-auto-animate>
+          <h2 class="hero">Christoph Baldow</h2>
+          <p class="tagline">
+            computer scientist &middot; cancer modeller &middot; BI data scientist &middot; Head of AI
+          </p>
+
+          <div class="timeline" data-id="timeline">
+            <div class="node fragment" data-id="n1">
+              <div class="dot"></div>
+              <div class="year">&ndash; 2013</div>
+              <div class="label">Computer Science</div>
+              <div class="sub">TU Dresden</div>
+            </div>
+            <div class="node fragment" data-id="n2">
+              <div class="dot"></div>
+              <div class="year">2014 &ndash; 20xx</div>
+              <div class="label">PhD Medical Informatics</div>
+              <div class="sub">Uniklinikum Carl Gustav Carus Dresden</div>
+            </div>
+            <div class="node fragment" data-id="n3">
+              <div class="dot"></div>
+              <div class="year">20xx &ndash; 20xx</div>
+              <div class="label">Data Scientist</div>
+              <div class="sub">Dataqube GmbH</div>
+            </div>
+            <div class="node fragment" data-id="n4">
+              <div class="dot"></div>
+              <div class="year">20xx &ndash; today</div>
+              <div class="label">Head of AI</div>
+              <div class="sub">atroo GmbH</div>
+            </div>
+          </div>
+
+          <p class="fragment" style="margin-top: 2em; font-size: 0.7em">
+            <span class="accent">One red thread:</span> turning data into models, and models into decisions.
+          </p>
+
+          <aside class="notes">
+            Short version of the CV. The four stations map onto the four big
+            blocks of this course: data, statistics, AI, and making it useful
+            for a business. Years marked 20xx still need to be filled in.
+          </aside>
+        </section>
+
+        <!-- ======================= STATION 1: CS ======================= -->
+        <section>
+          <section data-auto-animate>
+            <div class="timeline compact" data-id="timeline">
+              <div class="node active" data-id="n1">
+                <div class="dot"></div>
+                <div class="year">&ndash; 2013</div>
+                <div class="label">Computer Science</div>
+                <div class="sub">TU Dresden</div>
+              </div>
+              <div class="node" data-id="n2">
+                <div class="dot"></div>
+                <div class="year">2014 &ndash; 20xx</div>
+                <div class="label">PhD Medical Informatics</div>
+                <div class="sub">Uniklinikum Carl Gustav Carus Dresden</div>
+              </div>
+              <div class="node" data-id="n3">
+                <div class="dot"></div>
+                <div class="year">20xx &ndash; 20xx</div>
+                <div class="label">Data Scientist</div>
+                <div class="sub">Dataqube GmbH</div>
+              </div>
+              <div class="node" data-id="n4">
+                <div class="dot"></div>
+                <div class="year">20xx &ndash; today</div>
+                <div class="label">Head of AI</div>
+                <div class="sub">atroo GmbH</div>
+              </div>
+            </div>
+
+            <h3>Computer Science <span class="muted">@ TU Dresden</span></h3>
+
+            <div class="cards">
+              <div class="card fragment">
+                <div class="big">∀ ∃ λ</div>
+                <h4>Theoretical Computer Science</h4>
+                <ul>
+                  <li>logic, automata, complexity</li>
+                  <li>what can be computed, and how expensive is it?</li>
+                  <li>the reason I still think in "models" first</li>
+                </ul>
+              </div>
+              <div class="card green fragment">
+                <div class="big">f(x)</div>
+                <h4>Artificial Intelligence</h4>
+                <ul>
+                  <li>search, planning, knowledge representation</li>
+                  <li>machine learning before it was cool</li>
+                  <li>neural networks were a niche topic back then</li>
+                </ul>
+              </div>
+              <div class="card blue fragment">
+                <div class="big">ACGT</div>
+                <h4>Bioinformatics</h4>
+                <ul>
+                  <li>sequences, networks, noisy measurements</li>
+                  <li>first contact with real, messy data</li>
+                  <li>the bridge to medicine</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="takeaway fragment">
+              <span class="accent">Takeaway:</span> precise thinking about data and models pays off, no matter the domain.
+            </div>
+          </section>
+        </section>
+
+        <!-- ======================= STATION 2: PHD ======================= -->
+        <section>
+          <section data-auto-animate>
+            <div class="timeline compact" data-id="timeline">
+              <div class="node" data-id="n1">
+                <div class="dot"></div>
+                <div class="year">&ndash; 2013</div>
+                <div class="label">Computer Science</div>
+                <div class="sub">TU Dresden</div>
+              </div>
+              <div class="node active" data-id="n2">
+                <div class="dot"></div>
+                <div class="year">2014 &ndash; 20xx</div>
+                <div class="label">PhD Medical Informatics</div>
+                <div class="sub">Uniklinikum Carl Gustav Carus Dresden</div>
+              </div>
+              <div class="node" data-id="n3">
+                <div class="dot"></div>
+                <div class="year">20xx &ndash; 20xx</div>
+                <div class="label">Data Scientist</div>
+                <div class="sub">Dataqube GmbH</div>
+              </div>
+              <div class="node" data-id="n4">
+                <div class="dot"></div>
+                <div class="year">20xx &ndash; today</div>
+                <div class="label">Head of AI</div>
+                <div class="sub">atroo GmbH</div>
+              </div>
+            </div>
+
+            <h3>Mathematical models of <span class="red">blood cancer</span></h3>
+            <p style="font-size: 0.7em">
+              Institute for Medical Informatics and Biometry (IMB), Faculty of Medicine Carl Gustav Carus, TU Dresden
+            </p>
+            <p class="bigq fragment">
+              A patient is a <span class="accent">time series</span>.<br />
+              <span class="muted" style="font-size: 0.6em">Can we predict how it continues, and change it?</span>
+            </p>
+          </section>
+
+          <!-- CML in 60 seconds -->
+          <section>
+            <h3>Chronic Myeloid Leukemia (CML) in 60 seconds</h3>
+            <div class="cards">
+              <div class="card red">
+                <h4>The disease</h4>
+                <ul>
+                  <li>a single genetic accident in a blood stem cell: the <b>BCR-ABL1</b> fusion gene ("Philadelphia chromosome")</li>
+                  <li>the cell and all its offspring divide without brakes</li>
+                  <li>untreated: fatal within a few years</li>
+                </ul>
+              </div>
+              <div class="card green">
+                <h4>The therapy</h4>
+                <ul>
+                  <li><b>tyrosine kinase inhibitors (TKI)</b>, e.g. imatinib: one pill a day</li>
+                  <li>turned a deadly cancer into a chronic condition</li>
+                  <li>but: lifelong? side effects, costs (&gt; 30k&nbsp;€ per patient and year)</li>
+                </ul>
+              </div>
+              <div class="card blue">
+                <h4>The data</h4>
+                <ul>
+                  <li>every 3 months a blood sample: <b>BCR-ABL1 / ABL1 ratio</b> (qPCR)</li>
+                  <li>a number that spans 5 orders of magnitude, so always on a log scale</li>
+                  <li>clinical trials: hundreds of such time series</li>
+                </ul>
+              </div>
+            </div>
+            <div class="takeaway fragment">
+              The clinical question: <span class="accent">who can take less, or stop, and when?</span>
+            </div>
+          </section>
+
+          <!-- biphasic decline -->
+          <section>
+            <h3>What the data looks like</h3>
+            <img class="fig" src="../assets/introduction/biphasic_decline.svg" alt="Biphasic BCR-ABL1 decline" />
+            <p class="fragment" style="font-size: 0.65em">
+              Two slopes = two cell populations.
+              <span class="blue">Fast:</span> dividing cells, killed by TKI.
+              <span class="green">Slow:</span> dormant stem cells that TKI cannot reach.
+            </p>
+            <aside class="notes">
+              Schematic, simulated data. The biphasic shape is the key empirical
+              fact; everything else is modelling on top of it.
+            </aside>
+          </section>
+
+          <!-- the model -->
+          <section>
+            <h3>The model: three boxes, a few rates</h3>
+            <div style="display: flex; gap: 0.5em; align-items: center">
+              <svg viewBox="0 0 560 300" width="440" height="236" style="flex: 0 0 440px; background: transparent">
+                <defs>
+                  <marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+                    <path d="M0,0 L10,5 L0,10 z" fill="#ddd" />
+                  </marker>
+                  <marker id="arrRed" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+                    <path d="M0,0 L10,5 L0,10 z" fill="#ef5350" />
+                  </marker>
+                </defs>
+                <!-- quiescent -->
+                <rect x="20" y="110" width="150" height="80" rx="12" fill="rgba(144,238,144,0.12)" stroke="#90ee90" stroke-width="2" />
+                <text x="95" y="143" text-anchor="middle" fill="#90ee90" font-size="16" font-weight="bold">quiescent</text>
+                <text x="95" y="166" text-anchor="middle" fill="#90ee90" font-size="14">leukemic stem cells X</text>
+                <!-- proliferating -->
+                <rect x="210" y="110" width="150" height="80" rx="12" fill="rgba(79,195,247,0.12)" stroke="#4fc3f7" stroke-width="2" />
+                <text x="285" y="143" text-anchor="middle" fill="#4fc3f7" font-size="16" font-weight="bold">proliferating</text>
+                <text x="285" y="166" text-anchor="middle" fill="#4fc3f7" font-size="14">leukemic stem cells Y</text>
+                <!-- differentiated -->
+                <rect x="400" y="110" width="140" height="80" rx="12" fill="rgba(255,167,38,0.12)" stroke="#ffa726" stroke-width="2" />
+                <text x="470" y="143" text-anchor="middle" fill="#ffa726" font-size="16" font-weight="bold">differentiated</text>
+                <text x="470" y="166" text-anchor="middle" fill="#ffa726" font-size="14">cells W (measured)</text>
+                <!-- arrows X<->Y -->
+                <path d="M170,138 L210,138" stroke="#ddd" stroke-width="2" marker-end="url(#arr)" />
+                <text x="190" y="128" text-anchor="middle" fill="#ddd" font-size="12">p_xy</text>
+                <path d="M210,165 L170,165" stroke="#ddd" stroke-width="2" marker-end="url(#arr)" />
+                <text x="190" y="185" text-anchor="middle" fill="#ddd" font-size="12">p_yx</text>
+                <!-- Y -> W -->
+                <path d="M360,150 L400,150" stroke="#ddd" stroke-width="2" marker-end="url(#arr)" />
+                <text x="380" y="138" text-anchor="middle" fill="#ddd" font-size="12">r_w</text>
+                <!-- proliferation loop -->
+                <path d="M300,110 C300,70 270,70 270,110" fill="none" stroke="#4fc3f7" stroke-width="2" marker-end="url(#arr)" />
+                <text x="285" y="75" text-anchor="middle" fill="#4fc3f7" font-size="12">p_y</text>
+                <!-- TKI -->
+                <rect x="235" y="225" width="100" height="36" rx="8" fill="rgba(239,83,80,0.15)" stroke="#ef5350" stroke-width="2" />
+                <text x="285" y="249" text-anchor="middle" fill="#ef5350" font-size="15" font-weight="bold">TKI</text>
+                <path d="M285,225 L285,192" stroke="#ef5350" stroke-width="2" marker-end="url(#arrRed)" />
+                <text x="310" y="212" fill="#ef5350" font-size="12">kill e·dose</text>
+                <!-- immune -->
+                <rect x="420" y="225" width="120" height="36" rx="8" fill="rgba(255,255,255,0.06)" stroke="#9e9e9e" stroke-width="2" stroke-dasharray="5,4" />
+                <text x="480" y="249" text-anchor="middle" fill="#bbb" font-size="14">immune cells Z</text>
+                <path d="M440,225 L330,192" stroke="#9e9e9e" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#arr)" />
+                <!-- W death -->
+                <path d="M470,110 L470,70" stroke="#ddd" stroke-width="2" marker-end="url(#arr)" />
+                <text x="490" y="80" fill="#ddd" font-size="12">death</text>
+              </svg>
+              <div class="mathbox">
+                <p>Ordinary differential equations, e.g. for the dividing cells:</p>
+                <p>
+                  \[
+                  \frac{dY}{dt} = p_{xy}X - p_{yx}Y + p_y Y - \underbrace{e_{\text{TKI}}\,Y}_{\text{therapy}} - \underbrace{m\,Z\,Y}_{\text{immune}}
+                  \]
+                </p>
+                <p class="fragment">
+                  Fit the rates to <span class="accent">each patient's</span> time series
+                  &rarr; a personal "digital twin" of the disease.
+                </p>
+                <p class="fragment">
+                  Then simulate: <span class="green">what if we change the dose?</span>
+                </p>
+              </div>
+            </div>
+            <div class="cite">
+              Model family: Roeder et al. 2006 Nat Med; Fassoni et al. 2018 Haematologica; Hähnel et al. 2020 Cancer Res.
+            </div>
+          </section>
+
+          <!-- dose reduction -->
+          <section>
+            <h3>Result 1: half the dose is enough for most patients</h3>
+            <img class="fig" style="max-height: 380px" src="../assets/introduction/dose_reduction.svg" alt="Dose reduction scenario" />
+            <p class="fragment" style="font-size: 0.65em">
+              Prediction for two phase III trials: <span class="accent">~90 % (IRIS) / ~81 % (CML-IV)</span> of patients in stable
+              remission can halve the dose without losing long-term efficacy.
+            </p>
+            <div class="cite">
+              Fassoni, Baldow, Roeder, Glauche (2018). Reduced tyrosine kinase inhibitor dose is predicted to be as effective as standard dose in CML.
+              <i>Haematologica</i> 103(11). Schematic curve, simulated patient.
+            </div>
+          </section>
+
+          <!-- immune / stopping -->
+          <section>
+            <h3>Result 2: when can we stop therapy completely?</h3>
+            <p style="font-size: 0.6em; margin: 0 0 0.4em 0">
+              Add the immune system to the model, fit it to patients who stopped TKI. Three classes emerge:
+            </p>
+            <div class="cards">
+              <div class="card red fragment">
+                <h4>Class A: no control</h4>
+                <svg viewBox="0 0 200 80" width="100%"><path d="M5,20 L100,20 L190,5" fill="none" stroke="#ef5350" stroke-width="3"/><line x1="100" y1="5" x2="100" y2="75" stroke="#9e9e9e" stroke-dasharray="4,3"/><text x="104" y="72" fill="#9e9e9e" font-size="11">stop</text></svg>
+                <ul><li>leukemia returns after stopping</li><li>must stay on therapy</li></ul>
+              </div>
+              <div class="card green fragment">
+                <h4>Class B: strong control</h4>
+                <svg viewBox="0 0 200 80" width="100%"><path d="M5,20 L100,20 L190,25" fill="none" stroke="#90ee90" stroke-width="3"/><line x1="100" y1="5" x2="100" y2="75" stroke="#9e9e9e" stroke-dasharray="4,3"/><text x="104" y="72" fill="#9e9e9e" font-size="11">stop</text></svg>
+                <ul><li>immune system keeps the residual cells in check</li><li>treatment-free remission</li></ul>
+              </div>
+              <div class="card blue fragment">
+                <h4>Class C: it depends</h4>
+                <svg viewBox="0 0 200 80" width="100%"><path d="M5,20 L100,20 L140,8 L190,22" fill="none" stroke="#4fc3f7" stroke-width="3"/><line x1="100" y1="5" x2="100" y2="75" stroke="#9e9e9e" stroke-dasharray="4,3"/><text x="104" y="72" fill="#9e9e9e" font-size="11">stop</text></svg>
+                <ul><li>control is fragile, timing matters</li><li>stepwise dose reduction before stopping helps</li></ul>
+              </div>
+            </div>
+            <p class="fragment" style="font-size: 0.6em; margin: 0.5em 0 0 0">
+              DESTINY trial (67 patients): stepping down to 50 % and then 25 % before stopping keeps the success rate
+              with only <span class="accent">58 %</span> of the drug.
+            </p>
+            <div class="cite">
+              Hähnel, Baldow, et al. (2020) <i>Cancer Research</i> 80(11); Karg, Baldow, et al. (2022) <i>Frontiers in Oncology</i> 12.
+            </div>
+          </section>
+
+          <!-- clonal dynamics -->
+          <section>
+            <h3>Side quest: spotting a cancer before it is one</h3>
+            <div style="display: flex; gap: 1em; align-items: center">
+              <img class="fig" style="width: 58%" src="../assets/introduction/clonal_dynamics.svg" alt="Clonal dynamics" />
+              <div style="font-size: 0.6em; text-align: left">
+                <p>
+                  Blood is made by thousands of stem cell <b>clones</b>. In gene therapy every clone carries a barcode, so we can watch them.
+                </p>
+                <p class="fragment">
+                  Classic diversity measures (Shannon, Simpson) react late.
+                  We proposed a measure for <span class="red">relative clonal expansion</span> that flags a run-away clone early.
+                </p>
+                <p class="fragment">
+                  Later: reconstruct clones from noisy barcode readouts
+                  (<span class="accent">R package MultIS</span>, Nat Commun 2022).
+                </p>
+              </div>
+            </div>
+            <div class="cite">
+              Baldow, Thielecke, Glauche (2016) <i>PLoS ONE</i>; Wagner, Baldow, et al. (2022) <i>Nature Communications</i> 13. Simulated data.
+            </div>
+          </section>
+
+          <!-- MAGPIE -->
+          <section>
+            <h3>A model nobody can run is worthless</h3>
+            <p style="font-size: 0.7em">
+              So I built <span class="accent">MAGPIE</span>: a web platform where clinicians and researchers run
+              computational models with one click, with versioning and reproducible results.
+            </p>
+            <div>
+              <span class="pill">Ruby on Rails</span>
+              <span class="pill">PostgreSQL</span>
+              <span class="pill">Docker</span>
+              <span class="pill">Git versioning</span>
+              <span class="pill">REST / R API</span>
+              <span class="pill">any language: R, Python, C, SBML</span>
+            </div>
+            <div class="cards" style="margin-top: 0.6em">
+              <div class="card fragment">
+                <h4>1. publish</h4>
+                <ul><li>upload model code + parameter form</li></ul>
+              </div>
+              <div class="card green fragment">
+                <h4>2. run</h4>
+                <ul><li>isolated container per job</li></ul>
+              </div>
+              <div class="card blue fragment">
+                <h4>3. share</h4>
+                <ul><li>every result has a hash, every run is reproducible</li></ul>
+              </div>
+            </div>
+            <div class="takeaway fragment">
+              This is where research turned into <span class="accent">data engineering and tooling</span> for me.
+            </div>
+            <div class="cite">
+              Baldow, Salentin, Schroeder, Roeder, Glauche (2017). MAGPIE: Simplifying access and execution of computational models in the life sciences.
+              <i>PLoS Comput Biol</i> 13(12).
+            </div>
+          </section>
+
+          <!-- lessons -->
+          <section>
+            <h3>What I took with me <span class="muted">(and why you will meet it again)</span></h3>
+            <div class="cards">
+              <div class="card fragment">
+                <h4>Data first</h4>
+                <ul>
+                  <li>most time goes into cleaning, joining, versioning</li>
+                  <li class="muted">&rarr; Databases, Data Management</li>
+                </ul>
+              </div>
+              <div class="card green fragment">
+                <h4>Uncertainty is the product</h4>
+                <ul>
+                  <li>a prediction without a confidence interval is a guess</li>
+                  <li class="muted">&rarr; Statistics, A/B testing</li>
+                </ul>
+              </div>
+              <div class="card blue fragment">
+                <h4>Models for decisions</h4>
+                <ul>
+                  <li>the question "what if?" is what makes a model useful</li>
+                  <li class="muted">&rarr; Introduction to AI</li>
+                </ul>
+              </div>
+              <div class="card red fragment">
+                <h4>Make it usable</h4>
+                <ul>
+                  <li>a dashboard beats a PDF, an API beats a dashboard</li>
+                  <li class="muted">&rarr; BI, Tools, Agents</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <!-- publications -->
+          <section>
+            <h3>Selected publications</h3>
+            <table class="pubs">
+              <tr><td class="year">2022</td><td>Karg, <b>Baldow</b>, Zerjatke, Clark, Roeder, Fassoni, Glauche. Modelling of immune response in CML patients suggests potential for treatment reduction prior to cessation. <i>Front Oncol</i></td></tr>
+              <tr><td class="year">2022</td><td>Wagner, <b>Baldow</b>, Calabria, Rudilosso, Gallina, Montini, Cesana, Glauche. Clonal reconstruction from co-occurrence of vector integration sites accurately quantifies expanding clones in vivo. <i>Nat Commun</i></td></tr>
+              <tr><td class="year">2021</td><td>Hoffmann, <b>Baldow</b>, et al. How to predict relapse in leukemia using time series data: a comparative in silico study. <i>PLoS ONE</i></td></tr>
+              <tr><td class="year">2020</td><td>Hähnel, <b>Baldow</b>, Guilhot, Guilhot, Saussele, Mustjoki, et al. Model-based inference and classification of immunologic control mechanisms from TKI cessation and dose reduction in patients with CML. <i>Cancer Res</i></td></tr>
+              <tr><td class="year">2020</td><td>Hoffmann, Cazemier, <b>Baldow</b>, et al. Integration of mathematical model predictions into routine workflows to support clinical decision making in haematology. <i>BMC Med Inform Decis Mak</i></td></tr>
+              <tr><td class="year">2018</td><td>Glauche, Kuhn, <b>Baldow</b>, et al. Quantitative prediction of long-term molecular response in TKI-treated CML: lessons from an imatinib versus dasatinib comparison. <i>Sci Rep</i></td></tr>
+              <tr><td class="year">2018</td><td>Fassoni, <b>Baldow</b>, Roeder, Glauche. Reduced tyrosine kinase inhibitor dose is predicted to be as effective as standard dose in CML. <i>Haematologica</i></td></tr>
+              <tr><td class="year">2017</td><td><b>Baldow</b>, Salentin, Schroeder, Roeder, Glauche. MAGPIE: simplifying access and execution of computational models in the life sciences. <i>PLoS Comput Biol</i></td></tr>
+              <tr><td class="year">2017</td><td>Proschmann, <b>Baldow</b>, et al. Response dynamics of pediatric patients with CML on imatinib therapy. <i>Haematologica</i></td></tr>
+              <tr><td class="year">2016</td><td><b>Baldow</b>, Thielecke, Glauche. Model based analysis of clonal developments allows for early detection of monoclonal conversion and leukemia. <i>PLoS ONE</i></td></tr>
+            </table>
+            <small class="note">Reading a paper is a skill. We will practise it in this course.</small>
+          </section>
+        </section>
+
+        <!-- ======================= STATION 3: DATAQUBE ======================= -->
+        <section>
+          <section data-auto-animate>
+            <div class="timeline compact" data-id="timeline">
+              <div class="node" data-id="n1">
+                <div class="dot"></div>
+                <div class="year">&ndash; 2013</div>
+                <div class="label">Computer Science</div>
+                <div class="sub">TU Dresden</div>
+              </div>
+              <div class="node" data-id="n2">
+                <div class="dot"></div>
+                <div class="year">2014 &ndash; 20xx</div>
+                <div class="label">PhD Medical Informatics</div>
+                <div class="sub">Uniklinikum Carl Gustav Carus Dresden</div>
+              </div>
+              <div class="node active" data-id="n3">
+                <div class="dot"></div>
+                <div class="year">20xx &ndash; 20xx</div>
+                <div class="label">Data Scientist</div>
+                <div class="sub">Dataqube GmbH</div>
+              </div>
+              <div class="node" data-id="n4">
+                <div class="dot"></div>
+                <div class="year">20xx &ndash; today</div>
+                <div class="label">Head of AI</div>
+                <div class="sub">atroo GmbH</div>
+              </div>
+            </div>
+
+            <h3>Data Scientist <span class="muted">@ Dataqube GmbH</span></h3>
+            <p style="font-size: 0.7em">From patients to customers: same maths, different questions.</p>
+
+            <div class="cards">
+              <div class="card fragment">
+                <h4>Business Intelligence</h4>
+                <ul>
+                  <li>data warehouses, ETL pipelines, data models</li>
+                  <li>from "we have data" to "we know what happened"</li>
+                </ul>
+              </div>
+              <div class="card green fragment">
+                <h4>Dashboards &amp; KPIs</h4>
+                <ul>
+                  <li>the right number for the right person at the right time</li>
+                  <li>most dashboards fail at the "right question" step</li>
+                </ul>
+              </div>
+              <div class="card blue fragment">
+                <h4>Advanced analytics</h4>
+                <ul>
+                  <li>forecasting, segmentation, experiments</li>
+                  <li>when a KPI is not enough and a model is needed</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="takeaway fragment">
+              <span class="accent">Lesson:</span> in business, the hard part is rarely the algorithm. It is the data, the question, and the people.
+            </div>
+            <aside class="notes">
+              TODO: add one or two concrete project examples (industry, problem, outcome) from the Dataqube time.
+            </aside>
+          </section>
+        </section>
+
+        <!-- ======================= STATION 4: ATROO ======================= -->
+        <section>
+          <section data-auto-animate>
+            <div class="timeline compact" data-id="timeline">
+              <div class="node" data-id="n1">
+                <div class="dot"></div>
+                <div class="year">&ndash; 2013</div>
+                <div class="label">Computer Science</div>
+                <div class="sub">TU Dresden</div>
+              </div>
+              <div class="node" data-id="n2">
+                <div class="dot"></div>
+                <div class="year">2014 &ndash; 20xx</div>
+                <div class="label">PhD Medical Informatics</div>
+                <div class="sub">Uniklinikum Carl Gustav Carus Dresden</div>
+              </div>
+              <div class="node" data-id="n3">
+                <div class="dot"></div>
+                <div class="year">20xx &ndash; 20xx</div>
+                <div class="label">Data Scientist</div>
+                <div class="sub">Dataqube GmbH</div>
+              </div>
+              <div class="node active" data-id="n4">
+                <div class="dot"></div>
+                <div class="year">20xx &ndash; today</div>
+                <div class="label">Head of AI</div>
+                <div class="sub">atroo GmbH</div>
+              </div>
+            </div>
+
+            <h3>Head of AI <span class="muted">@ atroo GmbH</span></h3>
+            <img
+              src="../assets/cover/atroo_logo.svg"
+              alt="atroo logo"
+              style="width: 120px; margin: -0.4em auto 0.3em auto; background: transparent"
+            />
+
+            <div class="cards">
+              <div class="card fragment">
+                <h4>LLMs &amp; agents in products</h4>
+                <ul>
+                  <li>from demo to something a customer relies on</li>
+                  <li>retrieval, tools, evaluation, guardrails</li>
+                </ul>
+              </div>
+              <div class="card green fragment">
+                <h4>Data &amp; AI strategy</h4>
+                <ul>
+                  <li>which problems deserve AI, which deserve a SQL query</li>
+                  <li>build vs. buy, cost, risk</li>
+                </ul>
+              </div>
+              <div class="card blue fragment">
+                <h4>Team &amp; craft</h4>
+                <ul>
+                  <li>engineers, data people, and domain experts in one loop</li>
+                  <li>the job this course prepares you for</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="takeaway fragment">
+              <span class="accent">Lesson:</span> AI without data management is a demo. BI without AI is a rear-view mirror.
+            </div>
+            <aside class="notes">
+              TODO: add current atroo focus (products, industries) and the start year.
+            </aside>
+          </section>
+        </section>
+
+        <!-- ======================= WHY THIS COURSE ======================= -->
+        <section>
+          <h3>Why this course looks the way it does</h3>
+          <table class="modelmap" style="width: 100%">
+            <tr>
+              <td style="text-align: right; padding-right: 1em" class="muted">where I needed it</td>
+              <td class="accent" style="text-align: left">what we do here</td>
+            </tr>
+            <tr class="fragment">
+              <td style="text-align: right; padding-right: 1em">clinical trial data, barcodes, MAGPIE</td>
+              <td style="text-align: left">(III) Database Architecture, (IV) Data Management</td>
+            </tr>
+            <tr class="fragment">
+              <td style="text-align: right; padding-right: 1em">log-scale time series, model fits, "is the difference real?"</td>
+              <td style="text-align: left">(II) Python &amp; Pandas, Statistics &amp; A/B testing</td>
+            </tr>
+            <tr class="fragment">
+              <td style="text-align: right; padding-right: 1em">dashboards and KPIs at Dataqube</td>
+              <td style="text-align: left">(I) Business Intelligence</td>
+            </tr>
+            <tr class="fragment">
+              <td style="text-align: right; padding-right: 1em">digital twins, predictions, agents at atroo</td>
+              <td style="text-align: left">(V) Introduction to AI, (VI) Generative AI &amp; Agents</td>
+            </tr>
+          </table>
+          <p class="fragment" style="font-size: 0.75em; margin-top: 1.2em">
+            "You will never ever use Excel again." <span class="muted">(well, almost)</span>
+          </p>
+        </section>
+
+        <!-- ======================= EXPECTATIONS ======================= -->
+        <section>
+          <h3>Expectations</h3>
+          <div class="two-col">
+            <div>
+              <h4 class="green">What you can expect from me</h4>
+              <ul>
+                <li>theory only as much as needed, then hands-on in Python</li>
+                <li>real examples, with the "why do I need this in my job" attached</li>
+                <li>honest answers, including "I don't know, let's find out"</li>
+                <li>all material open on GitHub, also after the course</li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="accent">What I expect from you</h4>
+              <ul>
+                <li>laptop, Google account for Colab, curiosity</li>
+                <li>ask questions early, there are no stupid ones</li>
+                <li>work in groups, present your work</li>
+                <li>use AI tools, but be able to explain every line you hand in</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================= YOUR TURN ======================= -->
+        <section>
+          <h3>Your turn</h3>
+          <p style="font-size: 0.75em">
+            Name, background, and one thing you want to be able to do after this course.
+          </p>
+          <div class="poll">
+            <div class="fragment">I have written a Python script before</div>
+            <div class="fragment">I have written a SQL query before</div>
+            <div class="fragment">I know what a p-value is (roughly)</div>
+            <div class="fragment">I am an Excel power user</div>
+            <div class="fragment">I have used ChatGPT &amp; co. for data tasks</div>
+            <div class="fragment">I have built a dashboard</div>
+          </div>
+          <aside class="notes">
+            Hands up for each statement. Note the mix of Python/statistics
+            experience: it is used to form the presentation groups so that each
+            group has at least one person with coding experience.
+          </aside>
+        </section>
+      </div>
+    </div>
+
+    <!-- Reveal.js JavaScript -->
+    <script src="../reveal.js/dist/reveal.js"></script>
+    <script src="../reveal.js/plugin/notes/notes.js"></script>
+    <script src="../reveal.js/plugin/markdown/markdown.js"></script>
+    <script src="../reveal.js/plugin/highlight/highlight.js"></script>
+    <script src="../utils.js"></script>
+
+    <script>
+      Reveal.initialize({
+        hash: true,
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        includeHTML("../templates/cover.html", "cover-placeholder", {
+          title: "Who am I?",
+        });
+      });
+    </script>
+  </body>
+</html>
