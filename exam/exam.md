@@ -1,6 +1,6 @@
 # Mock Exam: Data Management & Business Intelligence
 
-90 multiple choice questions. Choose one answer (A-D) per question.
+105 multiple choice questions. Choose one answer (A-D) per question.
 
 ## Business Intelligence
 
@@ -576,6 +576,98 @@ D. Error
     C. A schema migration
     D. A new training run
 
+## A/B Testing
+
+91. Why run a randomized A/B test instead of comparing users who chose the new feature with those who did not?
+    A. It needs fewer users
+    B. Randomization removes confounding, so a difference can be attributed to the change
+    C. It is always faster
+    D. It does not require a metric
+
+92. In an A/B test, the control group:
+    A. Sees the new variant
+    B. Sees the existing version
+    C. Is not measured
+    D. Is selected by the product manager
+
+93. The null hypothesis in a checkout experiment states:
+    A. The new checkout changes nothing
+    B. The new checkout is better
+    C. The new checkout is worse
+    D. The sample size is large enough
+
+94. A p-value of 0.03 means:
+    A. There is a 3% probability that the null hypothesis is true
+    B. There is a 97% probability that B is better
+    C. If there were no effect, data at least this extreme would occur in about 3% of experiments
+    D. The effect is large
+
+95. A type I error is:
+    A. Missing a real effect
+    B. Declaring an effect that does not exist (false alarm)
+    C. Using too many users
+    D. Choosing the wrong metric
+
+96. Statistical power is:
+    A. The probability of a false alarm
+    B. The probability of detecting an effect that really exists
+    C. The number of users per group
+    D. The baseline conversion rate
+
+97. Which input to the sample size calculation is a business decision rather than a statistical convention?
+    A. The significance level α = 5%
+    B. The power of 80%
+    C. The minimum detectable effect
+    D. The z-statistic
+
+98. If the minimum detectable effect is halved, the required number of users per group roughly:
+    A. Halves
+    B. Doubles
+    C. Quadruples
+    D. Stays the same
+
+99. "Peeking" in A/B testing refers to:
+    A. Checking the p-value repeatedly and stopping as soon as it drops below 0.05
+    B. Looking at the control group only
+    C. Showing both variants to the same user
+    D. Running the test on weekends only
+
+100. The consequence of daily peeking with early stopping is:
+    A. Power increases
+    B. The false alarm rate becomes much larger than the nominal 5%
+    C. The required sample size shrinks
+    D. Nothing, the p-value accounts for it
+
+101. A sample ratio mismatch means:
+    A. The observed split between A and B deviates from the planned split more than chance allows
+    B. Variant B has a higher conversion rate
+    C. The confidence interval is too wide
+    D. The baseline rate was estimated wrongly
+
+102. Which test compares conversion rates (a binary outcome) between two groups?
+    A. Linear regression
+    B. Two-sample z-test for proportions (or chi-squared test)
+    C. k-means
+    D. Time series decomposition
+
+103. A 95% confidence interval for the lift of [+0.2 pp, +0.9 pp]:
+    A. Guarantees that the true lift is in this range
+    B. Excludes zero, so the result is significant at the 5% level, and shows the plausible range of the effect
+    C. Means that 95% of users converted
+    D. Is the same thing as the p-value
+
+104. Testing 20 metrics at α = 5% without any correction:
+    A. Does not change the false alarm rate
+    B. Gives about a 64% chance of at least one false "win" even if nothing changed
+    C. Increases power
+    D. Is required by statsmodels
+
+105. Simpson's paradox in an A/B test describes the situation where:
+    A. B wins in every segment but loses overall, because the segment mix differs between the groups
+    B. B wins on Sundays only
+    C. Users see both variants
+    D. The p-value is exactly 0.05
+
 Answer Key
 1-C, 2-D, 3-B, 4-A, 5-B, 6-C, 7-B, 8-C, 9-C, 10-B,
 11-D, 12-B, 13-C, 14-D, 15-A, 
@@ -593,4 +685,6 @@ Answer Key
 71-A, 72-B, 73-A, 74-D, 75-C,
 
 76-A, 77-C, 78-B, 79-B, 80-D,
-81-A, 82-A, 83-A, 84-A, 85-A, 86-A, 87-B, 88-C, 89-D, 90-A
+81-A, 82-A, 83-A, 84-A, 85-A, 86-A, 87-B, 88-C, 89-D, 90-A,
+91-B, 92-B, 93-A, 94-C, 95-B, 96-B, 97-C, 98-C, 99-A, 100-B,
+101-A, 102-B, 103-B, 104-B, 105-A

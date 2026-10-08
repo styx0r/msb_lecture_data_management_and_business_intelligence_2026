@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>A/B Testing</title>
+
+    <!-- Reveal.js CSS -->
+    <link rel="stylesheet" href="../reveal.js/dist/reset.css" />
+    <link rel="stylesheet" href="../reveal.js/dist/reveal.css" />
+    <link rel="stylesheet" href="../reveal.js/dist/theme/black.css" />
+
+    <!-- Theme for syntax highlighting -->
+    <link rel="stylesheet" href="../reveal.js/plugin/highlight/monokai.css" />
+
+    <style>
+      :root {
+        --accent: #ffa726;
+        --green: #90ee90;
+        --blue: #4fc3f7;
+        --red: #ef5350;
+        --muted: #9e9e9e;
+        --card: rgba(255, 255, 255, 0.06);
+        --card-border: rgba(255, 255, 255, 0.14);
+      }
+
+      .reveal h3 { font-size: 1.25em; margin-bottom: 0.5em; }
+      .reveal h4 { text-transform: none; }
+      .reveal .accent { color: var(--accent); }
+      .reveal .green { color: var(--green); }
+      .reveal .blue { color: var(--blue); }
+      .reveal .red { color: var(--red); }
+      .reveal .muted { color: var(--muted); }
+
+      .reveal .bigq {
+        font-size: 1.5em;
+        line-height: 1.3;
+      }
+      .reveal p.lead {
+        font-size: 0.8em;
+      }
+
+      /* ---------- cards ---------- */
+      .cards {
+        display: flex;
+        gap: 1em;
+        justify-content: center;
+        align-items: stretch;
+        width: 100%;
+      }
+      .card {
+        flex: 1;
+        background: var(--card);
+        border: 1px solid var(--card-border);
+        border-radius: 14px;
+        padding: 0.6em 0.8em;
+        text-align: left;
+        font-size: 0.5em;
+      }
+      .card h4 {
+        margin: 0 0 0.4em 0;
+        font-size: 1.2em;
+        color: var(--accent);
+        text-transform: none;
+      }
+      .card ul { margin: 0; padding-left: 1.1em; }
+      .card li { margin: 0.15em 0; }
+      .card .big {
+        font-size: 2em;
+        line-height: 1;
+        margin-bottom: 0.3em;
+        color: #ddd;
+        font-family: monospace;
+      }
+      .card.green h4 { color: var(--green); }
+      .card.blue h4 { color: var(--blue); }
+      .card.red h4 { color: var(--red); }
+      .card.muted h4 { color: var(--muted); }
+
+      /* ---------- flow (anatomy of a test) ---------- */
+      .flow {
+        display: flex;
+        gap: 0.4em;
+        align-items: stretch;
+        width: 100%;
+        margin-top: 0.6em;
+      }
+      .flow .step {
+        flex: 1;
+        background: var(--card);
+        border: 1px solid var(--card-border);
+        border-radius: 10px;
+        padding: 0.5em 0.4em;
+        font-size: 0.42em;
+        text-align: center;
+        position: relative;
+      }
+      .flow .step .n {
+        display: inline-block;
+        width: 1.8em;
+        height: 1.8em;
+        line-height: 1.8em;
+        border-radius: 50%;
+        background: var(--accent);
+        color: #111;
+        font-weight: 700;
+        margin-bottom: 0.3em;
+      }
+      .flow .step b { display: block; color: #ddd; margin-bottom: 0.3em; }
+      .flow .step span { color: var(--muted); }
+      .flow .step.active { border-color: var(--accent); box-shadow: 0 0 18px rgba(255, 167, 38, 0.35); }
+
+      /* ---------- misc ---------- */
+      .reveal .cite {
+        margin-top: 0.6em;
+        font-size: 0.38em;
+        color: var(--muted);
+        text-align: left;
+        line-height: 1.3;
+      }
+      .reveal .cite a { color: var(--muted); }
+      .reveal .fig {
+        background: transparent;
+        max-height: 460px;
+        max-width: 100%;
+        margin: 0 auto;
+      }
+      .reveal .fig.small { max-height: 380px; }
+      .reveal .takeaway {
+        display: inline-block;
+        margin-top: 0.6em;
+        padding: 0.3em 0.9em;
+        border-left: 5px solid var(--accent);
+        background: var(--card);
+        font-size: 0.65em;
+        text-align: left;
+      }
+      .reveal .pill {
+        display: inline-block;
+        padding: 0.15em 0.7em;
+        margin: 0.15em;
+        border-radius: 999px;
+        border: 1px solid var(--card-border);
+        background: var(--card);
+        font-size: 0.55em;
+        color: #ddd;
+      }
+      .reveal .two-col {
+        display: flex;
+        gap: 1.5em;
+        text-align: left;
+        font-size: 0.7em;
+        align-items: flex-start;
+      }
+      .reveal .two-col > div { flex: 1; min-width: 0; }
+      .reveal .two-col h4 { text-transform: none; margin-bottom: 0.3em; font-size: 1em; }
+      .reveal .two-col ul { font-size: 0.9em; }
+      .reveal table.simple {
+        font-size: 0.55em;
+        width: 100%;
+        margin: 0.5em auto;
+      }
+      .reveal table.simple th {
+        color: var(--accent);
+        border-bottom: 2px solid var(--card-border);
+        padding: 0.3em 0.6em;
+      }
+      .reveal table.simple td {
+        padding: 0.3em 0.6em;
+        border-bottom: 1px solid var(--card-border);
+        vertical-align: top;
+        text-align: left;
+      }
+      .reveal table.simple td.c, .reveal table.simple th.c { text-align: center; }
+      .reveal pre {
+        width: 100%;
+        font-size: 0.5em;
+        box-shadow: none;
+      }
+      .reveal pre code {
+        max-height: 480px;
+        border-radius: 10px;
+      }
+      .reveal .quote {
+        font-size: 0.8em;
+        font-style: italic;
+        color: #ddd;
+        border-left: 5px solid var(--card-border);
+        padding-left: 0.8em;
+        text-align: left;
+      }
+      .reveal small.note {
+        display: block;
+        color: var(--muted);
+        font-size: 0.5em;
+        margin-top: 0.6em;
+      }
+      .reveal .katex-display { margin: 0.3em 0; }
+      .reveal .formula {
+        font-size: 0.75em;
+        background: var(--card);
+        border: 1px solid var(--card-border);
+        border-radius: 14px;
+        padding: 0.4em 1em;
+        margin: 0.4em auto;
+        display: inline-block;
+      }
+      .reveal .stamp {
+        display: inline-block;
+        transform: rotate(-6deg);
+        border: 3px solid var(--red);
+        color: var(--red);
+        padding: 0.1em 0.5em;
+        font-size: 0.6em;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <!-- ======================= COVER ======================= -->
+        <section id="cover-placeholder"></section>
+
+        <!-- ======================= WHERE ARE WE ======================= -->
+        <section>
+          <h3>Where are we?</h3>
+          <div class="cards">
+            <div class="card blue">
+              <h4>(I) Business Intelligence</h4>
+              <ul>
+                <li>what happened? why?</li>
+                <li>dashboards, KPIs</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h4>Statistics &amp; A/B testing</h4>
+              <ul>
+                <li>did <em>our change</em> cause the difference?</li>
+                <li>is the difference real, or noise?</li>
+              </ul>
+            </div>
+            <div class="card green">
+              <h4>(VI) Introduction to AI</h4>
+              <ul>
+                <li>what will happen? for whom?</li>
+                <li>models learn from the data we measure here</li>
+              </ul>
+            </div>
+          </div>
+          <div class="takeaway fragment">
+            <span class="accent">Module description:</span> "sampling procedure &amp; statistical testing procedures".
+            Today's version: how do companies decide what to ship?
+          </div>
+          <aside class="notes">
+            Bridge module: BI is descriptive, AI is predictive, A/B testing is the
+            one place in the course where we talk about causality. Keep the maths
+            light, the goal is intuition and one tool (statsmodels).
+          </aside>
+        </section>
+
+        <!-- ======================= MOTIVATION ======================= -->
+        <section>
+          <section>
+            <h3>ShopNow: the new checkout</h3>
+            <p class="lead">
+              The product team built a <span class="accent">one-page checkout</span>.
+              After two weeks they report:
+            </p>
+            <div class="cards" style="max-width: 760px; margin: 0 auto">
+              <div class="card blue" style="text-align: center">
+                <h4>Old checkout (3 pages)</h4>
+                <div class="big">5.0%</div>
+                <ul style="list-style: none; padding: 0"><li>of visitors buy</li></ul>
+              </div>
+              <div class="card green" style="text-align: center">
+                <h4>New checkout (1 page)</h4>
+                <div class="big">8.0%</div>
+                <ul style="list-style: none; padding: 0"><li>of visitors buy</li></ul>
+              </div>
+            </div>
+            <p class="bigq fragment" style="margin-top: 0.8em">
+              <span class="green">Would you ship it?</span>
+            </p>
+            <aside class="notes">
+              Let them vote. Then ask: who saw the new checkout? Usually: beta
+              users, app users, logged-in customers, people who opted in. Those
+              people buy more anyway.
+            </aside>
+          </section>
+
+          <section>
+            <h3>Who saw the new checkout?</h3>
+            <div class="two-col">
+              <div>
+                <h4 class="red">Observational data</h4>
+                <ul>
+                  <li>new checkout was shown to <em>logged-in</em> users only</li>
+                  <li>logged-in users already buy more often</li>
+                  <li>so: new checkout <em>or</em> loyal customers?</li>
+                  <li>we cannot tell. The two explanations are <span class="accent">confounded</span>.</li>
+                </ul>
+              </div>
+              <div>
+                <h4 class="muted">More of the same</h4>
+                <ul>
+                  <li>"app users spend 2x more" (loyal customers install the app)</li>
+                  <li>"customers with a coupon churn less" (coupons went to active users)</li>
+                  <li>"stores with more staff sell more" (busy stores get more staff)</li>
+                </ul>
+              </div>
+            </div>
+            <div class="takeaway fragment">
+              <span class="accent">Correlation is not causation.</span>
+              A dashboard can show you a difference, it cannot tell you what caused it.
+            </div>
+          </section>
+
+          <section>
+            <h3>The fix: flip a coin</h3>
+            <div class="two-col">
+              <div>
+                <h4 class="green">Randomized experiment</h4>
+                <ul>
+                  <li>every visitor is assigned <em>at random</em> to A (old) or B (new)</li>
+                  <li>on average both groups are identical: same share of loyal users, mobile users, bargain hunters, ...</li>
+                  <li>the <em>only</em> systematic difference is the checkout</li>
+                  <li>so a difference in conversion (beyond noise) is <span class="accent">caused</span> by the checkout</li>
+                </ul>
+              </div>
+              <div>
+                <h4 class="accent">Names for the same thing</h4>
+                <span class="pill">A/B test</span>
+                <span class="pill">online controlled experiment</span>
+                <span class="pill">split test</span>
+                <span class="pill">randomized controlled trial (medicine)</span>
+                <span class="pill">bucket test</span>
+                <ul style="margin-top: 0.8em">
+                  <li>A = control, B = treatment / variant</li>
+                  <li>the coin flip is the whole trick. Everything else today is about handling the noise.</li>
+                </ul>
+              </div>
+            </div>
+            <aside class="notes">
+              Same idea as clinical trials: placebo vs drug. Randomization
+              removes confounders on average, it does not remove noise. That is
+              what statistics is for.
+            </aside>
+          </section>
+
+          <section>
+            <h3>Who does this?</h3>
+            <div class="cards">
+              <div class="card">
+                <h4>Everywhere online</h4>
+                <ul>
+                  <li>Booking.com, Amazon, Netflix, Google, Microsoft, Spotify, Zalando, ...</li>
+                  <li>thousands of experiments per year, often &gt;1000 running at the same time</li>
+                  <li>every button, ranking, price display, email subject line</li>
+                </ul>
+              </div>
+              <div class="card red">
+                <h4>Most ideas fail</h4>
+                <ul>
+                  <li>Microsoft: only about 1/3 of tested ideas improved their target metric, 1/3 did nothing, 1/3 hurt</li>
+                  <li>experts are bad at predicting which ideas win</li>
+                  <li>that is the business case for testing</li>
+                </ul>
+              </div>
+              <div class="card green">
+                <h4>Cheap wins exist</h4>
+                <ul>
+                  <li>Bing: moving part of the ad text into the headline, a few days of work</li>
+                  <li>+12% revenue, one of the best ideas in Bing's history</li>
+                  <li>it had sat in the backlog for months because nobody believed in it</li>
+                </ul>
+              </div>
+            </div>
+            <div class="cite">
+              Kohavi &amp; Thomke (2017): <a href="https://hbr.org/2017/09/the-surprising-power-of-online-experiments">The Surprising Power of Online Experiments</a>, Harvard Business Review.
+              Kohavi, Tang &amp; Xu (2020): Trustworthy Online Controlled Experiments, Cambridge University Press.
+            </div>
+          </section>
+        </section>
+
+        <!-- ======================= ANATOMY ======================= -->
+        <section>
+          <section>
+            <h3>Anatomy of an A/B test</h3>
+            <div class="flow">
+              <div class="step"><span class="n">1</span><b>Hypothesis</b><span>what do we change, what do we expect?</span></div>
+              <div class="step"><span class="n">2</span><b>Metric</b><span>one primary metric, guardrails</span></div>
+              <div class="step"><span class="n">3</span><b>Sample size</b><span>how many users, how long?</span></div>
+              <div class="step"><span class="n">4</span><b>Randomize</b><span>coin flip per user</span></div>
+              <div class="step"><span class="n">5</span><b>Run</b><span>do not touch, do not peek</span></div>
+              <div class="step"><span class="n">6</span><b>Analyze</b><span>test, confidence interval</span></div>
+              <div class="step"><span class="n">7</span><b>Decide</b><span>ship, iterate, or drop</span></div>
+            </div>
+            <div class="takeaway fragment" style="margin-top: 1.2em">
+              <span class="accent">Steps 1 to 3 happen before a single user sees variant B.</span>
+              Most A/B testing mistakes come from skipping them.
+            </div>
+          </section>
+
+          <section>
+            <h3>1. A good hypothesis</h3>
+            <p class="quote">
+              "Replacing the 3-page checkout by a 1-page checkout increases the
+              <span class="accent">checkout conversion rate</span> from 5.0% by
+              <span class="accent">at least 0.5 percentage points</span>, because fewer
+              steps mean fewer drop-offs."
+            </p>
+            <div class="two-col" style="margin-top: 0.8em">
+              <div>
+                <h4 class="green">Contains</h4>
+                <ul>
+                  <li>the change (one thing)</li>
+                  <li>the metric and its current value</li>
+                  <li>the smallest effect we care about</li>
+                  <li>a reason (so we learn something even if it fails)</li>
+                </ul>
+              </div>
+              <div>
+                <h4 class="red">Not a hypothesis</h4>
+                <ul>
+                  <li>"let's see if the new design does something"</li>
+                  <li>"we redesigned checkout, navigation and pricing, let's test"</li>
+                  <li>"we will pick whatever metric looks best afterwards"</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h3>2. Metrics</h3>
+            <table class="simple">
+              <tr>
+                <th>Role</th>
+                <th>ShopNow checkout example</th>
+                <th>Type</th>
+              </tr>
+              <tr>
+                <td><span class="accent">Primary metric</span> (exactly one)</td>
+                <td>checkout conversion rate: buyers / visitors of the checkout</td>
+                <td>binary per user (0/1), compared as a <em>proportion</em></td>
+              </tr>
+              <tr>
+                <td><span class="blue">Secondary metrics</span></td>
+                <td>revenue per visitor, average basket, time to complete checkout</td>
+                <td>continuous per user, compared as a <em>mean</em></td>
+              </tr>
+              <tr>
+                <td><span class="red">Guardrail metrics</span></td>
+                <td>page load time, error rate, returns, support tickets, unsubscribes</td>
+                <td>must not get worse, otherwise no ship</td>
+              </tr>
+            </table>
+            <div class="two-col" style="margin-top: 0.6em">
+              <div>
+                <h4 class="green">Why one primary metric?</h4>
+                <ul>
+                  <li>decided before the test, so nobody can cherry-pick afterwards</li>
+                  <li>more metrics = more chances of a false "win" (later: multiple testing)</li>
+                </ul>
+              </div>
+              <div>
+                <h4 class="accent">Why revenue per user is harder</h4>
+                <ul>
+                  <li>most users spend 0, a few spend a lot: very skewed, noisy</li>
+                  <li>needs many more users than a conversion rate</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <!-- ======================= NOISE ======================= -->
+        <section>
+          <section>
+            <h3>The enemy: noise</h3>
+            <p class="lead">
+              Same page in both groups (an <span class="accent">A/A test</span>),
+              5,000 users each. What differences do we see?
+            </p>
+            <img class="fig small" src="../assets/ab_testing/aa_noise.svg" alt="A/A test noise" />
+            <div class="takeaway fragment">
+              Nothing was changed, and still: differences of ±0.5 pp are normal,
+              ±1 pp happens. <span class="accent">So is +0.9 pp for the new checkout real?</span>
+            </div>
+            <aside class="notes">
+              Key intuition for the whole lecture. Every observed difference is
+              effect + noise. Statistics quantifies how big noise alone can be.
+              More users: narrower histogram.
+            </aside>
+          </section>
+
+          <section>
+            <h3>The question, properly asked</h3>
+            <div class="two-col">
+              <div>
+                <h4 class="blue">Null hypothesis H0</h4>
+                <ul>
+                  <li>"the new checkout changes nothing"</li>
+                  <li>any difference we see is noise</li>
+                  <li>the boring default we try to reject</li>
+                </ul>
+              </div>
+              <div>
+                <h4 class="green">Alternative H1</h4>
+                <ul>
+                  <li>"the new checkout changes the conversion rate"</li>
+                  <li>what we hope is true</li>
+                </ul>
+              </div>
+            </div>
+            <p class="bigq fragment" style="margin-top: 0.8em; font-size: 1.1em">
+              If H0 were true, how often would <span class="accent">chance alone</span><br />
+              produce a difference at least as big as the one we saw?
+            </p>
+            <p class="fragment lead">That number is the <span class="accent">p-value</span>.</p>
+          </section>
+
+          <section>
+            <h3>The p-value as a picture</h3>
+            <img class="fig" src="../assets/ab_testing/null_pvalue.svg" alt="null distribution and p-value" />
+            <div class="takeaway">
+              <span class="accent">Decision rule:</span> fix a threshold before the test, usually
+              α = 5%. p &lt; α: "statistically significant", we reject H0. Here: p = 0.039, so yes.
+            </div>
+            <aside class="notes">
+              The blue curve is the histogram from the A/A slide, smoothed and
+              scaled. Two-sided: we would also be surprised by a big negative
+              difference. Alpha 5% is a convention, not a law of nature.
+            </aside>
+          </section>
+
+          <section>
+            <h3>What a p-value is <span class="red">not</span></h3>
+            <table class="simple" style="font-size: 0.6em">
+              <tr><th>People say</th><th>Reality</th></tr>
+              <tr>
+                <td>"p = 0.04, so there is a 96% chance B is better"</td>
+                <td>no. p assumes H0 is true and asks how surprising the data is. It says nothing about the probability of H0 or H1.</td>
+              </tr>
+              <tr>
+                <td>"p = 0.3, so the new checkout has no effect"</td>
+                <td>no. We just did not <em>detect</em> one. Maybe the effect is small, maybe we had too few users.</td>
+              </tr>
+              <tr>
+                <td>"p = 0.001, so the effect is huge"</td>
+                <td>no. With millions of users even a +0.01 pp effect gets a tiny p-value. Significance says "real", not "relevant".</td>
+              </tr>
+              <tr>
+                <td>"p = 0.06, so close, let's run a few more days"</td>
+                <td>that is peeking. Coming up.</td>
+              </tr>
+            </table>
+            <div class="takeaway fragment">
+              Always report the <span class="accent">effect size with a confidence interval</span> next to the p-value.
+            </div>
+          </section>
+        </section>
+
+        <!-- ======================= ERRORS AND POWER ======================= -->
+        <section>
+          <section>
+            <h3>Two ways to be wrong</h3>
+            <table class="simple" style="font-size: 0.62em; max-width: 820px">
+              <tr>
+                <th></th>
+                <th class="c">B really has no effect</th>
+                <th class="c">B really has an effect</th>
+              </tr>
+              <tr>
+                <td><b>Test says "no effect"</b></td>
+                <td class="c green">correct</td>
+                <td class="c red"><b>Type II error</b> (missed it), probability β</td>
+              </tr>
+              <tr>
+                <td><b>Test says "effect!"</b></td>
+                <td class="c red"><b>Type I error</b> (false alarm), probability α</td>
+                <td class="c green">correct, probability = <b>power</b> = 1 - β</td>
+              </tr>
+            </table>
+            <div class="cards" style="margin-top: 0.8em">
+              <div class="card red">
+                <h4>α = 5%: false alarm</h4>
+                <ul>
+                  <li>we ship something useless (or harmful) and believe it works</li>
+                  <li>smoke alarm goes off, no fire</li>
+                </ul>
+              </div>
+              <div class="card muted">
+                <h4>β = 20%: missed effect</h4>
+                <ul>
+                  <li>we throw away a good idea</li>
+                  <li>fire, but the alarm stays quiet</li>
+                </ul>
+              </div>
+              <div class="card green">
+                <h4>power = 80%</h4>
+                <ul>
+                  <li>if the effect is really there, we find it 4 out of 5 times</li>
+                  <li>the usual convention, like α = 5%</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h3>α, β and power in one picture</h3>
+            <img class="fig" src="../assets/ab_testing/errors_power.svg" alt="type I and II errors and power" />
+            <div class="takeaway">
+              The only ways to shrink <em>both</em> errors: more users (curves get narrower)
+              or a bigger true effect (curves move apart).
+            </div>
+            <aside class="notes">
+              Moving the threshold left: more power but more false alarms. Moving
+              right: the opposite. This trade-off is why sample size matters.
+            </aside>
+          </section>
+        </section>
+
+        <!-- ======================= SAMPLE SIZE ======================= -->
+        <section>
+          <section>
+            <h3>3. How many users do we need?</h3>
+            <p class="lead">Four knobs, three of them are decisions, not data:</p>
+            <div class="cards">
+              <div class="card blue">
+                <h4>Baseline</h4>
+                <div class="big">5%</div>
+                <ul><li>current conversion rate, from your BI dashboard</li></ul>
+              </div>
+              <div class="card">
+                <h4>Minimum detectable effect</h4>
+                <div class="big">+0.5 pp</div>
+                <ul><li>smallest lift worth shipping (business decision!)</li></ul>
+              </div>
+              <div class="card red">
+                <h4>α</h4>
+                <div class="big">5%</div>
+                <ul><li>false alarm rate we accept</li></ul>
+              </div>
+              <div class="card green">
+                <h4>Power</h4>
+                <div class="big">80%</div>
+                <ul><li>chance to detect the MDE if it is real</li></ul>
+              </div>
+            </div>
+            <div class="takeaway fragment">
+              <span class="accent">Intuition:</span> small effects hide in noise. To see a
+              <em>half</em> as big effect you need <em>four</em> times the users.
+            </div>
+          </section>
+
+          <section>
+            <h3>The one formula of the day (for demonstration only)</h3>
+            <div class="formula">
+              \[ n_{\text{per group}} \;\approx\; \frac{16 \cdot p\,(1-p)}{\delta^{2}} \]
+            </div>
+            <p class="lead muted" style="font-size: 0.55em">
+              rule of thumb for α = 5%, power = 80%; p = baseline rate, δ = minimum detectable effect (absolute). The 16 hides the α and power choices.
+            </p>
+            <div class="takeaway fragment">
+              Halve the effect, quadruple the users. That is the δ² in the denominator, and the
+              reason small shops cannot test small changes.
+            </div>
+            <aside class="notes">
+              This is Lehr's rule. Full version: n = (z_{1-α/2} + z_{1-β})² · 2·p(1-p) / δ².
+              With z = 1.96 and 0.84 the squared sum is 7.85, times 2 is about 16.
+              We will not derive it, the notebook uses statsmodels.
+            </aside>
+          </section>
+
+          <section>
+            <h3>The formula in numbers</h3>
+            <table class="simple" style="font-size: 0.55em; max-width: 760px">
+              <tr><th>Baseline p</th><th>MDE δ</th><th class="c">rule of thumb</th><th class="c">statsmodels</th><th>at 2,000 visitors/day</th></tr>
+              <tr><td>5%</td><td>+2.0 pp (40% relative)</td><td class="c">1,900</td><td class="c">2,200 per group</td><td>2 days</td></tr>
+              <tr><td>5%</td><td>+1.0 pp (20% relative)</td><td class="c">7,600</td><td class="c">8,100 per group</td><td>8 days</td></tr>
+              <tr><td>5%</td><td>+0.5 pp (10% relative)</td><td class="c">30,400</td><td class="c">31,200 per group</td><td>1 month</td></tr>
+              <tr><td>5%</td><td>+0.25 pp (5% relative)</td><td class="c">121,600</td><td class="c">122,100 per group</td><td>4 months</td></tr>
+            </table>
+            <div class="takeaway fragment">
+              The rule of thumb is good enough for a meeting. The tool is good enough for the test plan.
+              Either way: a +0.5 pp lift at 5% baseline is a one-month experiment, not a one-week one.
+            </div>
+          </section>
+
+          <section>
+            <h3>Power curve: the same thing as a picture</h3>
+            <img class="fig" src="../assets/ab_testing/power_curve.svg" alt="power curve" />
+            <div class="takeaway">
+              Pick your MDE, go right until you hit 80%, read off the users per group. That is the whole planning step.
+            </div>
+          </section>
+
+          <section>
+            <h3>The tool: statsmodels</h3>
+            <pre><code class="language-python" data-trim data-line-numbers="1-2|4-6|8-10|12-14">
+from statsmodels.stats.power import NormalIndPower
+from statsmodels.stats.proportion import proportion_effectsize
+
+baseline = 0.05          # 5.0% convert today
+mde      = 0.005         # we care about +0.5 pp (5.0% -> 5.5%)
+effect   = proportion_effectsize(baseline + mde, baseline)
+
+n_per_group = NormalIndPower().solve_power(
+    effect_size=effect, alpha=0.05, power=0.8, alternative="two-sided"
+)
+
+print(f"{n_per_group:,.0f} users per group")
+# 31,217 users per group
+# at 2,000 checkout visitors per day: about 31 days
+            </code></pre>
+            <div class="takeaway">
+              Why decide this <em>before</em> the test: (1) you know if the test is even feasible,
+              (2) you know when to stop, so you are not tempted to peek.
+            </div>
+          </section>
+        </section>
+
+        <!-- ======================= RUNNING ======================= -->
+        <section>
+          <section>
+            <h3>4 + 5. Randomize and run</h3>
+            <div class="two-col">
+              <div>
+                <h4 class="green">Do</h4>
+                <ul>
+                  <li>randomize per <em>user</em> (not per session or page view), and keep a user in their group</li>
+                  <li>run for whole weeks: Monday shoppers differ from Sunday shoppers</li>
+                  <li>run until the planned sample size, then stop</li>
+                  <li>check the split: 50/50 planned should be 50/50 observed</li>
+                </ul>
+              </div>
+              <div>
+                <h4 class="red">Don't</h4>
+                <ul>
+                  <li>change variant B while the test runs ("just a small fix")</li>
+                  <li>stop early because it looks good (or bad)</li>
+                  <li>start on Black Friday</li>
+                  <li>test on a subgroup only and then generalize</li>
+                </ul>
+              </div>
+            </div>
+            <div class="takeaway fragment">
+              <span class="accent">Sample ratio mismatch:</span> planned 50/50, got 50.8% / 49.2% with 100,000 users?
+              That is not noise (p &lt; 0.001), that is a bug: a redirect that fails on old browsers, a bot filter, a caching layer.
+              Do not analyze, fix first.
+            </div>
+          </section>
+
+          <section>
+            <h3>Peeking: the most common mistake</h3>
+            <img class="fig" src="../assets/ab_testing/peeking.svg" alt="peeking at the p-value every day" />
+            <div class="takeaway">
+              Looking every day and stopping at the first p &lt; 0.05 turns the promised 5% false alarm rate
+              into about <span class="red">25-30%</span>. The p-value is only valid for the sample size you planned.
+            </div>
+            <aside class="notes">
+              Left: the p-value random-walks. Right: the share of A/A tests that
+              hit p < 0.05 at least once keeps growing. Looking at the dashboard is
+              fine; deciding based on it is not. If you want to peek by design,
+              use sequential testing (outlook).
+            </aside>
+          </section>
+        </section>
+
+        <!-- ======================= ANALYSIS ======================= -->
+        <section>
+          <section>
+            <h3>6. Analyze: proportions</h3>
+            <pre><code class="language-python" data-trim data-line-numbers="1-2|4-6|8-9|11-15">
+from statsmodels.stats.proportion import proportions_ztest
+from statsmodels.stats.proportion import confint_proportions_2indep
+
+# after 31 days: visitors and buyers per group
+visitors = [31_250, 31_180]     # A, B
+buyers   = [ 1_560,  1_780]     # A, B
+
+z, p = proportions_ztest(count=buyers, nobs=visitors)
+# z = -3.98, p = 0.0001
+
+# B first, so the interval is for B - A
+lo, hi = confint_proportions_2indep(
+    buyers[1], visitors[1], buyers[0], visitors[0]
+)
+# difference B - A = +0.72 pp, 95% CI [+0.36 pp, +1.07 pp]
+            </code></pre>
+            <div class="takeaway">
+              <span class="accent">Two-sample z-test for proportions.</span> The chi-squared test on the 2x2 table
+              gives the same answer. The t-test is the same idea for means (revenue per user): <code>scipy.stats.ttest_ind</code>.
+            </div>
+            <aside class="notes">
+              Do not derive the test statistic. Say: it is the observed difference
+              divided by the noise level from the A/A slide. z = 3 means "3 noise
+              units away from zero".
+            </aside>
+          </section>
+
+          <section>
+            <h3>Confidence intervals: the honest summary</h3>
+            <img class="fig small" src="../assets/ab_testing/ci.svg" alt="confidence intervals of repeated experiments" />
+            <div class="takeaway">
+              A 95% CI is the range of effects that are compatible with the data. Over many experiments,
+              19 out of 20 of these intervals contain the true effect. If it excludes 0, p &lt; 0.05.
+            </div>
+            <aside class="notes">
+              The CI carries more information than the p-value: effect size,
+              direction, and uncertainty. "+0.72 pp [0.25, 1.18]" lets the business
+              judge if it is worth it. Also note: the red ones are not mistakes
+              of the analyst, that is the 5% at work.
+            </aside>
+          </section>
+
+          <section>
+            <h3>7. Decide</h3>
+            <table class="simple" style="font-size: 0.6em">
+              <tr><th>Result</th><th>Example</th><th>Decision</th></tr>
+              <tr>
+                <td class="green">significant, and bigger than MDE</td>
+                <td>+0.72 pp [0.36, 1.07], p = 0.0001, guardrails fine</td>
+                <td>ship</td>
+              </tr>
+              <tr>
+                <td class="accent">significant, but tiny</td>
+                <td>+0.05 pp [0.01, 0.09] with 5 million users</td>
+                <td>real, but is it worth the maintenance? business call</td>
+              </tr>
+              <tr>
+                <td class="muted">not significant, CI wide</td>
+                <td>+0.4 pp [-0.3, 1.1], p = 0.26</td>
+                <td>inconclusive, not "no effect". Bigger test or drop the idea</td>
+              </tr>
+              <tr>
+                <td class="muted">not significant, CI narrow around 0</td>
+                <td>+0.02 pp [-0.08, 0.12]</td>
+                <td>effect, if any, is too small to matter. Drop</td>
+              </tr>
+              <tr>
+                <td class="red">primary wins, guardrail loses</td>
+                <td>conversion +0.7 pp, but support tickets +30%</td>
+                <td>do not ship, investigate</td>
+              </tr>
+            </table>
+            <div class="takeaway fragment">
+              How to report: <span class="accent">effect, interval, p-value, sample size, duration</span>.
+              "B increased checkout conversion by 0.72 pp (95% CI 0.36 to 1.07, p = 0.0001), 62k users, 31 days."
+            </div>
+          </section>
+        </section>
+
+        <!-- ======================= PITFALLS ======================= -->
+        <section>
+          <section>
+            <h3>Pitfalls</h3>
+            <div class="cards">
+              <div class="card red">
+                <h4>Peeking</h4>
+                <ul><li>stopping when p dips below 0.05</li><li>seen above</li></ul>
+              </div>
+              <div class="card red">
+                <h4>Multiple testing</h4>
+                <ul><li>20 metrics, 10 segments: something will "win"</li></ul>
+              </div>
+              <div class="card red">
+                <h4>Novelty effect</h4>
+                <ul><li>new things get clicked because they are new</li></ul>
+              </div>
+              <div class="card red">
+                <h4>Sample ratio mismatch</h4>
+                <ul><li>the split is off, the randomization is broken</li></ul>
+              </div>
+              <div class="card red">
+                <h4>Simpson's paradox</h4>
+                <ul><li>B wins in every segment and loses overall</li></ul>
+              </div>
+            </div>
+            <p class="lead muted fragment" style="margin-top: 1em">
+              All of them produce beautiful, confident, wrong dashboards.
+            </p>
+          </section>
+
+          <section>
+            <h3>Multiple testing</h3>
+            <img class="fig small" src="../assets/ab_testing/multiple_testing.svg" alt="multiple testing" />
+            <div class="takeaway">
+              Test 20 metrics at α = 5% and you have a 64% chance of at least one false win.
+              Fix: one primary metric decided upfront. Everything else is exploration, not evidence.
+              (Bonferroni: divide α by the number of tests, if you must.)
+            </div>
+          </section>
+
+          <section>
+            <h3>Novelty effect</h3>
+            <img class="fig small" src="../assets/ab_testing/novelty.svg" alt="novelty effect" />
+            <div class="takeaway">
+              Users click the shiny new thing, then they stop. Run long enough, look at the trend over time,
+              and look at new users separately (they have no "old" to compare to).
+            </div>
+          </section>
+
+          <section>
+            <h3>Simpson's paradox</h3>
+            <img class="fig small" src="../assets/ab_testing/simpson.svg" alt="Simpson's paradox" />
+            <div class="takeaway">
+              B got mostly mobile users (low conversion), A got mostly desktop users. Happens when the split differs by segment:
+              ramp-ups per platform, or observational data. Proper randomization prevents it, segment checks detect it.
+            </div>
+          </section>
+        </section>
+
+        <!-- ======================= OUTLOOK ======================= -->
+        <section>
+          <h3>Outlook (not exam relevant)</h3>
+          <div class="cards">
+            <div class="card blue">
+              <h4>Bayesian A/B testing</h4>
+              <ul>
+                <li>answers the question people actually ask: "probability that B is better: 96%"</li>
+                <li>needs a prior; tools: PyMC, many platforms (VWO, Optimizely)</li>
+              </ul>
+            </div>
+            <div class="card green">
+              <h4>Sequential testing</h4>
+              <ul>
+                <li>peeking by design: thresholds that get stricter the more often you look</li>
+                <li>stops bad ideas early without inflating α</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h4>Uplift / personalization</h4>
+              <ul>
+                <li>"B is better for whom?"</li>
+                <li>a model predicts the best variant per user</li>
+                <li>exactly the notebook of the next lecture</li>
+              </ul>
+            </div>
+            <div class="card muted">
+              <h4>Experimentation platforms</h4>
+              <ul>
+                <li>assignment, metrics, SRM checks, dashboards as a service</li>
+                <li>Optimizely, LaunchDarkly, GrowthBook (open source), in-house at the big ones</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================= BI CONNECTION ======================= -->
+        <section>
+          <h3>A/B tests in the data warehouse</h3>
+          <div class="two-col">
+            <div>
+              <h4 class="accent">Two tables are enough</h4>
+              <pre style="font-size: 0.42em"><code class="language-sql" data-trim>
+-- who is in which group (written by the assignment service)
+assignments(experiment_id, user_id, variant, assigned_at)
+
+-- what users did (your normal fact tables)
+orders(order_id, user_id, order_ts, revenue)
+
+SELECT a.variant,
+       COUNT(DISTINCT a.user_id)                AS users,
+       COUNT(DISTINCT o.user_id)                AS buyers,
+       COUNT(DISTINCT o.user_id) * 1.0
+         / COUNT(DISTINCT a.user_id)            AS conversion
+FROM assignments a
+LEFT JOIN orders o
+       ON o.user_id = a.user_id
+      AND o.order_ts >= a.assigned_at
+WHERE a.experiment_id = 'checkout_v2'
+GROUP BY a.variant;
+              </code></pre>
+            </div>
+            <div>
+              <h4 class="green">Why BI people care</h4>
+              <ul>
+                <li>the experiment dashboard is just this query plus a confidence interval</li>
+                <li>metric definitions must be the same as in the company KPIs, or nobody trusts the result</li>
+                <li>experiment results are the most trustworthy rows in the warehouse: the only ones with a causal story</li>
+                <li>join with segments (device, country, new vs returning) for the Simpson check</li>
+                <li>SRM check = one GROUP BY</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================= LAB ======================= -->
+        <section>
+          <h3>Lab: ShopNow checkout experiment</h3>
+          <div class="flow">
+            <div class="step"><span class="n">1</span><b>Plan</b><span>sample size and power curve with statsmodels</span></div>
+            <div class="step"><span class="n">2</span><b>Simulate</b><span>coin flip, conversions with and without effect</span></div>
+            <div class="step"><span class="n">3</span><b>Analyze</b><span>z-test, confidence interval, decision</span></div>
+            <div class="step"><span class="n">4</span><b>Peek</b><span>data arrives daily, see what goes wrong</span></div>
+            <div class="step"><span class="n">5</span><b>Revenue</b><span>t-test for a continuous metric</span></div>
+            <div class="step"><span class="n">6</span><b>Checks</b><span>sample ratio mismatch, segments</span></div>
+          </div>
+          <p class="lead" style="margin-top: 1em">
+            Notebook: <code>colab/ab_testing.ipynb</code> (solution available after the lab)
+          </p>
+          <div class="takeaway">
+            You will simulate the experiment yourself. That is the best way to feel what noise does,
+            because you know the true effect and can check whether the test finds it.
+          </div>
+        </section>
+
+        <!-- ======================= SUMMARY ======================= -->
+        <section>
+          <h3>Takeaways</h3>
+          <div class="two-col" style="font-size: 0.75em">
+            <div>
+              <ul>
+                <li><span class="accent">Randomize</span>, then every difference beyond noise is causal</li>
+                <li>Every observed difference is <span class="accent">effect + noise</span>; A/A tests show how big noise is</li>
+                <li>The p-value: how surprising is this difference if nothing was going on?</li>
+                <li>α = 5% and power = 80% are conventions, the <span class="accent">MDE is a business decision</span></li>
+              </ul>
+            </div>
+            <div>
+              <ul>
+                <li><span class="accent">Plan the sample size first</span>, then run, then look. No peeking.</li>
+                <li>Report effect size with a confidence interval, not just p</li>
+                <li>One primary metric, guardrails, segment and SRM checks</li>
+                <li>Tools do the maths: <code>statsmodels</code>, <code>scipy.stats</code></li>
+              </ul>
+            </div>
+          </div>
+          <h4 style="margin-top: 1em; font-size: 0.8em" class="muted">Further reading</h4>
+          <div class="cite" style="text-align: center">
+            Kohavi, Tang &amp; Xu (2020): <em>Trustworthy Online Controlled Experiments</em> (the standard reference, chapters 1 to 3 are enough) ·
+            Kohavi &amp; Thomke (2017): <a href="https://hbr.org/2017/09/the-surprising-power-of-online-experiments">The Surprising Power of Online Experiments</a>, HBR ·
+            Bruce, Bruce &amp; Gedeck (2020): <em>Practical Statistics for Data Scientists</em>, chapter 3 ·
+            Evan Miller: <a href="https://www.evanmiller.org/ab-testing/sample-size.html">sample size calculator</a> and <a href="https://www.evanmiller.org/how-not-to-run-an-ab-test.html">How not to run an A/B test</a>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Reveal.js JavaScript -->
+    <script src="../reveal.js/dist/reveal.js"></script>
+    <script src="../reveal.js/plugin/notes/notes.js"></script>
+    <script src="../reveal.js/plugin/markdown/markdown.js"></script>
+    <script src="../reveal.js/plugin/highlight/highlight.js"></script>
+    <script src="../reveal.js/plugin/math/math.js"></script>
+    <script src="../utils.js"></script>
+
+    <script>
+      Reveal.initialize({
+        hash: true,
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX],
+        showNotes: false, // press s for speaker notes
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        includeHTML("../templates/cover.html", "cover-placeholder", {
+          title: "A/B Testing",
+        });
+      });
+    </script>
+  </body>
+</html>

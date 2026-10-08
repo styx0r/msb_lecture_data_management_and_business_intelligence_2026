@@ -1,6 +1,6 @@
 # Mock Exam: Data Management & Business Intelligence
 
-90 multiple choice questions. Choose one answer (A-D) per question.
+105 multiple choice questions. Choose one answer (A-D) per question.
 
 ## Business Intelligence
 
@@ -570,6 +570,98 @@
    C. A GPU training protocol
    D. A file compression method
 
+## A/B Testing
+
+91. A dashboard shows that users of a new feature convert more often. Why does this not prove that the feature causes higher conversion?
+    A. Dashboards cannot compute conversion rates
+    B. Users who choose the feature may differ from the others (self-selection, confounding)
+    C. Conversion is not a valid metric
+    D. Only SQL can prove causality
+
+92. In an A/B test, the treatment group:
+    A. Sees the new variant
+    B. Sees the existing version
+    C. Is never measured
+    D. Is chosen by hand
+
+93. Which statement is the alternative hypothesis of a checkout experiment?
+    A. The sample size is large enough
+    B. The new checkout changes nothing
+    C. The new checkout changes the conversion rate
+    D. The metric is a proportion
+
+94. "p = 0.3, so the new checkout has no effect." This conclusion is:
+    A. Correct
+    B. Wrong, a large p-value means we did not detect an effect, not that there is none
+    C. Correct only for conversion rates
+    D. Correct only if the sample is small
+
+95. A type II error is:
+    A. Declaring an effect that does not exist
+    B. Choosing α too small
+    C. Missing an effect that really exists
+    D. Running the test too long
+
+96. With a power of 80%:
+    A. 80% of users convert
+    B. The test has a 20% false alarm rate
+    C. A real effect of the planned size is detected in about 4 out of 5 experiments
+    D. The confidence interval is 80% wide
+
+97. Which of these is NOT needed to compute the sample size of an A/B test?
+    A. The baseline conversion rate
+    B. The minimum detectable effect
+    C. The significance level and the power
+    D. The result of the experiment
+
+98. A test needs 8,000 users per group to detect +1 pp. To detect +0.5 pp it needs roughly:
+    A. 4,000 per group
+    B. 16,000 per group
+    C. 32,000 per group
+    D. 8,000 per group
+
+99. What should you do if the p-value is 0.06 at the planned end of the experiment?
+    A. Run a few more days until it drops below 0.05
+    B. Report the result as not significant together with the effect size and confidence interval
+    C. Remove the users who did not convert
+    D. Switch to a one-sided test
+
+100. Why does checking the p-value every day and stopping at the first p < 0.05 inflate the false alarm rate?
+    A. Because noise gets many chances to cross the threshold instead of one
+    B. Because the sample size grows
+    C. Because conversions are binary
+    D. It does not inflate the false alarm rate
+
+101. You planned a 50/50 split and observe 50.8% / 49.2% with 100,000 users (p < 0.001). The right reaction is:
+    A. Ignore it, it is close enough
+    B. Treat it as a sample ratio mismatch: find the bug before analyzing
+    C. Declare B the winner
+    D. Reduce α to 1%
+
+102. For comparing revenue per visitor (a continuous metric) between A and B, a suitable test is:
+    A. A two-sample t-test
+    B. k-means clustering
+    C. A chi-squared test on the 2x2 table
+    D. Normalization to third normal form
+
+103. A guardrail metric is:
+    A. The one metric that decides the experiment
+    B. A metric that must not get worse, e.g. page load time or support tickets
+    C. The baseline conversion rate
+    D. The metric with the smallest p-value
+
+104. Why should an A/B test have exactly one primary metric, chosen before the test?
+    A. Because statsmodels only accepts one metric
+    B. Because testing many metrics and picking the best one inflates the false alarm rate
+    C. Because dashboards can show only one chart
+    D. Because secondary metrics are never relevant
+
+105. The novelty effect means:
+    A. New users convert better than returning users
+    B. A new variant shows a lift at first because it is new, which fades over time
+    C. The first week of data must be discarded
+    D. Variant B is always better in the long run
+
 Answer Key
 1-B, 2-B, 3-B, 4-A, 5-B, 6-B, 7-C, 8-B, 9-B, 10-B,
 11-C, 12-C, 13-B, 14-D, 15-B, 16-A, 17-B, 18-C, 19-B, 20-B,
@@ -579,4 +671,6 @@ Answer Key
 51-B, 52-B, 53-B, 54-C, 55-A, 56-B, 57-B, 58-A, 59-B, 60-B,
 61-A, 62-A, 63-B, 64-B, 65-B, 66-B, 67-A, 68-B, 69-B, 70-A,
 71-B, 72-A, 73-C, 74-B, 75-A, 76-A, 77-B, 78-B, 79-B, 80-B,
-81-B, 82-A, 83-B, 84-A, 85-A, 86-A, 87-A, 88-A, 89-A, 90-A
+81-B, 82-A, 83-B, 84-A, 85-A, 86-A, 87-A, 88-A, 89-A, 90-A,
+91-B, 92-A, 93-C, 94-B, 95-C, 96-C, 97-D, 98-C, 99-B, 100-A,
+101-B, 102-A, 103-B, 104-B, 105-B
