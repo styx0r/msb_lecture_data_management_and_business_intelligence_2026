@@ -858,6 +858,38 @@ lo, hi = confint_proportions_2indep(
           </section>
         </section>
 
+        <!-- ======================= YOUR TURN ======================= -->
+        <section>
+          <h3><span class="green">Your turn</span> <span class="muted">(15 min, in pairs)</span></h3>
+          <p class="lead">
+            ShopNow wants more newsletter sign-ups. Today <span class="accent">2.0%</span> of visitors sign up,
+            marketing hopes a new banner brings <span class="accent">+0.4 pp</span>. The site has 3,000 visitors per day.
+          </p>
+          <div class="cards">
+            <div class="card">
+              <h4>1. Plan</h4>
+              <ul><li>users per group and days needed (α = 5%, power = 80%)</li></ul>
+            </div>
+            <div class="card">
+              <h4>2. Negotiate</h4>
+              <ul><li>marketing wants an answer in 7 days: what is the smallest lift you could detect?</li></ul>
+            </div>
+            <div class="card">
+              <h4>3. Decide</h4>
+              <ul><li>A: 965 of 48,200, B: 1,160 of 48,050. Lift, confidence interval, p-value, ship or not?</li></ul>
+            </div>
+          </div>
+          <p class="lead" style="margin-top: 0.8em">
+            Notebook: <a href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/ab_testing_warmup.ipynb">colab/ab_testing_warmup.ipynb</a>
+            <span class="muted">(the hints in the notebook name the functions you need)</span>
+          </p>
+          <aside class="notes">
+            Short break from the slides. Expected answers: about 21,000 users per group, 14 days;
+            in 7 days only about +0.6 pp is detectable; the result is +0.41 pp with CI [0.23, 0.60] and p far below 0.05, so ship.
+            Discuss task 2: what do you tell marketing?
+          </aside>
+        </section>
+
         <!-- ======================= PITFALLS ======================= -->
         <section>
           <section>
