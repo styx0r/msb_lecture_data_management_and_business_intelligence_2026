@@ -8,9 +8,28 @@
 
 --
 
+#### Your turn first <span style="color: orange;">(groups of 2-3, 15 min)</span>
+
+You run Netflix. Next year you have <span style="color: lightgreen;">100 million &euro; for new content</span>.
+
+<span style="color: lightgreen;">What do you need to know to decide what to produce?</span>
+
+- write down <b>3 questions</b> you would want answered
+- for each: <b>which data</b> would answer it, and <b>where</b> would it come from?
+- then 3 min per group at the whiteboard
+
+Note:
+
+- No data on purpose. The students start from the business decision, not from a table.
+- While they work: walk around, push vague questions ("what is popular?") towards decidable ones ("which genre keeps new subscribers past month one?").
+- At the whiteboard: cluster the questions into content, audience, timing, money. Keep the board, it is reused two slides later.
+- Guiding questions for the discussion: Which questions came up in every group? Which need data Netflix probably does not have? Who in the company would act on the answer?
+
+--
+
 <img
-  src="../assets/business_intelligence/imgs/imgs.014.png"
-  alt="Overview"
+  src="../assets/business_intelligence/imgs/netflix_what_we_watched_2026H1.png"
+  alt="Netflix What We Watched report, first half of 2026"
   style="
     width: 2400px;
     margin: 0px 0px 0px 0px;
@@ -19,39 +38,28 @@
   "
 />
 
-<span style="color: lightgreen;">Why does Netflix collect this data?</span>
+<span style="color: lightgreen;">This is what Netflix publishes. Which of your questions does this table answer? Which not?</span>
 
 Note:
 
-Here we should have a discussion and find a lot of ideas why netflix might collect this data
-
-1. Which Types of Content Drive Engagement?
-   - Question: What genres or types of films (e.g., documentaries, thrillers, comedies) have the highest views and longest hours watched?
-   - Motivation: Identifying high-performing genres helps Netflix decide on future content investments, ensuring they produce or license films that maximize viewer engagement.
-2. What is the Return on Content Investment?
-   - Question: How do hours viewed and views per title correlate with production costs or licensing fees?
-   - Motivation: Understanding the profitability of content allows Netflix to prioritize high-ROI films and optimize spending on content that attracts and retains subscribers.
-3. What Trends in Viewership Patterns Can Inform Release Timing?
-   - Question: Are there seasonal patterns in views or hours watched that can guide the timing of releases for similar types of content?
-   - Motivation: Aligning new releases with peak demand periods (e.g., holidays) could enhance engagement and maximize return on investment.
-4. What Impact Does Runtime Have on Viewer Engagement?
-   - Question: How does the runtime of a film correlate with the total hours viewed and completion rates?
-   - Motivation: This helps optimize runtimes for future productions. If certain durations yield higher engagement or completion rates, Netflix can align runtimes with audience preferences.
-5. How Does the Release Date Affect Initial and Sustained Engagement?
-   - Question: Does releasing films on specific dates (e.g., weekends vs. weekdays) impact initial views and long-term engagement?
-   - Motivation: Knowing the best times to release content can help Netflix schedule launches for maximum viewership and subscriber retention.
-6. What Content is Most Likely to Drive New Subscriptions?
-   - Question: Are there films that disproportionately attract first-time viewers or appear in viewing patterns for new subscribers?
-   - Motivation: Insights here help Netflix understand which films contribute most to subscriber acquisition, guiding future content and marketing decisions.
+- 8,000+ shows and 8,000+ movies, views and hours for every title, January to June 2026. Netflix has published this twice a year since 2023, from 2027 only once a year.
+- Typical questions and whether this table answers them:
+  1. Which types of content drive engagement? Partly: there is no genre column, you would have to add it from another source.
+  2. Return on content investment? No: no production costs or licensing fees in here.
+  3. Best release timing? Partly: release date is there, seasonality needs several reports.
+  4. Does runtime matter? Yes: runtime, hours viewed and views allow a first look at completion.
+  5. Weekday vs. weekend release? Partly, release date only.
+  6. Which content brings new subscribers? No: no subscriber data at all.
+- Point to make: a published table answers almost none of the business questions completely. Internally Netflix has data per user, per session, per second. The questions decide which data is worth collecting, not the other way round.
 
 --
 
-- <span style="color: lightgreen;">What are business relevant questions for netflix?</span>
+- <span style="color: lightgreen;">What are business relevant questions for Netflix?</span>
 - <span style="color: lightgreen;">What (data) do we need to answer those questions?</span>
 - <span style="color: lightgreen;">Where do we get this information from?</span>
 - <span style="color: lightgreen;">Who needs access to this information?</span>
 
-Note: put some on the whiteboard
+Note: Fill these four from the whiteboard. These four questions are the whole course on one slide.
 
 --
 
@@ -59,7 +67,27 @@ That is BI!
 
 --
 
-[source](https://about.netflix.com/en/news/what-we-watched-the-first-half-of-2024)
+#### Same game, your field: <span style="color: red;">the emergency department</span>
+
+You run the emergency department of a hospital. Winter is coming.
+
+<span style="color: lightgreen;">What do you need to know to plan beds and staff for the next three months?</span>
+
+- 5 min, same groups, 3 questions
+- then: where does this data live today?
+
+Note:
+
+- Expected questions: how many patients per hour, weekday and season; how long do they stay; which cases (flu, falls, cardiac); how many are admitted to a ward; how many staff per shift; when do waves (flu, heat) come.
+- Where the data lives: hospital information system (admissions, triage, diagnoses), staff rosters, bed management; outside: RKI influenza surveillance, weather forecast, school holidays.
+- Same structure as Netflix: decision, questions, data, sources, who acts on it. The module description calls this eHealth. It is BI with patients instead of viewers.
+- Optional: this is the OODA loop that comes later in the deck.
+
+--
+
+[source: Netflix, What We Watched, first half of 2026](https://about.netflix.com/en/news/what-we-watched-the-first-half-of-2026)
+
+<small>full table as Excel in the course repo: <code>data/netflix_what_we_watched_2026H1.xlsx</code></small>
 
 ---
 
