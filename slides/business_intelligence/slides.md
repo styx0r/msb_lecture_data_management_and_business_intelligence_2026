@@ -66,24 +66,19 @@ That is BI!
 ### BI for dummies
 
 <svg viewBox="0 0 1920 1080" style="width: 100%; max-height: 540px; background: transparent" font-family="Helvetica, Arial, sans-serif" fill="#fff" text-anchor="middle" font-size="86">
-  <rect x="0" y="0" width="1920" height="1080" fill="#fff"/>
   <rect x="90" y="760" width="1740" height="220" fill="#4ea8f5"/>
   <text x="960" y="900">Business relevant questions</text>
-  <g class="fragment">
-    <polygon points="960,650 1035,710 985,710 985,750 935,750 935,710 885,710" fill="#8e8e8e"/>
-    <rect x="90" y="440" width="1740" height="220" fill="#f0b03f"/>
-    <text x="960" y="580">Data</text>
-  </g>
-  <g class="fragment">
-    <polygon points="960,330 1035,390 985,390 985,430 935,430 935,390 885,390" fill="#8e8e8e"/>
-    <rect x="90" y="120" width="1740" height="220" fill="#7ed957"/>
-    <text x="960" y="260">Informed (data driven) decisions</text>
-  </g>
+  <polygon points="960,672 1030,722 985,722 985,748 935,748 935,722 890,722" fill="#9e9e9e"/>
+  <rect x="90" y="440" width="1740" height="220" fill="#f0b03f"/>
+  <text x="960" y="580">Data</text>
+  <polygon points="960,352 1030,402 985,402 985,428 935,428 935,402 890,402" fill="#9e9e9e"/>
+  <rect x="90" y="120" width="1740" height="220" fill="#7ed957"/>
+  <text x="960" y="260">Informed (data driven) decisions</text>
 </svg>
 
 Note:
 
-- Bottom-up: start with the questions the business needs answered (Netflix slide), then collect the data to answer them, then decide.
+- Read bottom-up: start with the questions the business needs answered (Netflix slide), then collect the data to answer them, then decide.
 - Without the question, data is just storage cost. Without the decision, BI is just reporting.
 
 ---
@@ -237,7 +232,6 @@ Note:
 
 <svg viewBox="0 0 1920 1080" style="width: 100%; max-height: 540px; background: transparent" font-family="Helvetica, Arial, sans-serif" fill="#fff" text-anchor="middle" font-size="56">
   <defs><linearGradient id="valeff" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7ed957"/><stop offset="1" stop-color="#e5412e"/></linearGradient></defs>
-  <rect x="0" y="0" width="1920" height="1080" fill="#fff"/>
   <rect x="60" y="213" width="140" height="654" fill="url(#valeff)"/>
   <text x="130" y="530" font-size="38" font-weight="bold">Value</text>
   <text x="130" y="572" font-size="38" font-weight="bold">Effort</text>
@@ -269,7 +263,6 @@ Note:
 
 <svg viewBox="0 0 1920 1080" style="width: 100%; max-height: 540px; background: transparent" font-family="Helvetica, Arial, sans-serif" fill="#fff" text-anchor="middle" font-size="56">
   <defs><linearGradient id="valeff" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7ed957"/><stop offset="1" stop-color="#e5412e"/></linearGradient></defs>
-  <rect x="0" y="0" width="1920" height="1080" fill="#fff"/>
   <rect x="60" y="213" width="140" height="654" fill="url(#valeff)"/>
   <text x="130" y="530" font-size="38" font-weight="bold">Value</text>
   <text x="130" y="572" font-size="38" font-weight="bold">Effort</text>
@@ -289,7 +282,7 @@ Note:
   <polygon points="1503,673 1527,658 1527,688" fill="#c8c8c8"/>
   <text x="1560" y="720" font-size="42" fill="#c8c8c8" text-anchor="start">Data Integration</text>
   <text x="1560" y="765" font-size="42" fill="#c8c8c8" text-anchor="start">ETL / ELT</text>
-  <text x="960" y="980" font-size="44" fill="#6b6b6b">AI is no longer only on top: it is used to build and run every layer</text>
+  <text x="960" y="980" font-size="44" fill="#c8c8c8">AI is no longer only on top: it is used to build and run every layer</text>
 </svg>
 
 Note:
