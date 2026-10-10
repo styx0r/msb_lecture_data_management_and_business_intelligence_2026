@@ -292,30 +292,108 @@ Note:
 
 ---
 
-### Who does the work?
+### One case, bottom-up
 
-<img
-  src="../assets/business_intelligence/imgs/imgs.013.png"
-  alt="Overview"
-  style="
-    width: 2400px;
-    margin: 0px 0px 0px 0px;
-    padding-right: 0rem;
-    background: transparent;
-  "
-/>
+<span style="color: orange;">Case Study</span>
+
+An online retailer observes a deterioration in sales.
+An initial assumption: customer loyalty has declined.
+
+<span style="color: lightgreen;">Is that true, and what should the retailer do? Let's walk through the stack from the bottom.</span>
+
+Note:
+
+- Same stack as before, but now with one concrete case. Each layer gets one slide: what exists there, what we do with it, what it delivers to the next layer.
+- Ask the room first: what data does an online shop even have?
 
 --
 
-- no hard borders
-- dependent on company structure and complexity multi-roles possible
-- many more roles involved, e.g. for decision making PO
+### 1. Raw Data
 
----
+<div style="display: flex; gap: 1.5rem; align-items: center">
+  <div style="flex: 0 0 52%">
+<svg viewBox="200 190 1700 700" style="width: 100%; background: transparent" font-family="Helvetica, Arial, sans-serif" fill="#fff" text-anchor="middle" font-size="56">
+  <rect x="355" y="213" width="1145" height="120" fill="#5f5f5f"/>
+  <text x="928" y="291" font-size="56">Decisions</text>
+  <rect x="355" y="347" width="1145" height="120" fill="#8e8e8e"/>
+  <text x="928" y="425" font-size="56">Reporting (Visualisation)</text>
+  <rect x="355" y="481" width="1145" height="120" fill="#5f5f5f"/>
+  <text x="928" y="559" font-size="56">Data Analysis &amp; Exploration</text>
+  <rect x="355" y="615" width="1145" height="120" fill="#8e8e8e"/>
+  <text x="928" y="693" font-size="56">Data Warehousing / Data Marts</text>
+  <rect x="355" y="749" width="1145" height="120" fill="#f0b03f"/>
+  <text x="928" y="827" font-size="48">Raw Data (self produced or foreign sources)</text>
+  <rect x="230" y="213" width="110" height="654" fill="#5f5f5f"/>
+  <text x="285" y="560">AI</text>
+  <path d="M1500,807 H1550 V673 H1517" fill="none" stroke="#c8c8c8" stroke-width="6"/>
+  <polygon points="1503,673 1527,658 1527,688" fill="#c8c8c8"/>
+  <text x="1560" y="720" font-size="42" fill="#c8c8c8" text-anchor="start">Data Integration</text>
+  <text x="1560" y="765" font-size="42" fill="#c8c8c8" text-anchor="start">ETL / ELT</text>
+</svg>
+  </div>
+  <div style="flex: 1; text-align: left; font-size: 0.6em">
+    <ul>
+      <li><span style="color: orange;">Shop database:</span> orders, customers, products, prices, returns</li>
+      <li><span style="color: orange;">Web tracking:</span> sessions, clicks, search terms, abandoned baskets</li>
+      <li><span style="color: orange;">Customer service:</span> tickets, complaints, reviews</li>
+      <li><span style="color: orange;">Marketing:</span> campaigns, ad spend, newsletter opens</li>
+      <li><span style="color: orange;">External:</span> competitor prices, holidays, weather</li>
+      <li>Scattered over many systems, different formats, nobody has the full picture</li>
+    </ul>
+  </div>
+</div>
 
-### Stages of Analytics
+Note:
 
-<svg viewBox="200 190 1700 700" style="width: 100%; max-height: 420px; background: transparent" font-family="Helvetica, Arial, sans-serif" fill="#fff" text-anchor="middle" font-size="56">
+- Point: the data to answer the question already exists, but in five systems with five owners. The first BI job is to get it into one place.
+
+--
+
+### 2. Data Integration &amp; Warehousing
+
+<div style="display: flex; gap: 1.5rem; align-items: center">
+  <div style="flex: 0 0 52%">
+<svg viewBox="200 190 1700 700" style="width: 100%; background: transparent" font-family="Helvetica, Arial, sans-serif" fill="#fff" text-anchor="middle" font-size="56">
+  <rect x="355" y="213" width="1145" height="120" fill="#5f5f5f"/>
+  <text x="928" y="291" font-size="56">Decisions</text>
+  <rect x="355" y="347" width="1145" height="120" fill="#8e8e8e"/>
+  <text x="928" y="425" font-size="56">Reporting (Visualisation)</text>
+  <rect x="355" y="481" width="1145" height="120" fill="#5f5f5f"/>
+  <text x="928" y="559" font-size="56">Data Analysis &amp; Exploration</text>
+  <rect x="355" y="615" width="1145" height="120" fill="#f0b03f"/>
+  <text x="928" y="693" font-size="56">Data Warehousing / Data Marts</text>
+  <rect x="355" y="749" width="1145" height="120" fill="#5f5f5f"/>
+  <text x="928" y="827" font-size="48">Raw Data (self produced or foreign sources)</text>
+  <rect x="230" y="213" width="110" height="654" fill="#5f5f5f"/>
+  <text x="285" y="560">AI</text>
+  <path d="M1500,807 H1550 V673 H1517" fill="none" stroke="#f0b03f" stroke-width="6"/>
+  <polygon points="1503,673 1527,658 1527,688" fill="#f0b03f"/>
+  <text x="1560" y="720" font-size="42" fill="#f0b03f" text-anchor="start">Data Integration</text>
+  <text x="1560" y="765" font-size="42" fill="#f0b03f" text-anchor="start">ETL / ELT</text>
+</svg>
+  </div>
+  <div style="flex: 1; text-align: left; font-size: 0.6em">
+    <ul>
+      <li><span style="color: orange;">Extract / Load:</span> copy all sources into one warehouse, every night (or in real time)</li>
+      <li><span style="color: orange;">Transform:</span> one customer ID across systems, one currency, one time zone, deduplicate</li>
+      <li><span style="color: orange;">Define the metrics once:</span> what exactly is a "repeat customer"? "revenue" with or without returns?</li>
+      <li><span style="color: orange;">Data marts:</span> a sales mart (revenue per day, product, channel) and a customer mart (orders, tickets, last purchase per customer)</li>
+      <li>Output: tables everyone can trust and query, e.g. customer x month</li>
+    </ul>
+  </div>
+</div>
+
+Note:
+
+- This is module III and IV (databases, ETL). Stress the metric definitions: most BI fights are about definitions, not numbers.
+
+--
+
+### 3. Data Analysis &amp; Exploration
+
+<div style="display: flex; gap: 1.5rem; align-items: center">
+  <div style="flex: 0 0 52%">
+<svg viewBox="200 190 1700 700" style="width: 100%; background: transparent" font-family="Helvetica, Arial, sans-serif" fill="#fff" text-anchor="middle" font-size="56">
   <rect x="355" y="213" width="1145" height="120" fill="#5f5f5f"/>
   <text x="928" y="291" font-size="56">Decisions</text>
   <rect x="355" y="347" width="1145" height="120" fill="#8e8e8e"/>
@@ -333,18 +411,28 @@ Note:
   <text x="1560" y="720" font-size="42" fill="#c8c8c8" text-anchor="start">Data Integration</text>
   <text x="1560" y="765" font-size="42" fill="#c8c8c8" text-anchor="start">ETL / ELT</text>
 </svg>
-
-<span style="color: orange;">Zoom in:</span> what actually happens inside "Data Analysis &amp; Exploration"?
+  </div>
+  <div style="flex: 1; text-align: left; font-size: 0.6em">
+    <ul>
+      <li>Now we can actually ask the question. Four stages, increasing in value and difficulty:</li>
+      <li><span style="color: orange;">Descriptive:</span> what happened? Sales are down 12% vs last year, repeat purchase rate fell from 38% to 31%</li>
+      <li><span style="color: orange;">Diagnostic:</span> why? Returns and support tickets doubled for one product category after a supplier change</li>
+      <li><span style="color: orange;">Predictive:</span> what will happen? If the trend continues, Q4 revenue misses the plan by 8%</li>
+      <li><span style="color: orange;">Prescriptive:</span> what should we do? Fix the supplier, win back the affected customers with a targeted offer</li>
+      <li>Descriptive and diagnostic: classic BI. Predictive and prescriptive: statistics and AI, the second half of this course</li>
+    </ul>
+  </div>
+</div>
 
 Note:
 
-- Bridge from the component stack to the four stages: descriptive and diagnostic are classic BI, predictive and prescriptive are advanced analytics, i.e. the AI part of this course.
+- The next slides go through the four stages in detail with the same case. The last two stages are the bridge to A/B testing (module V) and AI (VI).
 
 --
 
 <img
   src="../assets/business_intelligence/imgs/imgs.019.png"
-  alt="Overview"
+  alt="Stages of analytics: business value vs. complexity"
   style="
     width: 2400px;
     margin: 0px 0px 0px 0px;
@@ -352,13 +440,6 @@ Note:
     background: transparent;
   "
 />
-
---
-
-<span style="color: orange;">Case Study</span>
-
-An online retailer observes a deterioration in sales.
-An initial assumption: customer loyalty has declined.
 
 --
 
@@ -395,6 +476,148 @@ What strategies or actions could the retailer take to improve customer loyalty a
 
 - Recommend targeted loyalty programs, personalized offers, or new product lines to increase engagement.
 - Consider adjustments in marketing strategies, pricing, customer service improvements, or implementing a feedback loop for continual improvement.
+
+--
+
+### 4. Reporting (Visualisation)
+
+<div style="display: flex; gap: 1.5rem; align-items: center">
+  <div style="flex: 0 0 52%">
+<svg viewBox="200 190 1700 700" style="width: 100%; background: transparent" font-family="Helvetica, Arial, sans-serif" fill="#fff" text-anchor="middle" font-size="56">
+  <rect x="355" y="213" width="1145" height="120" fill="#5f5f5f"/>
+  <text x="928" y="291" font-size="56">Decisions</text>
+  <rect x="355" y="347" width="1145" height="120" fill="#f0b03f"/>
+  <text x="928" y="425" font-size="56">Reporting (Visualisation)</text>
+  <rect x="355" y="481" width="1145" height="120" fill="#5f5f5f"/>
+  <text x="928" y="559" font-size="56">Data Analysis &amp; Exploration</text>
+  <rect x="355" y="615" width="1145" height="120" fill="#8e8e8e"/>
+  <text x="928" y="693" font-size="56">Data Warehousing / Data Marts</text>
+  <rect x="355" y="749" width="1145" height="120" fill="#5f5f5f"/>
+  <text x="928" y="827" font-size="48">Raw Data (self produced or foreign sources)</text>
+  <rect x="230" y="213" width="110" height="654" fill="#5f5f5f"/>
+  <text x="285" y="560">AI</text>
+  <path d="M1500,807 H1550 V673 H1517" fill="none" stroke="#c8c8c8" stroke-width="6"/>
+  <polygon points="1503,673 1527,658 1527,688" fill="#c8c8c8"/>
+  <text x="1560" y="720" font-size="42" fill="#c8c8c8" text-anchor="start">Data Integration</text>
+  <text x="1560" y="765" font-size="42" fill="#c8c8c8" text-anchor="start">ETL / ELT</text>
+</svg>
+  </div>
+  <div style="flex: 1; text-align: left; font-size: 0.6em">
+    <ul>
+      <li>The analysis is worthless if it stays in a notebook. It has to reach the people who decide, in their language</li>
+      <li><span style="color: orange;">Management dashboard:</span> revenue vs. plan and vs. last year, weekly, one page</li>
+      <li><span style="color: orange;">Category managers:</span> returns and ticket rate per product category, with the supplier change marked</li>
+      <li><span style="color: orange;">CRM team:</span> list of affected customers, their last order, their lifetime value</li>
+      <li><span style="color: orange;">Alerts:</span> "return rate of category X above 15% for 2 weeks" instead of waiting for someone to look</li>
+      <li>Same data, different views per role. Charts are part of the Python lab today</li>
+    </ul>
+  </div>
+</div>
+
+Note:
+
+- Visualisation is not decoration: a dashboard that nobody opens is a failed BI project. Ask: who looks at it, how often, and what do they do afterwards?
+
+--
+
+### 5. Decisions
+
+<div style="display: flex; gap: 1.5rem; align-items: center">
+  <div style="flex: 0 0 52%">
+<svg viewBox="200 190 1700 700" style="width: 100%; background: transparent" font-family="Helvetica, Arial, sans-serif" fill="#fff" text-anchor="middle" font-size="56">
+  <rect x="355" y="213" width="1145" height="120" fill="#f0b03f"/>
+  <text x="928" y="291" font-size="56">Decisions</text>
+  <rect x="355" y="347" width="1145" height="120" fill="#8e8e8e"/>
+  <text x="928" y="425" font-size="56">Reporting (Visualisation)</text>
+  <rect x="355" y="481" width="1145" height="120" fill="#5f5f5f"/>
+  <text x="928" y="559" font-size="56">Data Analysis &amp; Exploration</text>
+  <rect x="355" y="615" width="1145" height="120" fill="#8e8e8e"/>
+  <text x="928" y="693" font-size="56">Data Warehousing / Data Marts</text>
+  <rect x="355" y="749" width="1145" height="120" fill="#5f5f5f"/>
+  <text x="928" y="827" font-size="48">Raw Data (self produced or foreign sources)</text>
+  <rect x="230" y="213" width="110" height="654" fill="#5f5f5f"/>
+  <text x="285" y="560">AI</text>
+  <path d="M1500,807 H1550 V673 H1517" fill="none" stroke="#c8c8c8" stroke-width="6"/>
+  <polygon points="1503,673 1527,658 1527,688" fill="#c8c8c8"/>
+  <text x="1560" y="720" font-size="42" fill="#c8c8c8" text-anchor="start">Data Integration</text>
+  <text x="1560" y="765" font-size="42" fill="#c8c8c8" text-anchor="start">ETL / ELT</text>
+</svg>
+  </div>
+  <div style="flex: 1; text-align: left; font-size: 0.6em">
+    <ul>
+      <li><span style="color: orange;">Decision 1:</span> switch back to the old supplier for category X, or fix quality control</li>
+      <li><span style="color: orange;">Decision 2:</span> win-back campaign for the 4,000 affected customers: apology, voucher, free return</li>
+      <li><span style="color: orange;">Decision 3:</span> was it really the supplier? Run an A/B test for the campaign instead of just believing the dashboard (module V)</li>
+      <li>Every decision produces new raw data: campaign responses, returns, repeat purchases</li>
+      <li>The stack is a <span style="color: orange;">loop</span>, not a pipeline. BI is not an end in itself (next topic)</li>
+    </ul>
+  </div>
+</div>
+
+Note:
+
+- Close the loop explicitly: the decision feeds the bottom layer again. This is the OODA idea that comes a few slides later.
+
+--
+
+### AI at every layer (2026)
+
+<div style="display: flex; gap: 1.5rem; align-items: center">
+  <div style="flex: 0 0 52%">
+<svg viewBox="200 190 1700 700" style="width: 100%; background: transparent" font-family="Helvetica, Arial, sans-serif" fill="#fff" text-anchor="middle" font-size="56">
+  <rect x="355" y="213" width="1145" height="120" fill="#5f5f5f"/>
+  <text x="928" y="291" font-size="56">Decisions</text>
+  <rect x="355" y="347" width="1145" height="120" fill="#8e8e8e"/>
+  <text x="928" y="425" font-size="56">Reporting (Visualisation)</text>
+  <rect x="355" y="481" width="1145" height="120" fill="#5f5f5f"/>
+  <text x="928" y="559" font-size="56">Data Analysis &amp; Exploration</text>
+  <rect x="355" y="615" width="1145" height="120" fill="#8e8e8e"/>
+  <text x="928" y="693" font-size="56">Data Warehousing / Data Marts</text>
+  <rect x="355" y="749" width="1145" height="120" fill="#5f5f5f"/>
+  <text x="928" y="827" font-size="48">Raw Data (self produced or foreign sources)</text>
+  <rect x="230" y="213" width="110" height="654" fill="#f0b03f"/>
+  <text x="285" y="560">AI</text>
+  <path d="M1500,807 H1550 V673 H1517" fill="none" stroke="#c8c8c8" stroke-width="6"/>
+  <polygon points="1503,673 1527,658 1527,688" fill="#c8c8c8"/>
+  <text x="1560" y="720" font-size="42" fill="#c8c8c8" text-anchor="start">Data Integration</text>
+  <text x="1560" y="765" font-size="42" fill="#c8c8c8" text-anchor="start">ETL / ELT</text>
+</svg>
+  </div>
+  <div style="flex: 1; text-align: left; font-size: 0.6em">
+    <ul>
+      <li><span style="color: orange;">Raw data:</span> extract structured data from emails, PDFs, call transcripts, product photos</li>
+      <li><span style="color: orange;">Integration:</span> generate and review ETL code and SQL, detect schema changes, suggest matching rules</li>
+      <li><span style="color: orange;">Analysis:</span> forecasting, anomaly detection, churn prediction, "which customers are affected?"</li>
+      <li><span style="color: orange;">Reporting:</span> "chat with your data", automatic summaries of a dashboard, alerts in natural language</li>
+      <li><span style="color: orange;">Decisions:</span> recommendations, next-best-action, simulations. The decision stays with a human (for now)</li>
+    </ul>
+  </div>
+</div>
+
+Note:
+
+- This is why the AI column now spans the whole stack. The second half of the course (modules VI and VII) shows how these pieces work.
+
+---
+
+### Who does the work?
+
+<img
+  src="../assets/business_intelligence/imgs/imgs.013.png"
+  alt="Overview"
+  style="
+    width: 2400px;
+    margin: 0px 0px 0px 0px;
+    padding-right: 0rem;
+    background: transparent;
+  "
+/>
+
+--
+
+- no hard borders
+- dependent on company structure and complexity multi-roles possible
+- many more roles involved, e.g. for decision making PO
 
 ---
 
