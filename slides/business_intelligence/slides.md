@@ -784,7 +784,7 @@ Cultural resistance or indifference toward using data, causing BI initiatives to
 
 Separation of data across departments or systems.
 
-[Link](https://estuary.dev/why-data-silos-problematic/)
+[Literature](https://estuary.dev/why-data-silos-problematic/)
 
 --
 
