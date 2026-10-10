@@ -16,7 +16,7 @@ You run Netflix. Next year you have <span style="color: lightgreen;">100 million
 
 - write down <b>3 questions</b> you would want answered
 - for each: <b>which data</b> would answer it, and <b>where</b> would it come from?
-- then 3 min per group at the whiteboard
+- then 3 min per group at the whiteboard <span style="display: inline-block; border: 2px solid #f0b03f; color: #f0b03f; border-radius: 8px; padding: 0.05em 0.5em; font-size: 0.5em; letter-spacing: 0.08em; vertical-align: middle">WHITEBOARD</span>
 
 Note:
 
@@ -59,6 +59,8 @@ Note:
 - <span style="color: lightgreen;">Where do we get this information from?</span>
 - <span style="color: lightgreen;">Who needs access to this information?</span>
 
+<span style="display: inline-block; border: 2px solid #f0b03f; color: #f0b03f; border-radius: 8px; padding: 0.05em 0.5em; font-size: 0.5em; letter-spacing: 0.08em; vertical-align: middle">WHITEBOARD</span> <span style="font-size: 0.5em; color: #9e9e9e">fill the four from the board</span>
+
 Note: Fill these four from the whiteboard. These four questions are the whole course on one slide.
 
 --
@@ -74,7 +76,7 @@ You run the emergency department of a hospital. Winter is coming.
 <span style="color: lightgreen;">What do you need to know to plan beds and staff for the next three months?</span>
 
 - 5 min, same groups, 3 questions
-- then: where does this data live today?
+- then: where does this data live today? <span style="display: inline-block; border: 2px solid #f0b03f; color: #f0b03f; border-radius: 8px; padding: 0.05em 0.5em; font-size: 0.5em; letter-spacing: 0.08em; vertical-align: middle">WHITEBOARD</span>
 
 Note:
 
@@ -113,146 +115,94 @@ Note:
 
 ### Important BI Goals & Benefits
 
+<!-- ===== VARIANT A: sorting exercise + four goals (2 slides) ===== -->
+
+--
+
 <img
   src="../assets/business_intelligence/imgs/imgs.001.png"
-  alt="Overview"
+  alt="Ten BI goals"
   style="
-    width: 2400px;
+    width: 1600px;
     margin: 0px 0px 0px 0px;
     padding-right: 0rem;
     background: transparent;
   "
 />
+
+<span style="color: lightgreen;">Your whiteboard questions: which of these goals does each one serve?</span> <span style="display: inline-block; border: 2px solid #f0b03f; color: #f0b03f; border-radius: 8px; padding: 0.05em 0.5em; font-size: 0.5em; letter-spacing: 0.08em; vertical-align: middle">WHITEBOARD</span>
+
+Note:
+
+- 5 minutes, call out from the room. Take each question from the Netflix and emergency department boards and let the room assign it to one icon.
+- Expect that almost everything lands on four icons: decision-making, revenue, efficiency, visibility. Say that out loud, it is the point of the next slide.
+- Two icons will get nothing: security & compliance and data-driven culture. Ask why. Answer: they are not goals, they are conditions.
 
 --
 
-<img
-  src="../assets/business_intelligence/imgs/imgs.002.png"
-  alt="Overview"
-  style="
-    width: 2400px;
-    margin: 0px 0px 0px 0px;
-    padding-right: 0rem;
-    background: transparent;
-  "
-/>
+### Four goals, everything else is a flavour
 
---
+<div style="display: flex; gap: 0.6em; margin-top: 0.4em">
+  <div style="flex: 1; border-left: 5px solid #4ea8f5; background: rgba(255,255,255,0.06); padding: 0.4em 0.7em; text-align: left">
+    <div style="font-size: 0.6em; color: #4ea8f5; font-weight: 600">Decide better</div>
+    <div style="font-size: 0.4em; color: #9e9e9e; margin: 0.1em 0 0.3em 0">decision-making, forecasting, what-if</div>
+    <div style="font-size: 0.45em">Netflix: which content to fund next year</div>
+  </div>
+  <div style="flex: 1; border-left: 5px solid #7ed957; background: rgba(255,255,255,0.06); padding: 0.4em 0.7em; text-align: left">
+    <div style="font-size: 0.6em; color: #7ed957; font-weight: 600">Earn more</div>
+    <div style="font-size: 0.4em; color: #9e9e9e; margin: 0.1em 0 0.3em 0">revenue, customer experience, competitive advantage</div>
+    <div style="font-size: 0.45em">Netflix: which titles keep new subscribers past month one</div>
+  </div>
+</div>
+<div style="display: flex; gap: 0.6em; margin-top: 0.6em">
+  <div style="flex: 1; border-left: 5px solid #f0b03f; background: rgba(255,255,255,0.06); padding: 0.4em 0.7em; text-align: left">
+    <div style="font-size: 0.6em; color: #f0b03f; font-weight: 600">Run cheaper</div>
+    <div style="font-size: 0.4em; color: #9e9e9e; margin: 0.1em 0 0.3em 0">operational efficiency</div>
+    <div style="font-size: 0.45em">Emergency department: staff per shift follows the hourly patient curve</div>
+  </div>
+  <div style="flex: 1; border-left: 5px solid #ef5350; background: rgba(255,255,255,0.06); padding: 0.4em 0.7em; text-align: left">
+    <div style="font-size: 0.6em; color: #ef5350; font-weight: 600">Know what is going on</div>
+    <div style="font-size: 0.4em; color: #9e9e9e; margin: 0.1em 0 0.3em 0">visibility, accountability</div>
+    <div style="font-size: 0.45em">Emergency department: waiting time today vs. last week, on one screen</div>
+  </div>
+</div>
 
-<img
-  src="../assets/business_intelligence/imgs/imgs.003.png"
-  alt="Overview"
-  style="
-    width: 2400px;
-    margin: 0px 0px 0px 0px;
-    padding-right: 0rem;
-    background: transparent;
-  "
-/>
+<div style="font-size: 0.45em; color: #9e9e9e; margin-top: 0.8em">
+  Security &amp; compliance and a data-driven culture are not goals. They are conditions. They come back under "pitfalls".
+</div>
 
---
+Note:
 
-<img
-  src="../assets/business_intelligence/imgs/imgs.004.png"
-  alt="Overview"
-  style="
-    width: 2400px;
-    margin: 0px 0px 0px 0px;
-    padding-right: 0rem;
-    background: transparent;
-  "
-/>
+- One sentence per goal, then the example. Do not read the grey sub-lines, they only map the ten icons from the previous slide onto the four.
+- Ask: which of the four would your employer pay for first? Usually "run cheaper" or "earn more". That is where BI budgets come from.
 
---
+<!-- ===== VARIANT B (not used, kept for reference): ten goals as one table.
+     To reactivate: move this block out of the comment and add a '--' separator above it,
+     then rename 'Notes B:' back to 'Note:'. =====
 
-<img
-  src="../assets/business_intelligence/imgs/imgs.005.png"
-  alt="Overview"
-  style="
-    width: 2400px;
-    margin: 0px 0px 0px 0px;
-    padding-right: 0rem;
-    background: transparent;
-  "
-/>
+<div style="text-align: right; font-size: 0.4em; color: #f0b03f">Variant B</div>
 
---
+### Ten goals of BI, one example each
 
-<img
-  src="../assets/business_intelligence/imgs/imgs.006.png"
-  alt="Overview"
-  style="
-    width: 2400px;
-    margin: 0px 0px 0px 0px;
-    padding-right: 0rem;
-    background: transparent;
-  "
-/>
+<table style="width: 100%; font-size: 0.42em; border-collapse: collapse; text-align: left; margin-top: 0.3em">
+<tr style="color: #9e9e9e"><th style="padding: 0.25em 0.6em; border-bottom: 2px solid rgba(255,255,255,0.3)">goal</th><th style="padding: 0.25em 0.6em; border-bottom: 2px solid rgba(255,255,255,0.3)">what it means</th><th style="padding: 0.25em 0.6em; border-bottom: 2px solid rgba(255,255,255,0.3)">from our two examples</th></tr>
+<tr style="color: #eee"><td style="padding: 0.25em 0.6em; border-bottom: 1px solid rgba(255,255,255,0.14); white-space: nowrap; color: #f0b03f">Decision-making</td><td style="padding: 0.25em 0.6em; border-bottom: 1px solid rgba(255,255,255,0.14)">put the right numbers in front of the person who decides</td><td style="padding: 0.25em 0.6em; border-bottom: 1px solid rgba(255,255,255,0.14)">Netflix: which genres to fund next year</td></tr>
+<tr style="color: #eee"><td style="padding: 0.25em 0.6em; border-bottom: 1px solid rgba(255,255,255,0.14); white-space: nowrap; color: #f0b03f">Forecasting &amp; planning</td><td style="padding: 0.25em 0.6em; border-bottom: 1px solid rgba(255,255,255,0.14)">use the past to plan the next months</td><td style="padding: 0.25em 0.6em; border-bottom: 1px solid rgba(255,255,255,0.14)">ED: expected patients per shift in January</td></tr>
+<tr style="color: #eee"><td style="padding: 0.25em 0.6em; border-bottom: 1px solid rgba(255,255,255,0.14); white-space: nowrap; color: #f0b03f">Revenue growth</td><td style="padding: 0.25em 0.6em; border-bottom: 1px solid rgba(255,255,255,0.14)">find where the money is</td><td style="padding: 0.25em 0.6em; border-bottom: 1px solid rgba(255,255,255,0.14)">Netflix: which titles keep subscribers past month one</td></tr>
+<tr style="color: #eee"><td style="padding: 0.25em 0.6em; border-bottom: 1px solid rgba(255,255,255,0.14); white-space: nowrap; color: #f0b03f">Customer experience</td><td style="padding: 0.25em 0.6em; border-bottom: 1px solid rgba(255,255,255,0.14)">know your users as groups, not as an average</td><td style="padding: 0.25em 0.6em; border-bottom: 1px solid rgba(255,255,255,0.14)">Netflix: viewing habits per segment, not per &quot;average viewer&quot;</td></tr>
+<tr style="color: #eee"><td style="padding: 0.25em 0.6em; border-bottom: 1px solid rgba(255,255,255,0.14); white-space: nowrap; color: #f0b03f">Competitive advantage</td><td style="padding: 0.25em 0.6em; border-bottom: 1px solid rgba(255,255,255,0.14)">spot a trend before the others do</td><td style="padding: 0.25em 0.6em; border-bottom: 1px solid rgba(255,255,255,0.14)">Netflix: Korean thrillers break out, buy more of them</td></tr>
+<tr style="color: #eee"><td style="padding: 0.25em 0.6em; border-bottom: 1px solid rgba(255,255,255,0.14); white-space: nowrap; color: #f0b03f">Operational efficiency</td><td style="padding: 0.25em 0.6em; border-bottom: 1px solid rgba(255,255,255,0.14)">do the same work with less waste</td><td style="padding: 0.25em 0.6em; border-bottom: 1px solid rgba(255,255,255,0.14)">ED: staff rostered to the hourly patient curve</td></tr>
+<tr style="color: #eee"><td style="padding: 0.25em 0.6em; border-bottom: 1px solid rgba(255,255,255,0.14); white-space: nowrap; color: #f0b03f">Visibility</td><td style="padding: 0.25em 0.6em; border-bottom: 1px solid rgba(255,255,255,0.14)">everyone looks at the same, current picture</td><td style="padding: 0.25em 0.6em; border-bottom: 1px solid rgba(255,255,255,0.14)">ED: waiting time now vs. last week, on one screen</td></tr>
+<tr style="color: #eee"><td style="padding: 0.25em 0.6em; border-bottom: 1px solid rgba(255,255,255,0.14); white-space: nowrap; color: #f0b03f">Accountability</td><td style="padding: 0.25em 0.6em; border-bottom: 1px solid rgba(255,255,255,0.14)">link results to actions and people</td><td style="padding: 0.25em 0.6em; border-bottom: 1px solid rgba(255,255,255,0.14)">ED: did the new triage process shorten waits?</td></tr>
+<tr style="color: #9e9e9e"><td style="padding: 0.25em 0.6em; border-bottom: 1px solid rgba(255,255,255,0.14); white-space: nowrap; color: #9e9e9e">Data-driven culture</td><td style="padding: 0.25em 0.6em; border-bottom: 1px solid rgba(255,255,255,0.14)">people reach for data before opinion (a condition, not a goal)</td><td style="padding: 0.25em 0.6em; border-bottom: 1px solid rgba(255,255,255,0.14)">both: &quot;what does the data say?&quot; becomes a habit</td></tr>
+<tr style="color: #9e9e9e"><td style="padding: 0.25em 0.6em; border-bottom: 1px solid rgba(255,255,255,0.14); white-space: nowrap; color: #9e9e9e">Security &amp; compliance</td><td style="padding: 0.25em 0.6em; border-bottom: 1px solid rgba(255,255,255,0.14)">who may see what, and prove it (a condition, not a goal)</td><td style="padding: 0.25em 0.6em; border-bottom: 1px solid rgba(255,255,255,0.14)">ED: patient data, GDPR, access logs</td></tr>
+</table>
 
---
+Notes B:
 
-<img
-  src="../assets/business_intelligence/imgs/imgs.007.png"
-  alt="Overview"
-  style="
-    width: 2400px;
-    margin: 0px 0px 0px 0px;
-    padding-right: 0rem;
-    background: transparent;
-  "
-/>
-
---
-
-<img
-  src="../assets/business_intelligence/imgs/imgs.008.png"
-  alt="Overview"
-  style="
-    width: 2400px;
-    margin: 0px 0px 0px 0px;
-    padding-right: 0rem;
-    background: transparent;
-  "
-/>
-
---
-
-<img
-  src="../assets/business_intelligence/imgs/imgs.009.png"
-  alt="Overview"
-  style="
-    width: 2400px;
-    margin: 0px 0px 0px 0px;
-    padding-right: 0rem;
-    background: transparent;
-  "
-/>
-
---
-
-<img
-  src="../assets/business_intelligence/imgs/imgs.010.png"
-  alt="Overview"
-  style="
-    width: 2400px;
-    margin: 0px 0px 0px 0px;
-    padding-right: 0rem;
-    background: transparent;
-  "
-/>
-
---
-
-<img
-  src="../assets/business_intelligence/imgs/imgs.011.png"
-  alt="Overview"
-  style="
-    width: 2400px;
-    margin: 0px 0px 0px 0px;
-    padding-right: 0rem;
-    background: transparent;
-  "
-/>
+- Walk the table top to bottom in two minutes, one example per row, do not explain the middle column.
+- The last two rows are grey on purpose: they are conditions for BI, not what a company buys BI for.
+-->
 
 ---
 
