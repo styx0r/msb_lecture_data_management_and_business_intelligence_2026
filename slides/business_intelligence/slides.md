@@ -424,8 +424,8 @@ Note:
   <pre style="margin: 0; width: 100%; box-shadow: none; font-size: 0.33em; line-height: 1.35; background: transparent; padding: 0.2em 0"><code class="nohighlight" style="background: transparent; padding: 0; white-space: pre">customer_month  4711 | 2026-03 | orders 1 | revenue 89.90 | returns 1 | tickets 1      (one of 23,480 rows)
                                      | SUM / COUNT ... GROUP BY month
 all_month       2026-03 | orders 31,900 | revenue -9% vs. 2025-03 | return rate 7% (was 5%)
-                                     | returns went up. GROUP BY what, to find out where they come from?
-<span class="fragment">kitchen_month   2026-03 | orders 6,210 | returns 1,118 | return rate 18% | half of all returns</span></code></pre>
+                                     | returns went up. GROUP BY what, to find out where they come from?</code></pre>
+  <pre class="fragment" style="margin: 0; width: 100%; box-shadow: none; font-size: 0.33em; line-height: 1.35; background: transparent; padding: 0 0 0.2em 0"><code class="nohighlight" style="background: transparent; padding: 0; white-space: pre">kitchen_month   2026-03 | orders 6,210 | returns 1,118 | return rate 18% | half of all returns</code></pre>
 </div>
 
 <span style="color: lightgreen; font-size: 0.6em">Sales are down and returns are up. Which GROUP BY would you try first?</span>
