@@ -65,16 +65,26 @@ That is BI!
 
 ### BI for dummies
 
-<img
-  src="../assets/business_intelligence/imgs/imgs.015.png"
-  alt="Overview"
-  style="
-    width: 2400px;
-    margin: 0px 0px 0px 0px;
-    padding-right: 0rem;
-    background: transparent;
-  "
-/>
+<svg viewBox="0 0 1920 1080" style="width: 100%; max-height: 540px; background: transparent" font-family="Helvetica, Arial, sans-serif" fill="#fff" text-anchor="middle" font-size="86">
+  <rect x="0" y="0" width="1920" height="1080" fill="#fff"/>
+  <rect x="90" y="760" width="1740" height="220" fill="#4ea8f5"/>
+  <text x="960" y="900">Business relevant questions</text>
+  <g class="fragment">
+    <polygon points="960,650 1035,710 985,710 985,750 935,750 935,710 885,710" fill="#8e8e8e"/>
+    <rect x="90" y="440" width="1740" height="220" fill="#f0b03f"/>
+    <text x="960" y="580">Data</text>
+  </g>
+  <g class="fragment">
+    <polygon points="960,330 1035,390 985,390 985,430 935,430 935,390 885,390" fill="#8e8e8e"/>
+    <rect x="90" y="120" width="1740" height="220" fill="#7ed957"/>
+    <text x="960" y="260">Informed (data driven) decisions</text>
+  </g>
+</svg>
+
+Note:
+
+- Bottom-up: start with the questions the business needs answered (Netflix slide), then collect the data to answer them, then decide.
+- Without the question, data is just storage cost. Without the decision, BI is just reporting.
 
 ---
 
@@ -225,16 +235,67 @@ That is BI!
 
 ### BI Components
 
-<img
-  src="../assets/business_intelligence/imgs/imgs.012.png"
-  alt="Overview"
-  style="
-    width: 2400px;
-    margin: -50px -50px 0px 0px;
-    padding-right: 0rem;
-    background: transparent;
-  "
-/>
+<svg viewBox="0 0 1920 1080" style="width: 100%; max-height: 540px; background: transparent" font-family="Helvetica, Arial, sans-serif" fill="#fff" text-anchor="middle" font-size="56">
+  <defs><linearGradient id="valeff" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7ed957"/><stop offset="1" stop-color="#e5412e"/></linearGradient></defs>
+  <rect x="0" y="0" width="1920" height="1080" fill="#fff"/>
+  <rect x="60" y="213" width="140" height="654" fill="url(#valeff)"/>
+  <text x="130" y="530" font-size="38" font-weight="bold">Value</text>
+  <text x="130" y="572" font-size="38" font-weight="bold">Effort</text>
+  <rect x="355" y="213" width="1145" height="120" fill="#5f5f5f"/>
+  <text x="928" y="291" font-size="56">Decisions</text>
+  <rect x="355" y="347" width="1145" height="120" fill="#8e8e8e"/>
+  <text x="928" y="425" font-size="56">Reporting (Visualisation)</text>
+  <rect x="355" y="481" width="1145" height="120" fill="#5f5f5f"/>
+  <text x="928" y="559" font-size="56">Data Analysis &amp; Exploration</text>
+  <rect x="230" y="615" width="1270" height="120" fill="#8e8e8e"/>
+  <text x="865" y="693" font-size="56">Data Warehousing / Data Marts</text>
+  <rect x="230" y="749" width="1270" height="120" fill="#5f5f5f"/>
+  <text x="865" y="827" font-size="48">Raw Data (self produced or foreign sources)</text>
+  <rect x="230" y="213" width="110" height="387" fill="#5f5f5f"/>
+  <text x="285" y="426">AI</text>
+  <path d="M1500,807 H1550 V673 H1517" fill="none" stroke="#c8c8c8" stroke-width="6"/>
+  <polygon points="1503,673 1527,658 1527,688" fill="#c8c8c8"/>
+  <text x="1560" y="720" font-size="42" fill="#c8c8c8" text-anchor="start">Data Integration</text>
+  <text x="1560" y="765" font-size="42" fill="#c8c8c8" text-anchor="start">ETL / ELT</text>
+</svg>
+
+Note:
+
+- Classic picture: AI sits on top of the stack and consumes what the lower layers deliver (analysis, reporting, decisions).
+
+--
+
+### BI Components (2026)
+
+<svg viewBox="0 0 1920 1080" style="width: 100%; max-height: 540px; background: transparent" font-family="Helvetica, Arial, sans-serif" fill="#fff" text-anchor="middle" font-size="56">
+  <defs><linearGradient id="valeff" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7ed957"/><stop offset="1" stop-color="#e5412e"/></linearGradient></defs>
+  <rect x="0" y="0" width="1920" height="1080" fill="#fff"/>
+  <rect x="60" y="213" width="140" height="654" fill="url(#valeff)"/>
+  <text x="130" y="530" font-size="38" font-weight="bold">Value</text>
+  <text x="130" y="572" font-size="38" font-weight="bold">Effort</text>
+  <rect x="355" y="213" width="1145" height="120" fill="#5f5f5f"/>
+  <text x="928" y="291" font-size="56">Decisions</text>
+  <rect x="355" y="347" width="1145" height="120" fill="#8e8e8e"/>
+  <text x="928" y="425" font-size="56">Reporting (Visualisation)</text>
+  <rect x="355" y="481" width="1145" height="120" fill="#5f5f5f"/>
+  <text x="928" y="559" font-size="56">Data Analysis &amp; Exploration</text>
+  <rect x="355" y="615" width="1145" height="120" fill="#8e8e8e"/>
+  <text x="928" y="693" font-size="56">Data Warehousing / Data Marts</text>
+  <rect x="355" y="749" width="1145" height="120" fill="#5f5f5f"/>
+  <text x="928" y="827" font-size="48">Raw Data (self produced or foreign sources)</text>
+  <rect x="230" y="213" width="110" height="654" fill="#5f5f5f"/>
+  <text x="285" y="560">AI</text>
+  <path d="M1500,807 H1550 V673 H1517" fill="none" stroke="#c8c8c8" stroke-width="6"/>
+  <polygon points="1503,673 1527,658 1527,688" fill="#c8c8c8"/>
+  <text x="1560" y="720" font-size="42" fill="#c8c8c8" text-anchor="start">Data Integration</text>
+  <text x="1560" y="765" font-size="42" fill="#c8c8c8" text-anchor="start">ETL / ELT</text>
+  <text x="960" y="980" font-size="44" fill="#6b6b6b">AI is no longer only on top: it is used to build and run every layer</text>
+</svg>
+
+Note:
+
+- Same stack, but AI is now a tool for implementing the lower layers too: generating ETL code, writing SQL, cleaning data, building dashboards.
+- Discussion: which of these roles (next slide) change the most because of that?
 
 ---
 
