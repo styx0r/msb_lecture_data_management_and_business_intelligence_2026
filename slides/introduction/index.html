@@ -197,9 +197,40 @@
         margin-right: 0.5em;
         vertical-align: middle;
       }
-      .reveal table.modelmap {
-        font-size: 0.55em;
+      .reveal .figpair {
+        display: flex;
+        gap: 1.2em;
+        align-items: flex-start;
         width: 100%;
+      }
+      .reveal .figpair > div {
+        flex: 1 1 0;
+        min-width: 0;
+      }
+      .reveal .figpair h4 {
+        font-size: 0.75em;
+        text-transform: none;
+        color: var(--accent);
+        margin: 0 0 0.3em 0;
+      }
+      .reveal .figpair h4.blue {
+        color: var(--blue);
+      }
+      .reveal .figpair img {
+        width: 100%;
+        max-height: 280px;
+        background: transparent;
+        margin: 0;
+      }
+      .reveal .caption {
+        font-size: 0.48em;
+        color: #ddd;
+        text-align: left;
+        margin-top: 0.3em;
+      }
+      .reveal p.plain {
+        font-size: 0.65em;
+        margin-top: 0.8em;
       }
     </style>
   </head>
@@ -234,19 +265,30 @@
         <section data-auto-animate>
           <div class="timeline compact" data-id="timeline" data-active="1"></div>
           <h3>Computer Science <span class="muted">@ TU Dresden</span></h3>
-          <div class="row">
-            <img class="fig" style="width: 60%" src="../assets/introduction/complexity.svg" alt="Algorithmic complexity" />
-            <div class="text">
-              <ul>
-                <li>focus: <span class="accent">theoretical CS</span>, AI, bioinformatics</li>
-                <li>the question that stuck: what can be computed, and <b>how expensive</b> is it?</li>
-                <li class="fragment">the same question decides today whether a dashboard loads in a second or in an hour</li>
-              </ul>
+          <div class="figpair">
+            <div>
+              <h4>Complexity theory</h4>
+              <img src="../assets/introduction/complexity.svg" alt="Algorithmic complexity" />
+              <p class="caption">
+                How much longer does a computer need when the task gets bigger?
+                Some tasks grow gently, some explode.
+              </p>
+            </div>
+            <div class="fragment">
+              <h4 class="blue">Bioinformatics</h4>
+              <img src="../assets/introduction/ppi_network.svg" alt="Protein interaction network" />
+              <p class="caption">
+                Which proteins in a cell work together? The computer finds the important ones in the tangle.
+              </p>
             </div>
           </div>
-          <div class="learning fragment">
-            <span class="accent">Learning:</span> think in models and in costs before you write the first line of code.
-          </div>
+          <p class="plain fragment" style="margin-top: 0.4em">
+            Both are the same craft: <span class="accent">making a messy question computable.</span>
+          </p>
+          <aside class="notes">
+            Simulated network. Keep it light: the point is that computer
+            science is about structure and effort, not about programming languages.
+          </aside>
         </section>
 
         <!-- ======================= STATION 2: PHD ======================= -->
@@ -255,41 +297,37 @@
             <div class="timeline compact" data-id="timeline" data-active="2"></div>
             <h3>Modelling <span class="red">blood cancer</span></h3>
             <div class="row">
-              <img class="fig" style="width: 58%; max-height: 380px" src="../assets/introduction/biphasic_decline.svg" alt="Biphasic BCR-ABL1 decline" />
+              <img class="fig" style="width: 58%; max-height: 400px" src="../assets/introduction/biphasic_decline.svg" alt="BCR-ABL1 decline under therapy" />
               <div class="text">
                 <ul>
-                  <li><b>Chronic myeloid leukemia</b>: one genetic accident, a daily pill (TKI) keeps it in check. Every 3 months a blood value: <span class="accent">a patient is a time series</span></li>
-                  <li class="fragment">two slopes = two cell populations. <span class="blue">Fast:</span> dividing cells. <span class="green">Slow:</span> dormant stem cells</li>
-                  <li class="fragment">a small model with three cell types explains hundreds of patients</li>
+                  <li>Leukemia is a cancer of the blood. For one type, a <b>daily pill</b> keeps it under control for years</li>
+                  <li class="fragment">every 3 months a blood test gives <b>one number</b>: how much cancer is left</li>
+                  <li class="fragment">plotted over the years, every patient becomes a <span class="accent">curve</span></li>
+                  <li class="fragment">my job: reproduce the patient's course using a model, for hundreds of patients</li>
                 </ul>
               </div>
             </div>
-            <div class="learning fragment">
-              <span class="accent">Learning:</span> look at the data on the right scale first. The model comes second.
-            </div>
             <div class="cite">
-              Institute for Medical Informatics and Biometry, TU Dresden. Schematic, simulated patient. Glauche, Kuhn, Baldow et al. 2018, <i>Sci Rep</i>.
+              Institute for Medical Informatics and Biometry, TU Dresden / Uniklinikum Dresden. Schematic, simulated patient.
             </div>
           </section>
 
           <section>
             <h3>What if we give <span class="accent">half</span> the dose?</h3>
             <div class="row">
-              <img class="fig" style="width: 60%" src="../assets/introduction/dose_reduction.svg" alt="Dose reduction scenario" />
+              <img class="fig" style="width: 58%; max-height: 400px" src="../assets/introduction/dose_reduction.svg" alt="Dose reduction scenario" />
               <div class="text">
                 <ul>
-                  <li>fit the model to each patient, then <b>simulate</b> what the trial never tested</li>
-                  <li class="fragment">prediction: <span class="accent">~90 %</span> of patients in stable remission can halve the dose without losing effect</li>
-                  <li class="fragment">later backed by a clinical trial (DESTINY), and extended to stopping therapy completely</li>
-                  <li class="fragment">fewer side effects, and a drug that costs more than a car per year</li>
+                  <li>once the equations fit, we can play through things <b>nobody has tried on real patients</b></li>
+                  <li class="fragment">for example: cut the dose in half after three years</li>
+                  <li class="fragment">the prediction: for <span class="accent">most patients</span> the cancer stays under control</li>
+                  <li class="fragment">fewer side effects, and the pill costs more than a car per year</li>
+                  <li class="fragment">a clinical trial later tested exactly this</li>
                 </ul>
               </div>
             </div>
-            <div class="learning fragment">
-              <span class="accent">Learning:</span> a model is useful when it answers "what if?", and honest when it comes with an uncertainty.
-            </div>
             <div class="cite">
-              Fassoni, Baldow, Roeder, Glauche 2018, <i>Haematologica</i>; Hähnel, Baldow et al. 2020, <i>Cancer Res</i>; Karg, Baldow et al. 2022, <i>Front Oncol</i>. Schematic curve.
+              Fassoni, Baldow, Roeder, Glauche 2018, <i>Haematologica</i>; Karg, Baldow et al. 2022, <i>Front Oncol</i>. Schematic curve.
             </div>
           </section>
         </section>
@@ -299,15 +337,15 @@
           <section data-auto-animate>
             <div class="timeline compact" data-id="timeline" data-active="3"></div>
             <h3>Data Scientist <span class="muted">@ Dataqube</span></h3>
-            <img class="fig wide" style="max-height: 270px" src="../assets/introduction/ab_test.svg" alt="A/B test: small lift, big revenue" />
+            <img class="fig wide" style="max-height: 250px" src="../assets/introduction/ab_test.svg" alt="A/B test: small lift, big revenue" />
             <div class="text" style="margin-top: 0.2em">
               <ul>
-                <li>e-commerce: we removed <b>one field</b> from the checkout and ran an <span class="accent">A/B test</span>. 0.3 percentage points sound like nothing, at 400k visitors a month it is a six-figure sum per year</li>
-                <li class="fragment">it works in the other direction too: a "small" UI change can quietly cost a fortune</li>
+                <li>online shop. <span class="accent">A/B test</span>: half of the visitors see the old page, half a changed one. Then we count who buys</li>
+                <li class="fragment">0.3 percentage points more buyers sounds like nothing. With 400k visitors a month it is a six-figure sum per year, in either direction</li>
               </ul>
             </div>
             <div class="learning fragment">
-              <span class="accent">Learning:</span> small changes move big margins. Measure them, or you will never notice.
+              <span class="accent">Learning:</span> small changes move big margins. Measure them.
             </div>
             <aside class="notes">
               Illustrative numbers, simulated data. The students will run this kind of test themselves in the A/B testing lab.
@@ -320,9 +358,9 @@
               <img class="fig" style="width: 60%" src="../assets/introduction/segments.svg" alt="User segments" />
               <div class="text">
                 <ul>
-                  <li>the "average user" does not exist</li>
-                  <li class="fragment">clustering on behaviour data found groups the business had only guessed at</li>
-                  <li class="fragment">each group got its own UI flow, offers and KPIs</li>
+                  <li>every dot is a customer: how often do they order, how much do they spend</li>
+                  <li class="fragment">the computer finds the groups, we give them names. The "average customer" is none of them</li>
+                  <li class="fragment">each group got its own shop flow and offers</li>
                   <li class="fragment">and each group reacted differently in the next A/B test</li>
                 </ul>
               </div>
@@ -330,7 +368,7 @@
             <div class="learning fragment">
               <span class="accent">Learning:</span> one number for everyone hides the story. Segment first, then decide.
             </div>
-            <div class="cite">Simulated data. Clustering and segmentation are a presentation topic in this course.</div>
+            <div class="cite">Simulated data.</div>
           </section>
         </section>
 
@@ -372,42 +410,21 @@
             </svg>
             <div class="text">
               <ul>
-                <li>today: building <span class="accent">agentic systems</span>, software where an LLM plans, uses tools and acts</li>
-                <li class="fragment">the model is the easy part. The hard part: the data it can reach, and knowing whether the answer is right</li>
-                <li class="fragment">evaluation is the new A/B test</li>
+                <li>today I build <span class="accent">agents</span>: programs around an AI model like ChatGPT that can also look things up in databases and documents, and trigger actions</li>
+                <li class="fragment">the AI model is the easy part. The hard part is the data it can reach</li>
+                <li class="fragment">and checking whether the answers are actually right</li>
               </ul>
             </div>
           </div>
-          <div class="learning fragment">
-            <span class="accent">Learning:</span> AI without data management is a demo. BI without AI is a rear-view mirror.
-          </div>
         </section>
 
-        <!-- ======================= WHY THIS COURSE + EXPECTATIONS ======================= -->
+        <!-- ======================= EXPECTATIONS ======================= -->
         <section>
-          <h3>Why this course looks the way it does</h3>
-          <table class="modelmap">
-            <tr>
-              <td style="text-align: right; padding-right: 1em" class="muted">where I needed it</td>
-              <td class="accent" style="text-align: left">what we do here</td>
-            </tr>
-            <tr class="fragment">
-              <td style="text-align: right; padding-right: 1em">clinical trial data, user events, agent tools</td>
-              <td style="text-align: left">(III) Database Architecture, (IV) Data Management</td>
-            </tr>
-            <tr class="fragment">
-              <td style="text-align: right; padding-right: 1em">patient time series, "is the lift real?"</td>
-              <td style="text-align: left">(II) Python &amp; Pandas, Statistics &amp; A/B testing</td>
-            </tr>
-            <tr class="fragment">
-              <td style="text-align: right; padding-right: 1em">dashboards, KPIs, user segments</td>
-              <td style="text-align: left">(I) Business Intelligence</td>
-            </tr>
-            <tr class="fragment">
-              <td style="text-align: right; padding-right: 1em">digital twins, agents</td>
-              <td style="text-align: left">(V) Introduction to AI, (VI) Generative AI &amp; Agents</td>
-            </tr>
-          </table>
+          <h3>This course</h3>
+          <p class="plain" style="margin-top: 0">
+            Everything you just saw is built from three things: <span class="accent">data</span>,
+            <span class="green">statistics</span> and <span class="blue">models</span>. That is what we do here, in Python, hands-on.
+          </p>
           <div class="two-col" style="margin-top: 0.8em">
             <div>
               <h4 class="green">What you can expect</h4>

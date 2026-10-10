@@ -191,4 +191,25 @@ ax.set_ylim(0, 260)
 fig.tight_layout()
 fig.savefig(OUT + "segments.svg")
 plt.close(fig)
+
+# ---------- Figure 7: protein-protein interaction network (bioinformatics) ----------
+import networkx as nx
+G = nx.barabasi_albert_graph(260, 2, seed=7)
+pos = nx.spring_layout(G, k=0.11, iterations=200, seed=7)
+deg = np.array([d for _, d in G.degree()])
+fig, ax = plt.subplots(figsize=(7.5, 5.6))
+nx.draw_networkx_edges(G, pos, ax=ax, edge_color="#777", width=0.6, alpha=0.6)
+hubs = deg >= 8
+nx.draw_networkx_nodes(G, pos, ax=ax, nodelist=[n for n, h in zip(G.nodes, hubs) if not h],
+                       node_size=18 + 6 * deg[~hubs], node_color=BLUE, alpha=0.85, linewidths=0)
+nx.draw_networkx_nodes(G, pos, ax=ax, nodelist=[n for n, h in zip(G.nodes, hubs) if h],
+                       node_size=18 + 6 * deg[hubs], node_color=ORANGE, alpha=0.95, linewidths=0)
+ax.text(0.02, 0.98, "each dot: one protein\neach line: the two interact", transform=ax.transAxes,
+        va="top", color=FG, fontsize=13)
+ax.text(0.98, 0.02, "orange: hub proteins,\nmany partners", transform=ax.transAxes,
+        va="bottom", ha="right", color=ORANGE, fontsize=13)
+ax.set_axis_off()
+fig.tight_layout()
+fig.savefig(OUT + "ppi_network.svg")
+plt.close(fig)
 print("done")
