@@ -301,17 +301,24 @@ An initial assumption: customer loyalty has declined.
 
 <span style="color: lightgreen;">Is that true, and what should the retailer do? Let's walk through the stack from the bottom.</span>
 
+<div style="text-align: left; margin-top: 0.4em; border-left: 5px solid #f0b03f; background: rgba(255,255,255,0.06); padding: 0.3em 0.7em">
+  <div style="font-size: 0.45em; color: #f0b03f">To make it concrete, we follow one customer through every layer</div>
+  <pre style="margin: 0; width: 100%; box-shadow: none; font-size: 0.33em; line-height: 1.35; background: transparent; padding: 0.2em 0"><code class="nohighlight" style="background: transparent; padding: 0; white-space: pre-wrap">Anna M., customer 4711, loyal customer since 2024.
+On 2026-03-14 she orders a coffee grinder (KG-X200, 89.90 EUR). It arrives broken. She opens a ticket and returns it.
+The grinder comes from a new supplier (FastParts Ltd) since 2026-02-01.</code></pre>
+</div>
+
 Note:
 
-- Same stack as before, but now with one concrete case. Each layer gets one slide: what exists there, what we do with it, what it delivers to the next layer.
+- Same stack as before, but now with one concrete case and one concrete customer. Each layer gets one slide: what exists there, what we do with it, and what Anna's data looks like at that point.
 - Ask the room first: what data does an online shop even have?
 
 --
 
 ### 1. Raw Data
 
-<div style="display: flex; gap: 1.5rem; align-items: center">
-  <div style="flex: 0 0 52%">
+<div style="display: flex; gap: 1.2rem; align-items: center">
+  <div style="flex: 0 0 40%">
 <svg viewBox="200 190 1700 700" style="width: 100%; background: transparent" font-family="Helvetica, Arial, sans-serif" fill="#fff" text-anchor="middle" font-size="56">
   <rect x="355" y="213" width="1145" height="120" fill="#5f5f5f"/>
   <text x="928" y="291" font-size="56">Decisions</text>
@@ -331,28 +338,35 @@ Note:
   <text x="1560" y="765" font-size="42" fill="#c8c8c8" text-anchor="start">ETL / ELT</text>
 </svg>
   </div>
-  <div style="flex: 1; text-align: left; font-size: 0.6em">
+  <div style="flex: 1; text-align: left; font-size: 0.55em">
     <ul>
-      <li><span style="color: orange;">Shop database:</span> orders, customers, products, prices, returns</li>
-      <li><span style="color: orange;">Web tracking:</span> sessions, clicks, search terms, abandoned baskets</li>
+      <li><span style="color: orange;">Shop database:</span> orders, customers, products, returns</li>
+      <li><span style="color: orange;">Web tracking:</span> sessions, clicks, abandoned baskets</li>
       <li><span style="color: orange;">Customer service:</span> tickets, complaints, reviews</li>
-      <li><span style="color: orange;">Marketing:</span> campaigns, ad spend, newsletter opens</li>
-      <li><span style="color: orange;">External:</span> competitor prices, holidays, weather</li>
+      <li><span style="color: orange;">Marketing / external:</span> campaigns, ad spend, competitor prices, holidays</li>
       <li>Scattered over many systems, different formats, nobody has the full picture</li>
     </ul>
   </div>
 </div>
+<div style="text-align: left; margin-top: 0.4em; border-left: 5px solid #f0b03f; background: rgba(255,255,255,0.06); padding: 0.3em 0.7em">
+  <div style="font-size: 0.45em; color: #f0b03f">Anna in the raw data: 5 systems, 3 IDs, 3 date formats</div>
+  <pre style="margin: 0; width: 100%; box-shadow: none; font-size: 0.33em; line-height: 1.35; background: transparent; padding: 0.2em 0"><code class="nohighlight" style="background: transparent; padding: 0; white-space: pre">shop db  orders    90817 | customer 4711 | KG-X200 | 89.90 | 2026-03-14
+shop db  returns   90817 | "broken on arrival" | 20.03.2026
+tracking (json)    {"uid":"a7f3c1","event":"view","url":"/kitchen/kg-x200","ts":"2026-03-14T19:02:11Z"}
+tickets.csv        T-5582;14/03/26;anna.m@example.com;"grinder arrived broken, second time!"
+products (erp)     KG-X200 | Kitchen | supplier FastParts Ltd since 2026-02-01 (was Mueller GmbH)</code></pre>
+</div>
 
 Note:
 
-- Point: the data to answer the question already exists, but in five systems with five owners. The first BI job is to get it into one place.
+- Point: the data to answer the question already exists, but in five systems with five owners. Anna is 4711 in the shop, a7f3c1 in the tracking, and an email address in the ticket system. The first BI job is to get it into one place and agree that these are the same person.
 
 --
 
 ### 2. Data Integration &amp; Warehousing
 
-<div style="display: flex; gap: 1.5rem; align-items: center">
-  <div style="flex: 0 0 52%">
+<div style="display: flex; gap: 1.2rem; align-items: center">
+  <div style="flex: 0 0 40%">
 <svg viewBox="200 190 1700 700" style="width: 100%; background: transparent" font-family="Helvetica, Arial, sans-serif" fill="#fff" text-anchor="middle" font-size="56">
   <rect x="355" y="213" width="1145" height="120" fill="#5f5f5f"/>
   <text x="928" y="291" font-size="56">Decisions</text>
@@ -372,27 +386,33 @@ Note:
   <text x="1560" y="765" font-size="42" fill="#f0b03f" text-anchor="start">ETL / ELT</text>
 </svg>
   </div>
-  <div style="flex: 1; text-align: left; font-size: 0.6em">
+  <div style="flex: 1; text-align: left; font-size: 0.55em">
     <ul>
       <li><span style="color: orange;">Extract / Load:</span> copy all sources into one warehouse, every night (or in real time)</li>
-      <li><span style="color: orange;">Transform:</span> one customer ID across systems, one currency, one time zone, deduplicate</li>
+      <li><span style="color: orange;">Transform:</span> one customer ID across systems, one date format, one currency, deduplicate</li>
       <li><span style="color: orange;">Define the metrics once:</span> what exactly is a "repeat customer"? "revenue" with or without returns?</li>
-      <li><span style="color: orange;">Data marts:</span> a sales mart (revenue per day, product, channel) and a customer mart (orders, tickets, last purchase per customer)</li>
-      <li>Output: tables everyone can trust and query, e.g. customer x month</li>
+      <li><span style="color: orange;">Data marts:</span> sales mart and customer mart, one row per customer and month</li>
     </ul>
   </div>
+</div>
+<div style="text-align: left; margin-top: 0.4em; border-left: 5px solid #f0b03f; background: rgba(255,255,255,0.06); padding: 0.3em 0.7em">
+  <div style="font-size: 0.45em; color: #f0b03f">Anna after ETL: one ID, ISO dates, one row per fact, one row per customer and month</div>
+  <pre style="margin: 0; width: 100%; box-shadow: none; font-size: 0.33em; line-height: 1.35; background: transparent; padding: 0.2em 0"><code class="nohighlight" style="background: transparent; padding: 0; white-space: pre">dim_customer    4711 | anna.m@example.com | uid a7f3c1 | first_order 2024-05-02 | segment: loyal
+dim_product     KG-X200 | Kitchen | supplier FastParts Ltd | valid_from 2026-02-01
+fact_orders     90817 | 4711 | KG-X200 | 2026-03-14 | 89.90 | returned: yes | ticket: T-5582
+customer_month  4711 | 2026-03 | orders 1 | revenue 89.90 | returns 1 | tickets 1 | repeat_customer: yes</code></pre>
 </div>
 
 Note:
 
-- This is module III and IV (databases, ETL). Stress the metric definitions: most BI fights are about definitions, not numbers.
+- This is module III and IV (databases, ETL). Show how the three IDs collapse into 4711 and the three date formats into ISO. Stress the metric definitions: most BI fights are about definitions, not numbers.
 
 --
 
 ### 3. Data Analysis &amp; Exploration
 
-<div style="display: flex; gap: 1.5rem; align-items: center">
-  <div style="flex: 0 0 52%">
+<div style="display: flex; gap: 1.2rem; align-items: center">
+  <div style="flex: 0 0 40%">
 <svg viewBox="200 190 1700 700" style="width: 100%; background: transparent" font-family="Helvetica, Arial, sans-serif" fill="#fff" text-anchor="middle" font-size="56">
   <rect x="355" y="213" width="1145" height="120" fill="#5f5f5f"/>
   <text x="928" y="291" font-size="56">Decisions</text>
@@ -412,21 +432,25 @@ Note:
   <text x="1560" y="765" font-size="42" fill="#c8c8c8" text-anchor="start">ETL / ELT</text>
 </svg>
   </div>
-  <div style="flex: 1; text-align: left; font-size: 0.6em">
+  <div style="flex: 1; text-align: left; font-size: 0.55em">
     <ul>
       <li>Now we can actually ask the question. Four stages, increasing in value and difficulty:</li>
-      <li><span style="color: orange;">Descriptive:</span> what happened? Sales are down 12% vs last year, repeat purchase rate fell from 38% to 31%</li>
-      <li><span style="color: orange;">Diagnostic:</span> why? Returns and support tickets doubled for one product category after a supplier change</li>
-      <li><span style="color: orange;">Predictive:</span> what will happen? If the trend continues, Q4 revenue misses the plan by 8%</li>
-      <li><span style="color: orange;">Prescriptive:</span> what should we do? Fix the supplier, win back the affected customers with a targeted offer</li>
+      <li><span style="color: orange;">Descriptive:</span> what happened? <span style="color: orange;">Diagnostic:</span> why?</li>
+      <li><span style="color: orange;">Predictive:</span> what will happen? <span style="color: orange;">Prescriptive:</span> what should we do?</li>
       <li>Descriptive and diagnostic: classic BI. Predictive and prescriptive: statistics and AI, the second half of this course</li>
     </ul>
   </div>
 </div>
+<div style="text-align: left; margin-top: 0.4em; border-left: 5px solid #f0b03f; background: rgba(255,255,255,0.06); padding: 0.3em 0.7em">
+  <div style="font-size: 0.45em; color: #f0b03f">Anna's row becomes one of thousands: aggregate first, then ask the four questions (next slides)</div>
+  <pre style="margin: 0; width: 100%; box-shadow: none; font-size: 0.33em; line-height: 1.35; background: transparent; padding: 0.2em 0"><code class="nohighlight" style="background: transparent; padding: 0; white-space: pre">customer_month  4711 | 2026-03 | orders 1 | revenue 89.90 | returns 1 | tickets 1      (one of 23,480 rows)
+                                     | SUM / COUNT ... GROUP BY category, month
+kitchen_month   2026-03 | orders 6,210 | returns 1,118 | return rate 18% | repeat purchase rate 31%</code></pre>
+</div>
 
 Note:
 
-- The next slides go through the four stages in detail with the same case. The last two stages are the bridge to A/B testing (module V) and AI (VI).
+- The next slides go through the four stages in detail with the same case. The last two stages are the bridge to A/B testing (module V) and AI (VI). Note that Anna disappears into an aggregate here and reappears as one row of the list in the prescriptive step.
 
 --
 
@@ -450,6 +474,13 @@ What data or metrics would you examine to understand the current state of custom
 - historical sales data, customer repeat purchase rates, average order value, and site traffic trends
 - key metrics such as monthly active users, average purchase frequency, and customer satisfaction ratings
 
+
+<div style="text-align: left; margin-top: 0.1em; border-left: 5px solid #f0b03f; background: rgba(255,255,255,0.06); padding: 0.1em 0.7em">
+  <div style="font-size: 0.4em; color: #f0b03f">Our case</div>
+  <pre style="margin: 0; width: 100%; box-shadow: none; font-size: 0.33em; line-height: 1.35; background: transparent; padding: 0.2em 0"><code class="nohighlight" style="background: transparent; padding: 0; white-space: pre">Kitchen, 2026-03: return rate 18% (2025-03: 6%), repeat purchase rate 31% (was 38%)
+-&gt; something is wrong, and it is bigger than normal fluctuation</code></pre>
+</div>
+
 --
 
 <span style="color: orange;">Diagnostic Analytics</span>
@@ -458,6 +489,13 @@ Why might customer loyalty and sales be declining? What factors could be causing
 
 - Investigate possible issues such as product availability, customer feedback (e.g., complaints, reviews), competitive factors, or recent changes in pricing or service.
 - Check if there’s been an increase in customer support tickets, returns, or complaints about a specific product category or aspect of service.
+
+
+<div style="text-align: left; margin-top: 0.1em; border-left: 5px solid #f0b03f; background: rgba(255,255,255,0.06); padding: 0.1em 0.7em">
+  <div style="font-size: 0.4em; color: #f0b03f">Our case</div>
+  <pre style="margin: 0; width: 100%; box-shadow: none; font-size: 0.33em; line-height: 1.35; background: transparent; padding: 0.2em 0"><code class="nohighlight" style="background: transparent; padding: 0; white-space: pre">GROUP BY supplier:  FastParts 21% returns  |  Mueller 5%
+-&gt; started exactly with the supplier change on 2026-02-01; tickets say "broken on arrival"</code></pre>
+</div>
 
 --
 
@@ -468,6 +506,13 @@ Based on the data, what can we predict about future sales or customer loyalty if
 - Forecast future sales using time series models and analyze if there’s a trend indicating further decline or possible recovery.
 - Examine customer cohorts to predict repeat purchase behavior, or use demographic data to anticipate seasonal trends in customer loyalty.
 
+
+<div style="text-align: left; margin-top: 0.1em; border-left: 5px solid #f0b03f; background: rgba(255,255,255,0.06); padding: 0.1em 0.7em">
+  <div style="font-size: 0.4em; color: #f0b03f">Our case</div>
+  <pre style="margin: 0; width: 100%; box-shadow: none; font-size: 0.33em; line-height: 1.35; background: transparent; padding: 0.2em 0"><code class="nohighlight" style="background: transparent; padding: 0; white-space: pre">p(buys again | "broken" ticket) = 0.12   vs.   0.38 for everyone else
+-&gt; 4,000 affected customers, about 350k EUR revenue at risk over the next 12 months</code></pre>
+</div>
+
 --
 
 <span style="color: orange;">Prescriptive Analytics</span>
@@ -477,12 +522,19 @@ What strategies or actions could the retailer take to improve customer loyalty a
 - Recommend targeted loyalty programs, personalized offers, or new product lines to increase engagement.
 - Consider adjustments in marketing strategies, pricing, customer service improvements, or implementing a feedback loop for continual improvement.
 
+
+<div style="text-align: left; margin-top: 0.1em; border-left: 5px solid #f0b03f; background: rgba(255,255,255,0.06); padding: 0.1em 0.7em">
+  <div style="font-size: 0.4em; color: #f0b03f">Our case</div>
+  <pre style="margin: 0; width: 100%; box-shadow: none; font-size: 0.33em; line-height: 1.35; background: transparent; padding: 0.2em 0"><code class="nohighlight" style="background: transparent; padding: 0; white-space: pre">fix or replace the supplier  +  win-back offer for the 4,000   (4711 Anna is on that list)
+-&gt; and measure whether the offer works: A/B test (module V)</code></pre>
+</div>
+
 --
 
 ### 4. Reporting (Visualisation)
 
-<div style="display: flex; gap: 1.5rem; align-items: center">
-  <div style="flex: 0 0 52%">
+<div style="display: flex; gap: 1.2rem; align-items: center">
+  <div style="flex: 0 0 26%">
 <svg viewBox="200 190 1700 700" style="width: 100%; background: transparent" font-family="Helvetica, Arial, sans-serif" fill="#fff" text-anchor="middle" font-size="56">
   <rect x="355" y="213" width="1145" height="120" fill="#5f5f5f"/>
   <text x="928" y="291" font-size="56">Decisions</text>
@@ -502,28 +554,26 @@ What strategies or actions could the retailer take to improve customer loyalty a
   <text x="1560" y="765" font-size="42" fill="#c8c8c8" text-anchor="start">ETL / ELT</text>
 </svg>
   </div>
-  <div style="flex: 1; text-align: left; font-size: 0.6em">
+  <div style="flex: 1; text-align: left; font-size: 0.5em">
     <ul>
       <li>The analysis is worthless if it stays in a notebook. It has to reach the people who decide, in their language</li>
-      <li><span style="color: orange;">Management dashboard:</span> revenue vs. plan and vs. last year, weekly, one page</li>
-      <li><span style="color: orange;">Category managers:</span> returns and ticket rate per product category, with the supplier change marked</li>
-      <li><span style="color: orange;">CRM team:</span> list of affected customers, their last order, their lifetime value</li>
-      <li><span style="color: orange;">Alerts:</span> "return rate of category X above 15% for 2 weeks" instead of waiting for someone to look</li>
-      <li>Same data, different views per role. Charts are part of the Python lab today</li>
+      <li><span style="color: orange;">Same facts, different views:</span> one page for management, the supplier chart for category managers, Anna's row in a list for the CRM team</li>
+      <li><span style="color: orange;">Alerts</span> instead of waiting for someone to look: "return rate Kitchen above 15% for 2 weeks"</li>
     </ul>
   </div>
 </div>
+<img src="../assets/business_intelligence/retailer_dashboard.svg" alt="mock dashboard: KPI tiles, returns per week by supplier, repeat purchase rate" style="width: 100%; max-height: 400px; margin: 0.2em 0 0 0; background: transparent" />
 
 Note:
 
-- Visualisation is not decoration: a dashboard that nobody opens is a failed BI project. Ask: who looks at it, how often, and what do they do afterwards?
+- Visualisation is not decoration: a dashboard that nobody opens is a failed BI project. Ask: who looks at it, how often, and what do they do afterwards? Charts are part of the Python lab today.
 
 --
 
 ### 5. Decisions
 
-<div style="display: flex; gap: 1.5rem; align-items: center">
-  <div style="flex: 0 0 52%">
+<div style="display: flex; gap: 1.2rem; align-items: center">
+  <div style="flex: 0 0 40%">
 <svg viewBox="200 190 1700 700" style="width: 100%; background: transparent" font-family="Helvetica, Arial, sans-serif" fill="#fff" text-anchor="middle" font-size="56">
   <rect x="355" y="213" width="1145" height="120" fill="#f0b03f"/>
   <text x="928" y="291" font-size="56">Decisions</text>
@@ -543,27 +593,33 @@ Note:
   <text x="1560" y="765" font-size="42" fill="#c8c8c8" text-anchor="start">ETL / ELT</text>
 </svg>
   </div>
-  <div style="flex: 1; text-align: left; font-size: 0.6em">
+  <div style="flex: 1; text-align: left; font-size: 0.55em">
     <ul>
-      <li><span style="color: orange;">Decision 1:</span> switch back to the old supplier for category X, or fix quality control</li>
+      <li><span style="color: orange;">Decision 1:</span> back to the old supplier for Kitchen, or fix quality control at the new one</li>
       <li><span style="color: orange;">Decision 2:</span> win-back campaign for the 4,000 affected customers: apology, voucher, free return</li>
-      <li><span style="color: orange;">Decision 3:</span> was it really the supplier? Run an A/B test for the campaign instead of just believing the dashboard (module V)</li>
-      <li>Every decision produces new raw data: campaign responses, returns, repeat purchases</li>
-      <li>The stack is a <span style="color: orange;">loop</span>, not a pipeline. BI is not an end in itself (next topic)</li>
+      <li><span style="color: orange;">Decision 3:</span> was it really the supplier? Measure the campaign with an A/B test instead of believing the dashboard (module V)</li>
+      <li>Every decision produces new raw data. The stack is a <span style="color: orange;">loop</span>, not a pipeline</li>
     </ul>
   </div>
+</div>
+<div style="text-align: left; margin-top: 0.4em; border-left: 5px solid #f0b03f; background: rgba(255,255,255,0.06); padding: 0.3em 0.7em">
+  <div style="font-size: 0.45em; color: #f0b03f">Anna gets the voucher ... and produces new raw data: back to layer 1</div>
+  <pre style="margin: 0; width: 100%; box-shadow: none; font-size: 0.33em; line-height: 1.35; background: transparent; padding: 0.2em 0"><code class="nohighlight" style="background: transparent; padding: 0; white-space: pre">campaign_sent   4711 | 2026-04-01 | voucher WB-15 | group: B (A = no voucher, for the A/B test)
+orders          91422 | customer 4711 | KG-X200 (now Mueller GmbH) | 74.90 | 2026-04-09
+tracking        {"uid":"a7f3c1","event":"purchase","ts":"2026-04-09T20:15:03Z"}
+customer_month  4711 | 2026-04 | orders 1 | returns 0 | tickets 0  -&gt; and the other 3,999?</code></pre>
 </div>
 
 Note:
 
-- Close the loop explicitly: the decision feeds the bottom layer again. This is the OODA idea that comes a few slides later.
+- Close the loop explicitly: the decision feeds the bottom layer again, and only the next round of the stack tells us whether it worked. This is the OODA idea that comes a few slides later, and the A/B test is module V.
 
 --
 
 ### AI at every layer (2026)
 
-<div style="display: flex; gap: 1.5rem; align-items: center">
-  <div style="flex: 0 0 52%">
+<div style="display: flex; gap: 1.2rem; align-items: center">
+  <div style="flex: 0 0 40%">
 <svg viewBox="200 190 1700 700" style="width: 100%; background: transparent" font-family="Helvetica, Arial, sans-serif" fill="#fff" text-anchor="middle" font-size="56">
   <rect x="355" y="213" width="1145" height="120" fill="#5f5f5f"/>
   <text x="928" y="291" font-size="56">Decisions</text>
@@ -583,15 +639,22 @@ Note:
   <text x="1560" y="765" font-size="42" fill="#c8c8c8" text-anchor="start">ETL / ELT</text>
 </svg>
   </div>
-  <div style="flex: 1; text-align: left; font-size: 0.6em">
+  <div style="flex: 1; text-align: left; font-size: 0.55em">
     <ul>
-      <li><span style="color: orange;">Raw data:</span> extract structured data from emails, PDFs, call transcripts, product photos</li>
-      <li><span style="color: orange;">Integration:</span> generate and review ETL code and SQL, detect schema changes, suggest matching rules</li>
-      <li><span style="color: orange;">Analysis:</span> forecasting, anomaly detection, churn prediction, "which customers are affected?"</li>
-      <li><span style="color: orange;">Reporting:</span> "chat with your data", automatic summaries of a dashboard, alerts in natural language</li>
-      <li><span style="color: orange;">Decisions:</span> recommendations, next-best-action, simulations. The decision stays with a human (for now)</li>
+      <li><span style="color: orange;">Raw data:</span> extract structure from emails, PDFs, call transcripts, product photos</li>
+      <li><span style="color: orange;">Integration:</span> generate and review ETL code and SQL, detect schema changes</li>
+      <li><span style="color: orange;">Analysis:</span> forecasting, anomaly detection, churn prediction</li>
+      <li><span style="color: orange;">Reporting:</span> "chat with your data", summaries, alerts in natural language</li>
+      <li><span style="color: orange;">Decisions:</span> recommendations, next-best-action. The decision stays with a human (for now)</li>
     </ul>
   </div>
+</div>
+<div style="text-align: left; margin-top: 0.4em; border-left: 5px solid #f0b03f; background: rgba(255,255,255,0.06); padding: 0.3em 0.7em">
+  <div style="font-size: 0.45em; color: #f0b03f">Anna's case with AI in the loop</div>
+  <pre style="margin: 0; width: 100%; box-shadow: none; font-size: 0.33em; line-height: 1.35; background: transparent; padding: 0.2em 0"><code class="nohighlight" style="background: transparent; padding: 0; white-space: pre">raw          ticket text -&gt; LLM: category = product defect, sentiment = angry, repeat issue = yes
+integration  "write the SQL that joins tickets to orders by email and date" -&gt; draft, engineer reviews
+analysis     churn model: p(buys again | broken-ticket) = 0.12  -&gt; 4711 flagged as "at risk"
+reporting    "why did Kitchen returns go up?" -&gt; "doubled after the supplier change, 86% FastParts items"</code></pre>
 </div>
 
 Note:
