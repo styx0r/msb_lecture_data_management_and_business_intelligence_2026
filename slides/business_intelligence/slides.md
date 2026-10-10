@@ -716,16 +716,38 @@ What is Operational Business Intelligence? Here’s Everything You Need to Know 
 
 --
 
-<img
-  src="../assets/business_intelligence/imgs/imgs.017.png"
-  alt="Overview"
-  style="
-    width: 2400px;
-    margin: 0px 0px 0px 0px;
-    padding-right: 0rem;
-    background: transparent;
-  "
-/>
+<svg viewBox="40 80 1880 820" style="width: 100%; max-height: 560px; background: transparent" font-family="Helvetica, Arial, sans-serif" fill="#fff" text-anchor="middle" font-size="56">
+  <rect x="355" y="213" width="1145" height="120" fill="#ee9a3c"/>
+  <text x="928" y="291" font-size="56">Decisions</text>
+  <rect x="355" y="347" width="1145" height="120" fill="#f6c35a"/>
+  <text x="928" y="425" font-size="56">Reporting (Visualisation)</text>
+  <rect x="355" y="481" width="1145" height="120" fill="#f8d06a"/>
+  <text x="928" y="559" font-size="56">Data Analysis &amp; Exploration</text>
+  <rect x="355" y="615" width="1145" height="120" fill="#fbe58a"/>
+  <text x="928" y="693" font-size="56">Data Warehousing / Data Marts</text>
+  <rect x="355" y="749" width="1145" height="120" fill="#fbe58a"/>
+  <text x="928" y="827" font-size="48">Raw Data (self produced or foreign sources)</text>
+  <rect x="230" y="213" width="110" height="654" fill="#5f5f5f"/>
+  <text x="285" y="560">AI</text>
+  <path d="M1500,807 H1550 V673 H1517" fill="none" stroke="#c8c8c8" stroke-width="6"/>
+  <polygon points="1503,673 1527,658 1527,688" fill="#c8c8c8"/>
+  <text x="1560" y="720" font-size="42" fill="#c8c8c8" text-anchor="start">Data Integration</text>
+  <text x="1560" y="765" font-size="42" fill="#c8c8c8" text-anchor="start">ETL / ELT</text>
+  <path d="M1100,213 V160 H1600 V540 H1517" fill="none" stroke="#fbe58a" stroke-width="6"/>
+  <path d="M1600,407 H1517" fill="none" stroke="#fbe58a" stroke-width="6"/>
+  <polygon points="1503,407 1527,392 1527,422" fill="#fbe58a"/>
+  <polygon points="1503,540 1527,525 1527,555" fill="#fbe58a"/>
+  <text x="1200" y="110" font-size="42" fill="#c8c8c8" text-anchor="start">Observation / Refinements</text>
+  <path d="M900,213 V160 H130 V807 H213" fill="none" stroke="#f6c35a" stroke-width="6"/>
+  <path d="M130,673 H213" fill="none" stroke="#f6c35a" stroke-width="6"/>
+  <polygon points="227,673 203,658 203,688" fill="#f6c35a"/>
+  <polygon points="227,807 203,792 203,822" fill="#f6c35a"/>
+  <text x="95" y="500" font-size="42" fill="#c8c8c8" transform="rotate(-90 95 500)">Extensions / Adaptations</text>
+</svg>
+
+Note:
+
+- The stack as an OODA loop: decisions trigger new observations (refine the analysis and the reports) and new extensions (new sources, new warehouse tables). AI now sits in every layer of that loop.
 
 ---
 
