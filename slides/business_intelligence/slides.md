@@ -420,14 +420,20 @@ Note:
   </div>
 </div>
 <div style="text-align: left; margin-top: 0.4em; border-left: 5px solid #f0b03f; background: rgba(255,255,255,0.06); padding: 0.3em 0.7em">
-  <div style="font-size: 0.45em; color: #f0b03f">Anna's row becomes one of thousands: aggregate first, then ask the four questions (next slides)</div>
+  <div style="font-size: 0.45em; color: #f0b03f">Anna's row becomes one of thousands: aggregate, notice the returns, then drill down</div>
   <pre style="margin: 0; width: 100%; box-shadow: none; font-size: 0.33em; line-height: 1.35; background: transparent; padding: 0.2em 0"><code class="nohighlight" style="background: transparent; padding: 0; white-space: pre">customer_month  4711 | 2026-03 | orders 1 | revenue 89.90 | returns 1 | tickets 1      (one of 23,480 rows)
-                                     | SUM / COUNT ... GROUP BY category, month
-kitchen_month   2026-03 | orders 6,210 | returns 1,118 | return rate 18% | repeat purchase rate 31%</code></pre>
+                                     | SUM / COUNT ... GROUP BY month
+all_month       2026-03 | orders 31,900 | revenue -9% vs. 2025-03 | return rate 7% (was 5%)
+                                     | returns went up. GROUP BY what, to find out where they come from?
+<span class="fragment">kitchen_month   2026-03 | orders 6,210 | returns 1,118 | return rate 18% | half of all returns</span></code></pre>
 </div>
+
+<span style="color: lightgreen; font-size: 0.6em">Sales are down and returns are up. Which GROUP BY would you try first?</span>
 
 Note:
 
+- The kitchen row is a fragment: ask the room first, then press next. Expected answers: by category, by product, by supplier, by new vs. returning customer. Category first because it is the coarsest cut; supplier comes up by itself on the diagnostic slide.
+- The point of the middle row: company-wide the drop looks small (-9%, 7% returns). Only the drill-down shows that one category carries half of all returns. Aggregates hide, GROUP BY reveals.
 - The next slides go through the four stages in detail with the same case. The last two stages are the bridge to A/B testing (module V) and AI (VI). Note that Anna disappears into an aggregate here and reappears as one row of the list in the prescriptive step.
 
 --
