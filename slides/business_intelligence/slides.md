@@ -315,16 +315,30 @@ Note:
 
 ### Stages of Analytics
 
-<img
-  src="../assets/business_intelligence/imgs/imgs.018.png"
-  alt="Overview"
-  style="
-    width: 2400px;
-    margin: 0px 0px 0px 0px;
-    padding-right: 0rem;
-    background: transparent;
-  "
-/>
+<svg viewBox="200 190 1700 700" style="width: 100%; max-height: 420px; background: transparent" font-family="Helvetica, Arial, sans-serif" fill="#fff" text-anchor="middle" font-size="56">
+  <rect x="355" y="213" width="1145" height="120" fill="#5f5f5f"/>
+  <text x="928" y="291" font-size="56">Decisions</text>
+  <rect x="355" y="347" width="1145" height="120" fill="#8e8e8e"/>
+  <text x="928" y="425" font-size="56">Reporting (Visualisation)</text>
+  <rect x="355" y="481" width="1145" height="120" fill="#f0b03f"/>
+  <text x="928" y="559" font-size="56">Data Analysis &amp; Exploration</text>
+  <rect x="355" y="615" width="1145" height="120" fill="#8e8e8e"/>
+  <text x="928" y="693" font-size="56">Data Warehousing / Data Marts</text>
+  <rect x="355" y="749" width="1145" height="120" fill="#5f5f5f"/>
+  <text x="928" y="827" font-size="48">Raw Data (self produced or foreign sources)</text>
+  <rect x="230" y="213" width="110" height="654" fill="#5f5f5f"/>
+  <text x="285" y="560">AI</text>
+  <path d="M1500,807 H1550 V673 H1517" fill="none" stroke="#c8c8c8" stroke-width="6"/>
+  <polygon points="1503,673 1527,658 1527,688" fill="#c8c8c8"/>
+  <text x="1560" y="720" font-size="42" fill="#c8c8c8" text-anchor="start">Data Integration</text>
+  <text x="1560" y="765" font-size="42" fill="#c8c8c8" text-anchor="start">ETL / ELT</text>
+</svg>
+
+<span style="color: orange;">Zoom in:</span> what actually happens inside "Data Analysis &amp; Exploration"?
+
+Note:
+
+- Bridge from the component stack to the four stages: descriptive and diagnostic are classic BI, predictive and prescriptive are advanced analytics, i.e. the AI part of this course.
 
 --
 
