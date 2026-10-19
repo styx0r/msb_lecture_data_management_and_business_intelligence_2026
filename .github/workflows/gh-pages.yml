@@ -28,15 +28,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # Use the pinned reveal.js submodule (slides/reveal.js) instead of
+          # upstream master: reveal.js 6 moved the plugin bundles, which broke
+          # the deployed decks while the local (pinned) version kept working.
+          submodules: true
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
-      
-      - name: Checkout Reveal.js Repository
-        uses: actions/checkout@v4
-        with:
-          repository: hakimel/reveal.js  # Check out the Reveal.js repository
-          path: reveal.js  # Optional: specify a path to check out the repository into
 
       - name: Copy html
         run: |
@@ -44,10 +43,7 @@ jobs:
           cp index.html _site/
           cp questions.html _site/
           cp -rf slides _site/
-          rm -rf _site/slides/reveal.js
-          mv reveal.js _site/slides/
-          
-        
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
 
