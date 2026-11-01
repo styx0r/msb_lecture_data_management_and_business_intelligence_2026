@@ -280,173 +280,176 @@ Note:
 
 ---
 
-### 2. Expert groups <span class="badge">8 + 2 MIN</span>
+### How to read the pictures
 
 <div class="task">
 
-Each group gets one architecture picture and one question. Prepare 8 minutes, then 2 minutes per group at the screen: <b>point at the picture</b> while you explain.
+All four architecture pictures are built from the same parts. They differ in only two things: <b>where</b> data is stored and <b>when</b> it is transformed.
 
 <table class="small-list" style="margin: 0.5em auto;">
-  <tr><th>Group</th><th>Architecture</th><th>Your question</th></tr>
-  <tr><td>1 and 5</td><td>Data Warehouse</td><td>What can be high cost drivers in a pure warehouse?</td></tr>
-  <tr><td>2 and 6</td><td>Data Lake</td><td>Pros and cons? Where is the "swamp" risk?</td></tr>
-  <tr><td>3</td><td>Hybrid Data Lake</td><td>Storage is doubled. When is it still advisable?</td></tr>
-  <tr><td>4</td><td>Lakehouse</td><td>Lower complexity than hybrid. What is the catch?</td></tr>
+  <tr><th>In the picture</th><th>Meaning</th><th>Ask yourself</th></tr>
+  <tr><td>grey column with "persistence"</td><td>a place where data is stored, short-term or long-term</td><td>how many storages? what is kept raw, what cleaned?</td></tr>
+  <tr><td>gear</td><td>Transform: cleaning, joining, aggregating (your notebook)</td><td>before or after the long-term storage?</td></tr>
+  <tr><td>orange arrows E, L</td><td>Extract and Load: data moves</td><td>how often is data copied, and where to?</td></tr>
+  <tr><td>right column</td><td>who uses the data: reporting, data science</td><td>what do they need: fast queries or raw material?</td></tr>
 </table>
-
-Every group also names <b>one company situation</b> in which they would pick their architecture.
 
 </div>
 
 Note:
 
-- Groups get the picture and the description slide (down arrow on the following slides, or printed). Pros/cons slides stay hidden until the group has presented.
+- 3 minutes, lecturer. This is the key to all four pictures. Point at the warehouse picture: one long-term storage, transform before it, reporting on the right. Every other picture is a variation of that.
+
+---
+
+### 2. Expert groups <span class="badge">8 + 2 MIN</span>
+
+<div class="task">
+
+One architecture per group: a <b>briefing</b> (picture plus facts, down arrow under your architecture) and <b>one question</b> the briefing does not answer. 8 min preparation, then 2 min per group at the screen, <b>finger on the picture</b>.
+
+<table class="small-list" style="margin: 0.5em auto;">
+  <tr><th>Group</th><th>Architecture</th><th>Your question</th></tr>
+  <tr><td>1 and 5</td><td>Data Warehouse</td><td>After a year ShopNow changes the definition of "bounce". What has to happen in your architecture, and what does it cost?</td></tr>
+  <tr><td>2 and 6</td><td>Data Lake</td><td>Three years in, nobody knows what the 400 folders contain. What went wrong, and why is every query more expensive than in the warehouse?</td></tr>
+  <tr><td>3</td><td>Hybrid Data Lake</td><td>You store everything twice. Name one company where that is still right and one where it is waste. What decides?</td></tr>
+  <tr><td>4</td><td>Lakehouse</td><td>What does the lakehouse need that the warehouse already includes, and which skill does your team need for it?</td></tr>
+</table>
+
+Also name <b>one company situation</b> where you would pick your architecture. Asking an LLM is allowed, reading its answer from the phone is not.
+
+</div>
+
+Note:
+
+- Presentation order: warehouse, lake, hybrid, lakehouse. The later groups may build on the earlier ones ("hybrid is both of those").
+- During the 8 minutes go to groups 3 and 4 first, they have the hardest pictures.
+- The answers to the four questions are in the notes of the question slides, not on any slide. After all four talks: correct only what was wrong, max 4 minutes, then the summary slide.
 - With fewer than 6 groups: warehouse and lake once each, hybrid and lakehouse once each.
-- While they present: do not interrupt. Afterwards correct with the hidden slides only where something was wrong or missing, max 4 minutes in total.
-- Common gaps: warehouse group forgets that raw data can be lost; lake group forgets that every query costs compute; hybrid group does not say "two systems to maintain"; lakehouse group does not know that a separate query engine is needed.
 
 --
 
-<span style="color: orange;">Data Warehouse</span> (groups 1 and 5)
+#### Briefing: <span style="color: orange;">Data Warehouse</span> (groups 1 and 5)
 
 <img
   src="../assets/data_management/imgs/imgs.002.png"
   alt="Data Warehouse"
   style="
-    width: 1400px;
-    margin: 0 auto 1rem auto;
+    max-height: 270px;
+    width: auto;
+    margin: 0 auto 0.3rem auto;
     background: transparent;
   "
 />
 
-<p class="smaller-text">Central hub for cleaned, structured data. Many sources are collected, cleaned and loaded (ETL) into consistent tables. Result: fast, consistent reporting.</p>
-
---
-
-<span style="color: lightgreen;">What can be high cost drivers in a pure data warehouse architecture?</span>
-
-<ul class="small-list">
-  <li><b>Schema changes:</b> changing a mart often means reprocessing months or years of data</li>
-  <li><b>Complex ETL:</b> many joins and transformations increase compute time</li>
-  <li><b>Large history reloads:</b> backfills are expensive</li>
-  <li><b>Many marts:</b> maintaining many curated tables adds cost and effort</li>
+<ul style="text-align: left; margin: 0 auto; width: 92%; font-size: 0.55em; list-style: none;">
+  <li><b>Stored:</b> only the cleaned, structured tables (staging, marts). Raw data is not kept, the sources keep it for a while.</li>
+  <li><b>Transformed:</b> before loading, in a nightly ETL job. Every mart has a fixed schema (columns and types).</li>
+  <li><b>Used by:</b> dashboards and reports, many users, queries take seconds.</li>
+  <li><b>Costs:</b> expensive storage per GB, cheap queries, one system to maintain. Tools: Snowflake, BigQuery, Redshift, Postgres.</li>
 </ul>
 
---
+Note:
 
-<div class="two-col">
-  <div>
-    <div style="color: orange;">Pros</div>
-    <ul class="smaller-list">
-      <li><b>Clear lineage:</b> you can see how a table was built</li>
-      <li><b>Fast queries:</b> dashboards load quickly on curated marts</li>
-      <li><b>Stronger governance:</b> access control by domain (HR mart separate from sales)</li>
-    </ul>
-  </div>
-  <div>
-    <div style="color: orange;">Cons</div>
-    <ul class="smaller-list">
-      <li><b>Less flexible for raw exploration:</b> not ideal for logs, text, images</li>
-      <li><b>Schema changes are costly:</b> pipelines have to be reloaded</li>
-      <li><b>Raw data may be lost:</b> if the source keeps data only briefly (7-day logs)</li>
-    </ul>
-  </div>
-</div>
+- Question: changing the definition of "bounce". Expected: the staging table stg_sessions and every mart built on it must be recomputed for the whole history (backfill). That needs the raw events of a year, which the warehouse does not keep; if the tracking tool keeps only 7 days, the old numbers can never be corrected. Cost drivers: schema changes, backfills, complex ETL, many marts.
+- Bonus they may find: the new and the old definition cannot be compared unless both are kept, so versioned marts.
 
 --
 
-<span style="color: orange;">Data Lake</span> (groups 2 and 6)
+#### Briefing: <span style="color: orange;">Data Lake</span> (groups 2 and 6)
 
 <img
   src="../assets/data_management/imgs/imgs.003.png"
   alt="Data Lake"
   style="
-    width: 1400px;
-    margin: 0 auto 1rem auto;
+    max-height: 270px;
+    width: auto;
+    margin: 0 auto 0.3rem auto;
     background: transparent;
   "
 />
 
-<p class="smaller-text">Central hub for all kinds of data. Information is extracted and loaded directly, without transformation. A copy of the original sources, kept long-term, for exploration, data science and machine learning.</p>
+<ul style="text-align: left; margin: 0 auto; width: 92%; font-size: 0.55em; list-style: none;">
+  <li><b>Stored:</b> everything, as it arrives: tables, logs, images, documents. Files in folders on cheap object storage ($0.01 to $0.025 per GB per month).</li>
+  <li><b>Transformed:</b> not on the way in. Whoever reads the data cleans it, every time, in their own code.</li>
+  <li><b>Used by:</b> data scientists and ML, few users, long-running jobs.</li>
+  <li><b>Costs:</b> cheap storage, expensive processing, a separate tool is needed to query at all. Tools: S3, MinIO, Azure Data Lake, plus Spark or similar.</li>
+</ul>
+
+Note:
+
+- Question: 400 folders, nobody knows the content. Expected: a data swamp, no structure or documentation was enforced, nobody owned the lake. Prevention: naming conventions, a catalog, ownership. Why every query is more expensive: the cleaning from Task 2 runs again on every read, on raw data, instead of once in ETL; plus no index, no curated marts.
+- Security point if they find it: hard to see what is sensitive in thousands of files of unknown format.
 
 --
 
-<span style="color: lightgreen;">Pros and cons of the Data Lake?</span>
-
-<div class="two-col">
-  <div>
-    <div style="color: orange;">Pros</div>
-    <ul class="smaller-list">
-      <li>high flexibility, no limits regarding format, type or amount of data</li>
-      <li>cheap storage (roughly $0.01 to $0.025 per GB per month)</li>
-      <li>raw data is never lost, you can always rebuild</li>
-    </ul>
-  </div>
-  <div>
-    <div style="color: orange;">Cons</div>
-    <ul class="smaller-list">
-      <li>higher costs for processing: every query works on raw data</li>
-      <li>lack of structure, lack of transparency: risk of becoming a <b>data swamp</b></li>
-      <li>security: hard to spot threats in a vast amount of formats</li>
-      <li>no default query execution, another tool is necessary</li>
-    </ul>
-  </div>
-</div>
-
---
-
-<span style="color: orange;">Hybrid Data Lake</span> (group 3)
+#### Briefing: <span style="color: orange;">Hybrid Data Lake</span> (group 3)
 
 <img
   src="../assets/data_management/imgs/imgs.004.png"
   alt="Hybrid Data Lake"
   style="
-    width: 1400px;
-    margin: 0 auto 1rem auto;
+    max-height: 270px;
+    width: auto;
+    margin: 0 auto 0.3rem auto;
     background: transparent;
   "
 />
 
-<p class="smaller-text">Combines the advantages of warehouse and lake, at the expense of complexity: two systems, data stored twice.</p>
-
-<span style="color: lightgreen;">Storage is doubled. When is it still advisable?</span>
+<ul style="text-align: left; margin: 0 auto; width: 92%; font-size: 0.55em; list-style: none;">
+  <li><b>Stored:</b> twice. Everything raw in the lake, the cleaned tables additionally in a warehouse.</li>
+  <li><b>Transformed:</b> after the lake, before the warehouse. The lake is the long-term memory, the warehouse the fast front.</li>
+  <li><b>Used by:</b> dashboards from the warehouse (many users, sub-second), data science from the lake.</li>
+  <li><b>Costs:</b> two systems, two bills, two teams or one that can do both. Highest maintenance of the four.</li>
+</ul>
 
 Note:
 
-- Expected: when low-latency operational BI (dashboards with many users, sub-second queries) and cheap exploration of raw data are both hard requirements, and the team can run two systems. Typical in larger companies with a mature data team.
+- Question: where is storing twice still right? Expected: large companies where both are hard requirements: operational BI with many concurrent users needing sub-second answers (the warehouse), and ML or audit needs on raw history (the lake), and a team that can run two systems. Waste: a 30-person company with three dashboards and no data science; or any company that only wants one of the two uses. What decides: concurrent dashboard users, latency requirements, share of raw and unstructured data, team size.
 
 --
 
-<span style="color: orange;">Data Lakehouse</span> (group 4)
+#### Briefing: <span style="color: orange;">Data Lakehouse</span> (group 4)
 
 <img
   src="../assets/data_management/imgs/imgs.005.png"
   alt="Lakehouse"
   style="
-    width: 1400px;
-    margin: 0 auto 1rem auto;
+    max-height: 270px;
+    width: auto;
+    margin: 0 auto 0.3rem auto;
     background: transparent;
   "
 />
 
-<p class="smaller-text">Combines the advantages of warehouse and lake and keeps complexity low: one storage, transformation happens inside, a standalone query engine on top.</p>
-
-<span style="color: lightgreen;">Lower complexity than hybrid. What is the catch?</span>
+<ul style="text-align: left; margin: 0 auto; width: 92%; font-size: 0.55em; list-style: none;">
+  <li><b>Stored:</b> once, on cheap object storage like a lake, but the cleaned tables are written back into the same storage in a table format (Iceberg, Delta) that behaves like database tables.</li>
+  <li><b>Transformed:</b> inside the storage, after loading (ELT). Raw and cleaned live side by side.</li>
+  <li><b>Used by:</b> both: dashboards and data science read from the same place.</li>
+  <li><b>Costs:</b> lake-cheap storage, queries in between warehouse and lake, one system. Tools: Databricks, Dremio, Trino, Snowflake on Iceberg.</li>
+</ul>
 
 Note:
 
-- Expected: a separate query engine is necessary (Dremio, Trino, Spark, Databricks), performance for many concurrent dashboard users is below a tuned warehouse, and the table format (Iceberg, Delta) is a skill the team must have.
+- Question: what does it need that the warehouse includes? Expected: a query engine. A warehouse is storage and query engine in one product; a lakehouse is files on object storage, so a separate engine (Dremio, Trino, Spark, Databricks) must be run and tuned, and the table format must be managed. Skills: running that engine, the table format, and discipline to keep raw and cleaned areas apart, otherwise it is a lake with extra steps. Performance for many concurrent dashboard users is below a tuned warehouse.
 
 --
 
-#### Hybrid Data Lake or Lakehouse?
+#### The four at a glance
 
-<ul class="small-list">
-  <li><b>Hybrid Data Lake:</b> high performance (low latency for operational BI) with cheap exploration, paid for with two systems</li>
-  <li><b>Lakehouse:</b> lower complexity, less maintenance, still good performance, sufficient for most cases</li>
-</ul>
+<table style="margin: 0 auto; font-size: 0.55em;">
+  <tr><th></th><th>Warehouse</th><th>Lake</th><th>Hybrid</th><th>Lakehouse</th></tr>
+  <tr><td>stored</td><td>cleaned only</td><td>raw only</td><td>raw + cleaned, two systems</td><td>raw + cleaned, one storage</td></tr>
+  <tr><td>transform</td><td>before (ETL)</td><td>on every read</td><td>between the two</td><td>inside (ELT)</td></tr>
+  <tr><td>strong</td><td>fast, governed reporting</td><td>cheap, flexible, never loses raw data</td><td>both, at full speed</td><td>both, with one system</td></tr>
+  <tr><td>weak</td><td>schema changes, raw data lost</td><td>swamp risk, expensive queries, no engine</td><td>cost and complexity of two systems</td><td>needs own query engine and skills</td></tr>
+</table>
 
-<p class="small-text">Don't think of these architectures as set in stone. They all have advantages and disadvantages and are applied in modified and combined forms.</p>
+<p class="smaller-text">Hybrid buys low latency for operational BI at the price of two systems; the lakehouse is sufficient for most cases. None of these is set in stone, companies combine them.</p>
+
+Note:
+
+- Show after all four talks. One minute. This is the exam-relevant summary.
 
 ---
 
