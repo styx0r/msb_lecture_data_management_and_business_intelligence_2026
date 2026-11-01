@@ -155,9 +155,10 @@ per Mail melden.
   6. 20 Metriken getestet, eine signifikant (Multiple Testing) -> no ship
 - [x] Data-Management-Deck umgebaut (2026-11-01): Where-are-we als SVG, Doing 1 ETL, Doing 2 Expertengruppen (Pro/Contra als versteckte vertikale Slides), Doing 3 Wettbewerb, lyvy "Spot the pattern", "AI at every layer", Takeaways; Realtime + Cloud als Anhang "self-study". Alte Fassung in Git-History
 - [x] Neues Notebook `colab/data_management_etl.ipynb` + Solution (raw -> staging -> mart in pandas, 4 Aufgaben, Lösung läuft durch), in `index.html` verlinkt
+- [x] Kosten-Notebook (2026-11-01): Quelle C ist jetzt ein gekaufter Finanzdaten-Feed (20 GB/Monat, 20 $/GB, jeder erneute Download kostet voll), Zusatzfrage in der Empfehlungsrunde, Bonus-Aufgabe (Incident + Schema-Update) sauber formuliert und mit Lösung
 - [x] Kosten-Notebook auf Gruppenformat umgebaut (`MY_ARCHITECTURE`, nur eigene Architektur, "nicht die eigene empfehlen", alle vier als Hausaufgabe); Lösung neu, alter Fehler in der Gesamtsumme (Query-Kosten der letzten Architektur für alle Zeilen) behoben; Speicherangabe vereinheitlicht (20 GB/Monat Wachstum, die widersprüchlichen "Year 1: 100 TB / Year 2: 150 TB" entfernt)
 - [ ] Deck und beide Notebooks einmal in Colab/Browser durchklicken, dann committen
-- [ ] Tafelvorlage für den Architektur-Wettbewerb: Tabelle Architekturen x fünf Kostenkomponenten + Summe, während der Expertenrunde anzeichnen. Referenzwerte (Solution): Lakehouse 7.603, Lake 7.957, Warehouse 8.870, Hybrid 9.650 $
+- [ ] Tafelvorlage für den Architektur-Wettbewerb: Tabelle Architekturen x fünf Kostenkomponenten + Summe, während der Expertenrunde anzeichnen. Referenzwerte (Solution, mit gekauftem Finanzdaten-Feed 20 $/GB als Quelle C): Lakehouse 16.723, Lake 17.077, Warehouse 17.990, Hybrid 18.770 $; Zusatzfrage "wer zahlt den Feed zweimal": nur das Warehouse (Bonus: ca. 30.100 $)
 - [ ] A/B-Deck: "Your turn"-Slide auf Lab-Aufgabe 1 umlenken (Warm-up-Notebook entfällt am Tag 3, bleibt als Übung auf der Kursseite)
 - [ ] Mini-Talk-Slide im Intro-AI-Deck auf das Pitch-Format umschreiben (20 min statt 60, Abstimmung)
 - [ ] Leitfragen für beide Streitgespräche als Sprechernotizen in die Decks (Taste `s`)
