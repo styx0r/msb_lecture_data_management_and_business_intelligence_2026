@@ -22,6 +22,7 @@ Students should require the necessary skills to start a data science project and
 
 ### Making slides
 - Uses (reveal.js)[https://github.com/hakimel/reveal.js]
+- Solution slides are hidden with `<!-- .slide: data-visibility="hidden" -->`; open a deck with `?showHiddenSlides=true` to present them (students get the link without the parameter)
 - There is a Makefile in the slides folder
 	- `make get-reveal`: add reveal.js as submodule into slides folder
 	- `make update-reveal`: updates reveal.js

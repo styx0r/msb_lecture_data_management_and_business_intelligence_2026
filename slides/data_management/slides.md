@@ -278,6 +278,18 @@ Note:
 - The screenshot is the dbt docs UI: every box is a table, the arrows are the lineage raw → staging → mart. This is "traceability" from the slide before, generated from the code.
 - One sentence on ELT vs ETL: with cheap storage people load raw data first and transform inside the warehouse. Same steps, different order, the lake slides explain why.
 
+--
+
+<!-- .slide: data-visibility="hidden" -->
+
+#### Task 4: reflection <span class="badge">ANSWER</span>
+
+<ul class="small-list" style="text-align: left;">
+  <li><b>CHF:</b> step 2b breaks silently. <code>np.where(currency == "USD", ...)</code> treats CHF like EUR, revenue is wrong, no error. You notice it only when someone compares the dashboard to the bank account. Fix: a currency table and a test that fails on unknown currencies.</li>
+  <li><b>Finance report:</b> start from <code>stg_orders</code>. Clean (dates, EUR) but not yet aggregated for one dashboard. The mart is too specific, raw is too messy. Clean once, use many times.</li>
+  <li><b>Test:</b> between raw and staging. Row counts per day (zero events = tracking broken), no nulls in session_id, every session_id in orders exists in events, only known currencies. dbt lets you declare these in a few lines.</li>
+</ul>
+
 ---
 
 ### How to read the pictures
@@ -324,7 +336,7 @@ Note:
 
 - Presentation order: warehouse, lake, hybrid, lakehouse. The later groups may build on the earlier ones ("hybrid is both of those").
 - During the 8 minutes go to groups 3 and 4 first, they have the hardest pictures.
-- The answers to the four questions are in the notes of the question slides, not on any slide. After all four talks: correct only what was wrong, max 4 minutes, then the summary slide.
+- The answers are on hidden slides (ANSWER badge) under each briefing. They only exist when the deck is opened with `?showHiddenSlides=true`; the course page links the deck without it. After all four talks: correct only what was wrong, max 4 minutes, then the summary slide.
 - With fewer than 6 groups: warehouse and lake once each, hybrid and lakehouse once each.
 
 --
@@ -356,6 +368,19 @@ Note:
 
 --
 
+<!-- .slide: data-visibility="hidden" -->
+
+#### Warehouse: changing the definition of "bounce" <span class="badge">ANSWER</span>
+
+<ul class="small-list" style="text-align: left;">
+  <li><code>stg_sessions</code> and every mart built on it must be <b>recomputed for the whole history</b> (a backfill).</li>
+  <li>That needs the raw events of a year. The warehouse does not keep them; if the tracking tool keeps 7 days, the old numbers can never be corrected.</li>
+  <li>Cost drivers of a pure warehouse: <b>schema changes, backfills, complex ETL, many marts.</b></li>
+  <li>Bonus: old and new definition cannot be compared unless both are kept, so versioned marts.</li>
+</ul>
+
+--
+
 #### Briefing: <span style="color: orange;">Data Lake</span> (groups 2 and 6)
 
 <img
@@ -380,6 +405,18 @@ Note:
 
 - Question: 400 folders, nobody knows the content. Expected: a data swamp, no structure or documentation was enforced, nobody owned the lake. Prevention: naming conventions, a catalog, ownership. Why every query is more expensive: the cleaning from Task 2 runs again on every read, on raw data, instead of once in ETL; plus no index, no curated marts.
 - Security point if they find it: hard to see what is sensitive in thousands of files of unknown format.
+
+--
+
+<!-- .slide: data-visibility="hidden" -->
+
+#### Lake: 400 folders, nobody knows <span class="badge">ANSWER</span>
+
+<ul class="small-list" style="text-align: left;">
+  <li>A <b>data swamp</b>: no structure or documentation was enforced, nobody owned the lake. Prevention: naming conventions, a catalog, ownership.</li>
+  <li>Every query is more expensive because the <b>cleaning from Task 2 runs again on every read</b>, on raw data, instead of once in ETL. No index, no curated marts, and a separate engine has to be run.</li>
+  <li>Security: hard to see what is sensitive in thousands of files of unknown format.</li>
+</ul>
 
 --
 
@@ -409,6 +446,18 @@ Note:
 
 --
 
+<!-- .slide: data-visibility="hidden" -->
+
+#### Hybrid: when is storing twice right? <span class="badge">ANSWER</span>
+
+<ul class="small-list" style="text-align: left;">
+  <li><b>Right:</b> a large company where both are hard requirements: operational BI with many concurrent users and sub-second answers (warehouse) <i>and</i> ML or audit on raw history (lake), plus a team that can run two systems.</li>
+  <li><b>Waste:</b> a 30-person company with three dashboards and no data science, or any company that needs only one of the two uses.</li>
+  <li><b>What decides:</b> concurrent dashboard users, latency requirements, share of raw and unstructured data, team size.</li>
+</ul>
+
+--
+
 #### Briefing: <span style="color: orange;">Data Lakehouse</span> (group 4)
 
 <img
@@ -432,6 +481,18 @@ Note:
 Note:
 
 - Question: what does it need that the warehouse includes? Expected: a query engine. A warehouse is storage and query engine in one product; a lakehouse is files on object storage, so a separate engine (Dremio, Trino, Spark, Databricks) must be run and tuned, and the table format must be managed. Skills: running that engine, the table format, and discipline to keep raw and cleaned areas apart, otherwise it is a lake with extra steps. Performance for many concurrent dashboard users is below a tuned warehouse.
+
+--
+
+<!-- .slide: data-visibility="hidden" -->
+
+#### Lakehouse: what does it need? <span class="badge">ANSWER</span>
+
+<ul class="small-list" style="text-align: left;">
+  <li>A <b>query engine</b>. A warehouse is storage and engine in one product; a lakehouse is files on object storage, so a separate engine (Dremio, Trino, Spark, Databricks) must be run and tuned, and the table format (Iceberg, Delta) must be managed.</li>
+  <li><b>Skills:</b> running that engine, the table format, and the discipline to keep raw and cleaned areas apart. Otherwise it is a lake with extra steps.</li>
+  <li>Performance for many concurrent dashboard users is below a tuned warehouse.</li>
+</ul>
 
 --
 
@@ -477,6 +538,22 @@ Note:
 - Recommendation round: the "not your own" rule forces them to use the other groups' arguments. Push for non-cost arguments: team skills, share of unstructured data, how often schemas change, how many dashboard users.
 - Wrap up in 3 sentences: cheapest on paper is the lakehouse, the warehouse buys speed and governance, hybrid only when both are hard requirements. And: cost is never the only factor.
 
+--
+
+<!-- .slide: data-visibility="hidden" -->
+
+#### Reference numbers (2 years, $) <span class="badge">ANSWER</span>
+
+<table class="small-list" style="margin: 0 auto;">
+  <tr><th></th><th>acquisition</th><th>storage</th><th>transfer</th><th>queries</th><th>maintenance</th><th>total</th></tr>
+  <tr><td>Lakehouse</td><td>2,983</td><td>480</td><td>1,821</td><td>1,600</td><td>720</td><td><b>7,603</b></td></tr>
+  <tr><td>Data Lake</td><td>2,983</td><td>300</td><td>1,821</td><td>2,133</td><td>720</td><td><b>7,957</b></td></tr>
+  <tr><td>Data Warehouse</td><td>2,983</td><td>1,800</td><td>1,821</td><td>1,066</td><td>1,200</td><td><b>8,870</b></td></tr>
+  <tr><td>Hybrid Data Lake</td><td>2,983</td><td>2,100</td><td>1,821</td><td>1,066</td><td>1,680</td><td><b>9,650</b></td></tr>
+</table>
+
+<p class="smaller-text">Month = 365/12 days. Acquisition and transfer are identical for all, the ranking comes from storage, queries and maintenance. Typical deviations: month = 30 days, TB vs GB, storage billed once instead of every month on the growing volume.</p>
+
 ---
 
 ### Spot the pattern: a real company
@@ -499,6 +576,20 @@ Note:
 - Zuruf, 5 minutes. Extract and Load: dlt (dltHub) pulls from the ad platforms and tracking into raw data, Skupper connects the secured sources. Storage: MinIO filesystem, that is the lake. Transform: dbt builds the marts, Dremio is the query engine on Iceberg tables. Reporting: Superset. Orchestration: Argo on Kubernetes.
 - Architecture: a lakehouse. One storage, transformation inside, a query engine on top, no separate warehouse.
 - Ask: "Which of the four cost components from the competition would you worry about here?" Maintenance: self hosted on k8s means people, not a cloud bill.
+
+--
+
+<!-- .slide: data-visibility="hidden" -->
+
+#### lyvy: the pattern <span class="badge">ANSWER</span>
+
+<ul class="small-list" style="text-align: left;">
+  <li><b>Extract and Load:</b> dlt (dltHub) pulls ads and tracking data into raw data, Skupper connects the secured sources.</li>
+  <li><b>Storage:</b> MinIO filesystem, that is the lake. One storage for raw and transformed data.</li>
+  <li><b>Transform:</b> dbt builds the marts, Dremio is the query engine on Iceberg tables.</li>
+  <li><b>Reporting:</b> Superset. Orchestration: Argo on Kubernetes.</li>
+  <li><b>Architecture:</b> a lakehouse. Cost component to worry about: maintenance, self-hosted on k8s means people, not a cloud bill.</li>
+</ul>
 
 ---
 
