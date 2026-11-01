@@ -336,7 +336,7 @@ Note:
 
 - Presentation order: warehouse, lake, hybrid, lakehouse. The later groups may build on the earlier ones ("hybrid is both of those").
 - During the 8 minutes go to groups 3 and 4 first, they have the hardest pictures.
-- The answers are on hidden slides (ANSWER badge) under each briefing. They only exist when the deck is opened with `?showHiddenSlides=true`; the course page links the deck without it. After all four talks: correct only what was wrong, max 4 minutes, then the summary slide.
+- The answers are on hidden slides (ANSWER badge) under each briefing. They are hidden while `SHOW_SOLUTIONS` at the top of index.html is false; set it to true and commit after the lecture. After all four talks: correct only what was wrong, max 4 minutes, then the summary slide.
 - With fewer than 6 groups: warehouse and lake once each, hybrid and lakehouse once each.
 
 --

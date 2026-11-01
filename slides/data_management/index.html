@@ -8,6 +8,11 @@
     />
     <title>Data Management and Architecture</title>
 
+    <!-- Solutions: false = hide the ANSWER slides (during the lecture), true = show them (set after the lecture and commit) -->
+    <script>
+      const SHOW_SOLUTIONS = false;
+    </script>
+
     <!-- Reveal.js CSS -->
     <link rel="stylesheet" href="../reveal.js/dist/reset.css" />
     <link rel="stylesheet" href="../reveal.js/dist/reveal.css" />
@@ -43,6 +48,7 @@
     <script>
       Reveal.initialize({
         hash: true,
+        showHiddenSlides: SHOW_SOLUTIONS,
         plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
       });
 
