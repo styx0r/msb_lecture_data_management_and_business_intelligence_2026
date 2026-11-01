@@ -24,15 +24,19 @@ Pausenraster an beiden Tagen: Vormittagspause ca. 10:15 (15 min), 12:30 Mittag (
 
 ## Tag 3: Sa 2026-11-14 — Data Management + A/B-Testing + Introduction to AI
 
-Data Management kommt an den Anfang (Anschluss an Tag 2, frische Köpfe, das Kosten-Notebook ist die
-Gruppenaufgabe dazu). Die ca. 85 min dafür kommen aus: kürzeres Quiz, A/B-Warm-up in das Lab integriert,
+Data Management kommt an den Anfang (Anschluss an Tag 2, frische Köpfe) und ist komplett auf "erst machen,
+dann benennen" umgebaut: drei Doing-Blöcke, Dozent redet in 80 min ca. 15 min (Stand 2026-11-01, Deck und beide
+Notebooks umgebaut, noch nicht committet). Die ca. 80 min dafür kommen aus: kürzeres Quiz, A/B-Warm-up in das Lab integriert,
 Review Board und Pitch je 10 min kürzer, Streitgespräch kompakt, Abschluss kürzer.
 
 | Zeit | Dauer | Format | Inhalt | Material |
 |---|---|---|---|---|
 | 09:00 | 10 | **Team-Quiz** | Rückblick Tag 1+2: 8 Fragen aus dem Mock Exam (BI, Datenbanken), Gruppen antworten per Handzeichen, Punktestand an der Tafel | `exam/mock_exam.md` |
-| 09:10 | 40 | Vortrag + Zuruf | Data Management: die vier Architekturen (Warehouse, Lake, Hybrid, Lakehouse), Zuruf "Kostentreiber im reinen Warehouse?", ETL-Beispiel E-Commerce-Dashboard raw -> staging -> mart, was einen guten ETL-Prozess ausmacht, dbt (Konvention, Doku, Lineage), Pro/Contra Data Lake als Zuruf, Realtime, Cloud vs. On-Premise nur kurz | `slides/data_management` |
-| 09:50 | 40 | **Architektur-Wettbewerb (Gruppen)** | Kosten-Notebook: jede Gruppe rechnet die 2-Jahres-Kosten der vier Architekturen, trägt ihre Zahlen in eine Tabelle an der Tafel ein (Abweichungen zwischen den Gruppen sind der Diskussionsstoff). Dann gibt jede Gruppe in 1 min eine Empfehlung mit einem Nicht-Kosten-Argument (Performance, Skalierung, Data Swamp). Dozent löst in 5 min auf. Bonus-Aufgabe (Backup, Schema-Update) als Hausaufgabe | `colab/data_management_architecture.ipynb` |
+| 09:10 | 5 | Einstieg | Data Management: "Where are we?" (SVG, Warehouse-Ebene markiert, AI über alle Ebenen), Frage des Tages: zwischen Annas Bestellung und dem Dashboard, wo liegen die Daten? Agenda "heute macht ihr drei Dinge" | `slides/data_management` |
+| 09:15 | 20 | **Doing 1: ETL von Hand (Paare, Colab)** | Rohtabellen (Klicks, Bestellungen) zu Staging-Tabellen und Dashboard-Mart umbauen, 12 min Timer. Danach Lösung über die Staging/Mart-Slides, "What you just did has names" (ETL, Staging, Mart, Warehouse), guter ETL-Prozess + dbt, max. 8 min Dozent. Papier-Variante als Fallback | `colab/data_management_etl.ipynb` |
+| 09:35 | 20 | **Doing 2: Expertengruppen** | Jede Gruppe ein Architekturbild (Warehouse 2x, Lake 2x, Hybrid, Lakehouse) plus eine der grünen Fragen, 8 min Vorbereitung, je 2 min am Screen mit Finger auf dem Bild, eine Firmensituation nennen. Dozent korrigiert nur mit den versteckten Pro/Contra-Slides, max. 4 min | `slides/data_management`, vertikale Stacks |
+| 09:55 | 28 | **Doing 3: Architektur-Wettbewerb (Gruppen, Colab)** | Jede Gruppe rechnet nur die 2-Jahres-Kosten ihrer eigenen Architektur (10 min), Zahlen an die Tafel, dann je 2 min Empfehlung mit der Regel "nicht die eigene", ein Kosten- und ein Nicht-Kosten-Argument. Referenzwerte stehen in den Sprechernotizen | `colab/data_management_architecture.ipynb` |
+| 10:23 | 7 | Zuruf + Brücke | "Spot the pattern": lyvy-Architektur, wo ist E/T/L, welche der vier? Dann eine Slide "AI at every layer" als Brücke zu Intro AI und Tag 4, Takeaways. Realtime und Cloud vs. On-Premise nur als Selbststudium (Cloud ist prüfungsrelevant, Mock Exam 54/57) | |
 | 10:30 | 15 | Pause | | |
 | 10:45 | 40 | Vortrag | A/B-Testing Teil 1: ShopNow-Checkout, Korrelation vs. Kausalität, Hypothese, Metriken, Noise, p-Wert, Fehler 1./2. Art, Power (Slides "Where are we?" bis "α, β and power") | `slides/ab_testing` |
 | 11:25 | 25 | Vortrag | A/B-Testing Teil 2: Fallzahl, Faustformel, Power-Kurve, statsmodels, Randomize & Run, Peeking | `slides/ab_testing` |
@@ -52,7 +56,7 @@ Review Board und Pitch je 10 min kürzer, Streitgespräch kompakt, Abschluss kü
 (Klassifikation) durcharbeiten. Part B ist die Grundlage für den Leaderboard-Wettbewerb am Tag 4.
 Optional: Bonus-Aufgabe des Data-Management-Notebooks (Backup, Schema-Update).
 
-Dozenten-Vortrag am Tag 3: ca. 3 h 30 min. Studierende aktiv: ca. 3 h 30 min. Der Tag ist dicht,
+Dozenten-Vortrag am Tag 3: ca. 3 h 05 min. Studierende aktiv: ca. 3 h 55 min. Der Tag ist dicht,
 Reserve gibt es keine. Wenn etwas kippt: Streitgespräch 1 streichen (30 min), es gibt am Tag 4 ein zweites.
 
 ---
@@ -143,8 +147,11 @@ per Mail melden.
   4. p = 0.08 bei halber geplanter Fallzahl (unterpowered) -> nicht entscheidbar
   5. Gesamteffekt positiv, in beiden Segmenten negativ (Simpson) -> no ship, Segmentierung prüfen
   6. 20 Metriken getestet, eine signifikant (Multiple Testing) -> no ship
-- [ ] Data-Management-Deck auf 40 min kürzen: Realtime und Cloud vs. On-Premise auf je eine Slide, Pro/Contra Data Lake und "Kostentreiber" als Zuruf (grüne Slides) beibehalten
-- [ ] Tafelvorlage für den Architektur-Wettbewerb: Tabelle Gruppen x Architekturen (Kosten in 2 Jahren), Musterlösung aus `colab/data_management_architecture_solution.ipynb` griffbereit
+- [x] Data-Management-Deck umgebaut (2026-11-01): Where-are-we als SVG, Doing 1 ETL, Doing 2 Expertengruppen (Pro/Contra als versteckte vertikale Slides), Doing 3 Wettbewerb, lyvy "Spot the pattern", "AI at every layer", Takeaways; Realtime + Cloud als Anhang "self-study". Alte Fassung in Git-History
+- [x] Neues Notebook `colab/data_management_etl.ipynb` + Solution (raw -> staging -> mart in pandas, 4 Aufgaben, Lösung läuft durch), in `index.html` verlinkt
+- [x] Kosten-Notebook auf Gruppenformat umgebaut (`MY_ARCHITECTURE`, nur eigene Architektur, "nicht die eigene empfehlen", alle vier als Hausaufgabe); Lösung neu, alter Fehler in der Gesamtsumme (Query-Kosten der letzten Architektur für alle Zeilen) behoben; Speicherangabe vereinheitlicht (20 GB/Monat Wachstum, die widersprüchlichen "Year 1: 100 TB / Year 2: 150 TB" entfernt)
+- [ ] Deck und beide Notebooks einmal in Colab/Browser durchklicken, dann committen
+- [ ] Tafelvorlage für den Architektur-Wettbewerb: Tabelle Architekturen x fünf Kostenkomponenten + Summe, während der Expertenrunde anzeichnen. Referenzwerte (Solution): Lakehouse 7.603, Lake 7.957, Warehouse 8.870, Hybrid 9.650 $
 - [ ] A/B-Deck: "Your turn"-Slide auf Lab-Aufgabe 1 umlenken (Warm-up-Notebook entfällt am Tag 3, bleibt als Übung auf der Kursseite)
 - [ ] Mini-Talk-Slide im Intro-AI-Deck auf das Pitch-Format umschreiben (20 min statt 60, Abstimmung)
 - [ ] Leitfragen für beide Streitgespräche als Sprechernotizen in die Decks (Taste `s`)
