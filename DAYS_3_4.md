@@ -38,9 +38,9 @@ Review Board und Pitch je 10 min kürzer, Streitgespräch kompakt, Abschluss kü
 | 09:58 | 25 | **Doing 3: Architektur-Wettbewerb (Gruppen, Colab)** | Jede Gruppe rechnet nur die 2-Jahres-Kosten ihrer eigenen Architektur (10 min), Zahlen an die Tafel, dann je 2 min Empfehlung mit der Regel "nicht die eigene", ein Kosten- und ein Nicht-Kosten-Argument. Referenzwerte auf der versteckten ANSWER-Slide | `colab/data_management_architecture.ipynb` |
 | 10:23 | 7 | Zuruf + Brücke | "Spot the pattern": lyvy-Architektur, wo ist E/T/L, welche der vier? Dann eine Slide "AI at every layer" als Brücke zu Intro AI und Tag 4, Takeaways. Realtime und Cloud vs. On-Premise nur als Selbststudium (Cloud ist prüfungsrelevant, Mock Exam 54/57) | |
 | 10:30 | 15 | Pause | | |
-| 10:45 | 40 | Vortrag | A/B-Testing Teil 1: ShopNow-Checkout, Korrelation vs. Kausalität, Hypothese, Metriken, Noise, p-Wert, Fehler 1./2. Art, Power (Slides "Where are we?" bis "α, β and power") | `slides/ab_testing` |
-| 11:25 | 25 | Vortrag | A/B-Testing Teil 2: Fallzahl, Faustformel, Power-Kurve, statsmodels, Randomize & Run, Peeking | `slides/ab_testing` |
-| 11:50 | 15 | Vortrag | A/B-Testing Teil 3: Analyze (Proportionen), Konfidenzintervall, Decide | `slides/ab_testing` |
+| 10:45 | 40 | Vortrag + Live-Simulation | A/B-Testing Teil 1: ShopNow-Checkout, Korrelation vs. Kausalität, Hypothese, Metriken, Noise (**live**: A/A-Simulator, Studierende stellen Nutzerzahl und Lift ein), p-Wert, Fehler 1./2. Art, Power (**live**: α/β/Power-Bild) | `slides/ab_testing` |
+| 11:25 | 25 | Vortrag + Live-Simulation | A/B-Testing Teil 2: Fallzahl, Faustformel, Power-Kurve (**live**: Planer mit Baseline, MDE, Traffic, "days you have"), statsmodels, Randomize & Run, Peeking (**live**: p-Wert-Pfade, Peeking vs. einmal entscheiden) | `slides/ab_testing` |
+| 11:50 | 15 | Vortrag + Live-Simulation | A/B-Testing Teil 3: Analyze (Proportionen), Konfidenzintervall (**live**: 20 Experimente, Coverage), Decide. Multiple Testing (**live**: Dashboard mit k Metriken, Bonferroni) kommt bei den Pitfalls | `slides/ab_testing` |
 | 12:05 | 25 | **Lab Teil 1 (Paare)** | ShopNow checkout experiment: Fallzahl planen, Experiment simulieren. Das Warm-up-Notebook entfällt, die "Your turn"-Slide verweist stattdessen auf Aufgabe 1 des Labs | `colab/ab_testing.ipynb` |
 | 12:30 | 60 | Mittag | | |
 | 13:30 | 30 | **Lab Teil 2 (Paare)** | Peeken, auswerten, entscheiden. Zwei Paare zeigen ihr Ergebnis (je 2 min) | `colab/ab_testing.ipynb` |

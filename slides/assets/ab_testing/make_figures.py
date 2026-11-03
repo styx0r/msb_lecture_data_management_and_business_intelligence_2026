@@ -3,6 +3,10 @@
 Run from the repo root:  python3 slides/assets/ab_testing/make_figures.py
 All data is simulated (schematic), figures are written next to this script as SVG
 with a transparent background so they fit the dark reveal.js theme.
+
+Since 2026-11 the deck shows aa_noise, errors_power, power_curve, peeking, ci and
+multiple_testing as live simulations (slides/ab_testing/sim.js); the SVGs are kept as
+static fallback, e.g. for handouts.
 """
 
 from pathlib import Path

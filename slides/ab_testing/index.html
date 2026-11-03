@@ -208,6 +208,45 @@
         margin: 0.4em auto;
         display: inline-block;
       }
+      /* ---------- interactive simulations (sim.js) ---------- */
+      .reveal .ctrl {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.3em 1.3em;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.42em;
+        color: #ddd;
+        margin: 0.1em 0 0.3em;
+      }
+      .reveal .ctrl label { display: flex; align-items: center; gap: 0.5em; white-space: nowrap; }
+      .reveal .ctrl input[type="range"] { width: 130px; accent-color: var(--accent); margin: 0; }
+      .reveal .ctrl input[type="checkbox"] { accent-color: var(--accent); width: 1em; height: 1em; margin: 0; }
+      .reveal .ctrl select {
+        font: inherit;
+        background: #222;
+        color: #ddd;
+        border: 1px solid var(--card-border);
+        border-radius: 6px;
+        padding: 0.05em 0.3em;
+      }
+      .reveal .ctrl .val { color: var(--accent); font-family: monospace; min-width: 4.5em; display: inline-block; text-align: right; }
+      .reveal .btn {
+        font: inherit;
+        background: var(--card);
+        color: #ddd;
+        border: 1px solid var(--card-border);
+        border-radius: 8px;
+        padding: 0.15em 0.7em;
+        cursor: pointer;
+      }
+      .reveal .btn:hover { border-color: var(--accent); color: var(--accent); }
+      .reveal .btn.primary { background: var(--accent); color: #111; border-color: var(--accent); font-weight: 700; }
+      .reveal .btn.primary:hover { background: #ffb74d; color: #111; }
+      .reveal canvas.sim { width: 900px; max-width: 100%; height: auto; display: block; margin: 0 auto; }
+      .reveal .simout { font-size: 0.42em; color: #ddd; text-align: center; margin-top: 0.3em; min-height: 2.6em; line-height: 1.35; }
+      .reveal .simout b { color: var(--accent); font-weight: 600; }
+
       .reveal .stamp {
         display: inline-block;
         transform: rotate(-6deg);
@@ -483,20 +522,24 @@
         <!-- ======================= NOISE ======================= -->
         <section>
           <section>
-            <h3>The enemy: noise</h3>
-            <p class="lead">
-              Same page in both groups (an <span class="accent">A/A test</span>),
-              5,000 users each. What differences do we see?
+            <h3>The enemy: noise <span class="muted" style="font-size: 0.6em">(live)</span></h3>
+            <p class="lead" style="margin: 0 0 0.2em; font-size: 0.65em">
+              Same checkout in both groups (an <span class="accent">A/A test</span>). What lift do we see anyway?
             </p>
-            <img class="fig small" src="../assets/ab_testing/aa_noise.svg" alt="A/A test noise" />
-            <div class="takeaway fragment">
-              Nothing was changed, and still: differences of ±0.5 pp are normal,
-              ±1 pp happens. <span class="accent">So is +0.9 pp for the new checkout real?</span>
+            <div class="ctrl">
+              <label>users per group <input type="range" id="noise-n" value="3" /> <span class="val" id="noise-n-v"></span></label>
+              <label>true lift of B <input type="range" id="noise-d" min="-1" max="3" step="0.25" value="0" /> <span class="val" id="noise-d-v"></span></label>
+              <span>run <button class="btn primary" id="noise-run1">1 experiment</button> <button class="btn" id="noise-run100">+100</button> <button class="btn" id="noise-run1000">+1000</button> <button class="btn" id="noise-reset">reset</button></span>
             </div>
+            <canvas id="noise-canvas" class="sim" width="1800" height="680"></canvas>
+            <div class="simout" id="noise-stats"></div>
             <aside class="notes">
-              Key intuition for the whole lecture. Every observed difference is
-              effect + noise. Statistics quantifies how big noise alone can be.
-              More users: narrower histogram.
+              Key intuition for the whole lecture, so take 5 minutes here.
+              Script: lift 0, 5,000 users. Click "1 experiment" a few times: every run shows a different lift,
+              nothing was changed. Then +1000: the histogram. Ask: how often more than 1 pp? Then: so is +0.9 pp for the
+              new checkout real? Orange bars are p below 0.05, about 5% of them: that is alpha, before we even define it.
+              Now users to 50,000: histogram narrows. Then lift to +1 pp: the orange share is the power.
+              Every observed difference is effect + noise. Statistics quantifies how big noise alone can be.
             </aside>
           </section>
 
@@ -614,15 +657,23 @@
           </section>
 
           <section>
-            <h3>α, β and power in one picture</h3>
-            <img class="fig" src="../assets/ab_testing/errors_power.svg" alt="type I and II errors and power" />
-            <div class="takeaway">
+            <h3>α, β and power in one picture <span class="muted" style="font-size: 0.6em">(live)</span></h3>
+            <div class="ctrl">
+              <label>users per group <input type="range" id="err-n" value="3" /> <span class="val" id="err-n-v"></span></label>
+              <label>true lift of B <input type="range" id="err-d" min="0" max="3" step="0.1" value="1" /> <span class="val" id="err-d-v"></span></label>
+              <label>α <select id="err-a"><option value="0.01">1%</option><option value="0.05" selected>5%</option><option value="0.1">10%</option></select></label>
+            </div>
+            <canvas id="err-canvas" class="sim" width="1800" height="700"></canvas>
+            <div class="simout" id="err-stats"></div>
+            <div class="takeaway" style="margin-top: 0.2em; font-size: 0.55em">
               The only ways to shrink <em>both</em> errors: more users (curves get narrower)
               or a bigger true effect (curves move apart).
             </div>
             <aside class="notes">
-              Moving the threshold left: more power but more false alarms. Moving
-              right: the opposite. This trade-off is why sample size matters.
+              Blue: what we would see if B did nothing. Green: what we see if B really adds the lift.
+              Let a student drive: alpha to 10%: threshold moves left, more power, more false alarms.
+              Alpha to 1%: the opposite. Users up: both curves narrow, beta shrinks. Lift up: curves move apart.
+              This trade-off is why sample size matters, next section.
             </aside>
           </section>
         </section>
@@ -695,11 +746,23 @@
           </section>
 
           <section>
-            <h3>Power curve: the same thing as a picture</h3>
-            <img class="fig" src="../assets/ab_testing/power_curve.svg" alt="power curve" />
-            <div class="takeaway">
-              Pick your MDE, go right until you hit 80%, read off the users per group. That is the whole planning step.
+            <h3>Power curve: plan it live</h3>
+            <div class="ctrl">
+              <label>baseline <input type="range" id="plan-p" min="1" max="30" step="0.5" value="5" /> <span class="val" id="plan-p-v"></span></label>
+              <label>MDE <input type="range" id="plan-mde" min="0.1" max="3" step="0.05" value="0.5" /> <span class="val" id="plan-mde-v"></span></label>
+              <label>visitors / day <input type="range" id="plan-v" value="2" /> <span class="val" id="plan-v-v"></span></label>
+              <label>days you have <input type="range" id="plan-days" min="1" max="60" step="1" value="7" /> <span class="val" id="plan-days-v"></span></label>
+              <label>power <select id="plan-pow"><option value="0.8" selected>80%</option><option value="0.9">90%</option></select></label>
             </div>
+            <canvas id="plan-canvas" class="sim" width="1800" height="640"></canvas>
+            <div class="simout" id="plan-stats"></div>
+            <aside class="notes">
+              Pick your MDE, go right until you hit 80%, read off the users per group. That is the whole planning step.
+              Then the negotiation: marketing wants an answer in 7 days. Move "days you have" and watch the blue line:
+              the smallest detectable lift grows. Halve the MDE: the orange line moves four times to the right.
+              This slide also solves tasks 1 and 2 of "Your turn" (baseline 2%, MDE +0.4 pp, 3,000 visitors/day),
+              let them verify their notebook numbers here.
+            </aside>
           </section>
 
           <section>
@@ -760,16 +823,23 @@ print(f"{n_per_group:,.0f} users per group")
 
           <section>
             <h3>Peeking: the most common mistake</h3>
-            <img class="fig" src="../assets/ab_testing/peeking.svg" alt="peeking at the p-value every day" />
-            <div class="takeaway">
+            <div class="ctrl">
+              <label>days <input type="range" id="peek-days" min="7" max="60" step="1" value="30" /> <span class="val" id="peek-days-v"></span></label>
+              <label>users / group / day <input type="range" id="peek-v" value="2" /> <span class="val" id="peek-v-v"></span></label>
+              <label>true lift of B <input type="range" id="peek-d" min="0" max="1" step="0.1" value="0" /> <span class="val" id="peek-d-v"></span></label>
+              <span>run <button class="btn primary" id="peek-run1">1 test</button> <button class="btn" id="peek-run100">+100</button> <button class="btn" id="peek-reset">reset</button></span>
+            </div>
+            <canvas id="peek-canvas" class="sim" width="1800" height="660"></canvas>
+            <div class="simout" id="peek-stats"></div>
+            <div class="takeaway" style="margin-top: 0.2em; font-size: 0.55em">
               Looking every day and stopping at the first p &lt; 0.05 turns the promised 5% false alarm rate
               into about <span class="red">25-30%</span>. The p-value is only valid for the sample size you planned.
             </div>
             <aside class="notes">
-              Left: the p-value random-walks. Right: the share of A/A tests that
-              hit p < 0.05 at least once keeps growing. Looking at the dashboard is
-              fine; deciding based on it is not. If you want to peek by design,
-              use sequential testing (outlook).
+              Lift 0, so there is nothing to find. Click "1 test" a few times: the p-value random-walks, some paths dip
+              below 0.05 and come back. Then +100 twice: right bars. Deciding once at the end gives the promised 5%,
+              stopping at the first dip gives 25-30%. More days: it gets worse, not better.
+              Looking at the dashboard is fine; deciding based on it is not. Peeking by design: sequential testing (outlook).
             </aside>
           </section>
         </section>
@@ -808,8 +878,14 @@ lo, hi = confint_proportions_2indep(
 
           <section>
             <h3>Confidence intervals: the honest summary</h3>
-            <img class="fig small" src="../assets/ab_testing/ci.svg" alt="confidence intervals of repeated experiments" />
-            <div class="takeaway">
+            <div class="ctrl">
+              <label>users per group <input type="range" id="ci-n" value="5" /> <span class="val" id="ci-n-v"></span></label>
+              <label>true lift of B <input type="range" id="ci-d" min="-1" max="3" step="0.1" value="0.8" /> <span class="val" id="ci-d-v"></span></label>
+              <button class="btn primary" id="ci-run">20 new experiments</button>
+            </div>
+            <canvas id="ci-canvas" class="sim" width="1800" height="640"></canvas>
+            <div class="simout" id="ci-stats"></div>
+            <div class="takeaway" style="margin-top: 0.2em; font-size: 0.55em">
               A 95% CI is the range of effects that are compatible with the data. Over many experiments,
               19 out of 20 of these intervals contain the true effect. If it excludes 0, p &lt; 0.05.
             </div>
@@ -922,13 +998,24 @@ lo, hi = confint_proportions_2indep(
           </section>
 
           <section>
-            <h3>Multiple testing</h3>
-            <img class="fig small" src="../assets/ab_testing/multiple_testing.svg" alt="multiple testing" />
-            <div class="takeaway">
+            <h3>Multiple testing <span class="muted" style="font-size: 0.6em">(live)</span></h3>
+            <div class="ctrl">
+              <label>metrics tested <input type="range" id="multi-k" min="1" max="50" step="1" value="20" /> <span class="val" id="multi-k-v"></span></label>
+              <label>α per metric <select id="multi-a"><option value="0.01">1%</option><option value="0.05" selected>5%</option><option value="0.1">10%</option></select></label>
+              <label><input type="checkbox" id="multi-bonf" /> Bonferroni (α / metrics)</label>
+              <button class="btn primary" id="multi-run">new dashboard</button>
+            </div>
+            <canvas id="multi-canvas" class="sim" width="1800" height="620"></canvas>
+            <div class="simout" id="multi-stats"></div>
+            <div class="takeaway" style="margin-top: 0.2em; font-size: 0.55em">
               Test 20 metrics at α = 5% and you have a 64% chance of at least one false win.
               Fix: one primary metric decided upfront. Everything else is exploration, not evidence.
-              (Bonferroni: divide α by the number of tests, if you must.)
             </div>
+            <aside class="notes">
+              Nothing works in this dashboard, every metric is pure noise. Slide the metric count up and watch
+              tiles light up. "New dashboard" rolls again: a different metric wins every time, that is the point.
+              Tick Bonferroni: the lights go out, and so does most of your power. Better: one primary metric.
+            </aside>
           </section>
 
           <section>
@@ -1084,6 +1171,7 @@ GROUP BY a.variant;
     <script src="../reveal.js/plugin/highlight/highlight.js"></script>
     <script src="../reveal.js/plugin/math/math.js"></script>
     <script src="../utils.js"></script>
+    <script src="sim.js"></script>
 
     <script>
       Reveal.initialize({
