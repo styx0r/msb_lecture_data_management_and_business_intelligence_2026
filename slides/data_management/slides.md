@@ -550,10 +550,10 @@ Note:
   <div>
     <b style="color: lightgreen;">Your 2 minutes, finger on the picture</b>
     <ol style="margin: 0.2em 0 0 1.2em;">
-      <li><b>Read the picture</b> with the legend: how many storages, raw or cleaned, where is the gear? (30 s)</li>
-      <li><b>Answer your question.</b> (45 s)</li>
-      <li><b>From that answer:</b> one strength and one weakness of your architecture. (30 s)</li>
-      <li><b>One company</b> where you would pick it. (15 s)</li>
+      <li><b>Read the picture</b> with the legend: how many storages, raw or cleaned, where is the gear?</li>
+      <li><b>Answer your question.</b></li>
+      <li><b>From that answer:</b> one strength and one weakness of your architecture.</li>
+      <li><b>One company</b> where you would pick it.</li>
     </ol>
   </div>
   <div>
