@@ -536,9 +536,9 @@ Note:
 
 <div class="task">
 
-One architecture per group: a <b>briefing</b> (picture plus facts, down arrow under your architecture) and <b>one question</b> the briefing does not answer. 8 min preparation, then 2 min per architecture at the screen, <b>finger on the picture</b>. The two harder architectures have two groups: the second group only adds what the first one missed (1 min).
+<p style="font-size: 0.85em; margin: 0;">One architecture per group: a <b>briefing</b> (picture plus facts, down arrow under your architecture) and <b>one question</b> the briefing does not answer. 8 min preparation, then 2 min at the screen. Groups 5 and 6 only add what 3 and 4 missed (1 min).</p>
 
-<table class="small-list" style="margin: 0.5em auto;">
+<table class="small-list" style="margin: 0.3em auto; font-size: 0.55em;">
   <tr><th>Group</th><th>Architecture</th><th>Your question</th></tr>
   <tr><td>1</td><td>Data Warehouse</td><td>After a year ShopNow changes the definition of "bounce". What has to happen in your architecture, and what does it cost?</td></tr>
   <tr><td>2</td><td>Data Lake</td><td>Three years in, nobody knows what the 400 folders contain. What went wrong, and why is every query more expensive than in the warehouse?</td></tr>
@@ -546,12 +546,27 @@ One architecture per group: a <b>briefing</b> (picture plus facts, down arrow un
   <tr><td>4 and 6</td><td>Lakehouse</td><td>What does the lakehouse need that the warehouse already includes, and which skill does your team need for it?</td></tr>
 </table>
 
-Also name <b>one company situation</b> where you would pick your architecture.
+<div class="two-col" style="font-size: 0.55em; gap: 1.5rem; margin-top: 0.3em;">
+  <div>
+    <b style="color: lightgreen;">Your 2 minutes, finger on the picture</b>
+    <ol style="margin: 0.2em 0 0 1.2em;">
+      <li><b>Read the picture</b> with the legend: how many storages, raw or cleaned, where is the gear? (30 s)</li>
+      <li><b>Answer your question.</b> (45 s)</li>
+      <li><b>From that answer:</b> one strength and one weakness of your architecture. (30 s)</li>
+      <li><b>One company</b> where you would pick it. (15 s)</li>
+    </ol>
+  </div>
+  <div>
+    <b style="color: lightgreen;">Everyone else, while listening</b>
+    <p style="margin: 0.2em 0 0 0;">Write down one strength and one weakness per architecture. You need them in 20 minutes: in the cost competition you must recommend an architecture that is <b>not your own</b>.</p>
+  </div>
+</div>
 
 </div>
 
 Note:
 
+- How a talk runs: step 1 is the legend applied to their picture, that is where you see whether they understood it. Step 2 is the transfer question. Step 3 forces them to derive pro and con from their own answer instead of reading the briefing. Step 4 anchors it. Interrupt only if step 1 is wrong (wrong number of storages, gear in the wrong place), everything else you correct at the end.
 - Presentation order: warehouse (1), lake (2), hybrid (3, then 5 adds), lakehouse (4, then 6 adds). The later groups may build on the earlier ones ("hybrid is both of those"). Second groups add only, no repetition: 4 x 2 min + 2 x 1 min = 10 min.
 - Hybrid and lakehouse are doubled on purpose: the pictures are the hardest, two groups means one of them usually gets it, and the students hear the hard ones twice. The warehouse they built themselves this morning.
 - During the 8 minutes go to groups 3 to 6 first, they have the hardest pictures.
