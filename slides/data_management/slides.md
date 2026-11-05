@@ -49,6 +49,40 @@
 .task li {
     margin-bottom: 0.4em;
 }
+.tname {
+    color: orange;
+    font-size: 0.6em;
+    text-align: left;
+    margin: 0.3em 0 0 0;
+}
+table.tbl {
+    font-size: 0.45em;
+    margin: 0 0 0.3em 0;
+    white-space: nowrap;
+}
+table.tbl th, table.tbl td {
+    padding: 0.15em 0.7em;
+}
+table.tbl th {
+    color: #f0b03f;
+}
+.reveal pre {
+    width: 100%;
+    font-size: 0.36em;
+    box-shadow: none;
+    margin: 0.3em auto;
+}
+.reveal pre code {
+    max-height: 560px;
+    padding: 0.5em 0.8em;
+    line-height: 1.25;
+}
+.steps {
+    font-size: 0.45em;
+    text-align: left;
+    color: #bbb;
+    margin: 0.2em 0 0 0;
+}
 </style>
 
 ### Where are we?
@@ -121,59 +155,84 @@ Note:
 
 #### Raw tables (messy)
 
-<div class="two-col">
-  <div>
-    <div style="color: orange;">raw_web_events</div>
-    <table class="small-list">
-      <tr><th>event_time</th><th>session_id</th><th>user_id</th><th>event</th><th>utm_source</th></tr>
-      <tr><td>2024/10/01 12:01</td><td>s-11</td><td>u-7</td><td>page_view</td><td>paid</td></tr>
-      <tr><td>2024/10/01 12:02</td><td>s-11</td><td>u-7</td><td>add_to_cart</td><td>paid</td></tr>
-      <tr><td>2024/10/01 12:03</td><td>s-12</td><td>u-9</td><td>page_view</td><td>organic</td></tr>
-    </table>
-  </div>
-  <div>
-    <div style="color: orange;">raw_orders</div>
-    <table class="small-list">
-      <tr><th>order_time</th><th>order_id</th><th>session_id</th><th>total_cents</th><th>currency</th></tr>
-      <tr><td>2024-10-01T12:05Z</td><td>O-1001</td><td>s-11</td><td>12990</td><td>USD</td></tr>
-      <tr><td>2024-10-01T12:10Z</td><td>O-1002</td><td>s-12</td><td>4990</td><td>EUR</td></tr>
-    </table>
-  </div>
-</div>
+<div class="tname">raw_web_events (one row per click)</div>
+<table class="tbl">
+  <tr><th>event_time</th><th>session_id</th><th>user_id</th><th>event</th><th>utm_source</th></tr>
+  <tr><td>2024/10/01 17:26</td><td>s-100</td><td>u-4</td><td>page_view</td><td>email</td></tr>
+  <tr><td>2024/10/01 17:29</td><td>s-100</td><td>u-4</td><td>page_view</td><td>email</td></tr>
+  <tr><td>2024/10/01 17:30</td><td>s-100</td><td>u-4</td><td>add_to_cart</td><td>email</td></tr>
+  <tr><td>2024/10/01 18:47</td><td>s-101</td><td>u-29</td><td>page_view</td><td>email</td></tr>
+</table>
 
-<div style="margin-top: 0.6rem; font-size: 0.85em;">
+<div class="tname">raw_orders (one row per order)</div>
+<table class="tbl">
+  <tr><th>order_time</th><th>order_id</th><th>user_id</th><th>session_id</th><th>total_cents</th><th>currency</th></tr>
+  <tr><td>2024-10-01T18:54Z</td><td>O-1001</td><td>u-29</td><td>s-101</td><td>23278</td><td>EUR</td></tr>
+  <tr><td>2024-10-01T17:54Z</td><td>O-1002</td><td>u-18</td><td>s-104</td><td>10116</td><td>EUR</td></tr>
+  <tr><td>2024-10-01T12:59Z</td><td>O-1003</td><td>u-38</td><td>s-105</td><td>4553</td><td>USD</td></tr>
+</table>
+
+<div style="margin-top: 0.4rem; font-size: 0.8em;">
   <span style="color: lightgreen;">What is messy here?</span>
 </div>
 
 Note:
 
-- Collect three answers from the plenum before showing the next slide: two time formats (and both are text), several rows per session, cents in two currencies.
+- Collect three answers from the plenum before showing the answer slide: two time formats (and both are text), several rows per session, cents in two currencies.
 - Fourth one nobody names: nothing here says what a "session" or a "bounce" is. Business definitions live in the transform step.
+
+--
+
+<!-- .slide: data-visibility="hidden" -->
+
+#### Task 1: what is messy <span class="badge">ANSWER</span>
+
+<ul class="smaller-list" style="text-align: left;">
+  <li><b>Two time formats, both text.</b> <code>2024/10/01 17:26</code> vs. <code>2024-10-01T18:54Z</code>. <code>raw_web_events.dtypes</code> says <code>object</code> (or <code>str</code>) for every column: nothing is a date yet, you cannot group by day.</li>
+  <li><b>Wrong grain.</b> One row per click, but the dashboard counts sessions. Session s-100 appears three times.</li>
+  <li><b>Money in cents and in two currencies.</b> Summing <code>total_cents</code> adds dollars to euros.</li>
+  <li><b>Missing definitions (nobody names this one).</b> Nothing in the data says what a "session", a "bounce" or a "conversion" is. These are business rules, and they live in the transform step.</li>
+</ul>
+
+--
+
+#### How to approach it (any ETL task)
+
+<ol class="smaller-list" style="text-align: left; margin: 0 auto;">
+  <li><b>Look before you code.</b> <code>.head()</code>, <code>.dtypes</code>. Everything <code>object</code>? Then nothing is a date or a number yet.</li>
+  <li><b>Decide the grain.</b> One row per what? Raw: click. Staging: session, order. Mart: day and source.</li>
+  <li><b>Fix types first.</b> <code>pd.to_datetime(..., format=...)</code>, cents to euros, one currency.</li>
+  <li><b>One row per business object.</b> Helper column per row, then <code>groupby().agg()</code> with named columns.</li>
+  <li><b>Join, then aggregate.</b> <code>merge(how="left")</code>, <code>fillna(0)</code>, then groupby to the mart grain.</li>
+  <li><b>Check.</b> Row counts (90 sessions? 26 orders?), no nulls in keys, revenue sum still matches the source?</li>
+</ol>
+
+Note:
+
+- This is the method slide, show it before the solution. Every step maps to a cell in the solution notebook.
+- Step 1 is the one students skip: they start typing before they know that event_time is text. Make them run .dtypes.
 
 --
 
 #### Staging tables (cleaned, reusable)
 
-<div class="two-col">
-  <div>
-    <div style="color: orange;">stg_sessions</div>
-    <table class="small-list">
-      <tr><th>session_id</th><th>date</th><th>utm_source</th><th>events</th><th>add_to_cart</th><th>bounce</th></tr>
-      <tr><td>s-11</td><td>2024-10-01</td><td>paid</td><td>5</td><td>1</td><td>0</td></tr>
-      <tr><td>s-12</td><td>2024-10-01</td><td>organic</td><td>1</td><td>0</td><td>1</td></tr>
-    </table>
-  </div>
-  <div>
-    <div style="color: orange;">stg_orders</div>
-    <table class="small-list">
-      <tr><th>order_id</th><th>date</th><th>session_id</th><th>revenue_eur</th></tr>
-      <tr><td>O-1001</td><td>2024-10-01</td><td>s-11</td><td>118.21</td></tr>
-      <tr><td>O-1002</td><td>2024-10-01</td><td>s-12</td><td>49.90</td></tr>
-    </table>
-  </div>
-</div>
+<div class="tname">stg_sessions (one row per session)</div>
+<table class="tbl">
+  <tr><th>session_id</th><th>date</th><th>utm_source</th><th>events</th><th>add_to_cart</th><th>bounce</th></tr>
+  <tr><td>s-100</td><td>2024-10-01</td><td>email</td><td>3</td><td>1</td><td>0</td></tr>
+  <tr><td>s-101</td><td>2024-10-01</td><td>email</td><td>4</td><td>1</td><td>0</td></tr>
+  <tr><td>s-102</td><td>2024-10-01</td><td>organic</td><td>1</td><td>0</td><td>1</td></tr>
+</table>
 
-<div style="margin-top: 0.6rem; font-size: 0.85em;">
+<div class="tname">stg_orders (one row per order, EUR)</div>
+<table class="tbl">
+  <tr><th>order_id</th><th>date</th><th>session_id</th><th>revenue_eur</th></tr>
+  <tr><td>O-1001</td><td>2024-10-01</td><td>s-101</td><td>232.78</td></tr>
+  <tr><td>O-1002</td><td>2024-10-01</td><td>s-104</td><td>101.16</td></tr>
+  <tr><td>O-1003</td><td>2024-10-01</td><td>s-105</td><td>41.43</td></tr>
+</table>
+
+<div style="margin-top: 0.3rem; font-size: 0.6em;">
   One row per business object, real types, one currency. Reusable for many dashboards (marketing, finance, product).
 </div>
 
@@ -183,18 +242,110 @@ Note:
 
 --
 
+<!-- .slide: data-visibility="hidden" -->
+
+#### Task 2a: stg_sessions, step by step <span class="badge">ANSWER</span>
+
+```python [1-2|4-5|7-8|10-16|18-19]
+raw_web_events.dtypes            # every column: object / str
+events = raw_web_events.copy()   # -> event_time is text, not a date
+
+# 1. fix the type, then extract the day
+events["date"] = pd.to_datetime(events["event_time"], format="%Y/%m/%d %H:%M").dt.date
+
+# 2. helper column, computed per row, before the groupby
+events["is_add_to_cart"] = events["event"] == "add_to_cart"
+
+# 3. one row per session: groupby + named aggregations
+stg_sessions = events.groupby("session_id").agg(
+    date=("date", "min"),
+    utm_source=("utm_source", "first"),
+    events=("event", "count"),
+    add_to_cart=("is_add_to_cart", "max"),
+).reset_index()
+
+# 4. business rule "bounce": exactly one event
+stg_sessions["bounce"] = (stg_sessions["events"] == 1).astype(int)
+```
+
+<p class="steps">Check: 90 rows (45 sessions × 2 days), 27 bounces. <code>add_to_cart</code> is still bool, <code>.astype(int)</code> makes it 0/1.</p>
+
+--
+
+<!-- .slide: data-visibility="hidden" -->
+
+#### Task 2b: stg_orders, step by step <span class="badge">ANSWER</span>
+
+```python [1|3-4|6-9|11-12]
+raw_orders.dtypes                # order_time: object, total_cents: int64, currency: object
+
+# 1. ISO format: pd.to_datetime understands it without a format string
+orders["date"] = pd.to_datetime(orders["order_time"]).dt.date
+
+# 2. cents -> euros, one currency (the rate comes from finance, not from the code)
+amount = orders["total_cents"] / 100
+orders["revenue_eur"] = np.where(orders["currency"] == "USD",
+                                 amount * EUR_PER_USD, amount).round(2)
+
+# 3. keep only what the staging table promises
+stg_orders = orders[["order_id", "date", "session_id", "revenue_eur"]]
+```
+
+<p class="steps">Check: 26 rows, 3,633.41 EUR in total. Note the silent failure: a third currency (CHF) would be treated like EUR. That is reflection question 1.</p>
+
+--
+
 #### Mart table (dashboard-specific)
 
-<div style="color: orange;">mart_daily_funnel</div>
-<table class="small-list">
+<div class="tname">mart_daily_funnel (one row per day and traffic source)</div>
+<table class="tbl">
   <tr><th>date</th><th>utm_source</th><th>sessions</th><th>bounces</th><th>add_to_cart</th><th>orders</th><th>revenue_eur</th><th>conversion</th></tr>
-  <tr><td>2024-10-01</td><td>paid</td><td>120</td><td>18</td><td>45</td><td>20</td><td>2,310.40</td><td>16.7%</td></tr>
-  <tr><td>2024-10-01</td><td>organic</td><td>180</td><td>40</td><td>30</td><td>15</td><td>1,480.90</td><td>8.3%</td></tr>
+  <tr><td>2024-10-01</td><td>email</td><td>13</td><td>4</td><td>7</td><td>5</td><td>900.65</td><td>38.5</td></tr>
+  <tr><td>2024-10-01</td><td>organic</td><td>18</td><td>7</td><td>9</td><td>8</td><td>1143.48</td><td>44.4</td></tr>
+  <tr><td>2024-10-01</td><td>paid</td><td>14</td><td>1</td><td>9</td><td>3</td><td>390.82</td><td>21.4</td></tr>
+  <tr><td>2024-10-02</td><td>email</td><td>18</td><td>9</td><td>5</td><td>2</td><td>203.97</td><td>11.1</td></tr>
+  <tr><td>2024-10-02</td><td>organic</td><td>12</td><td>2</td><td>9</td><td>6</td><td>828.55</td><td>50.0</td></tr>
+  <tr><td>2024-10-02</td><td>paid</td><td>15</td><td>4</td><td>6</td><td>2</td><td>165.94</td><td>13.3</td></tr>
 </table>
 
-<div style="margin-top: 0.6rem; font-size: 0.85em;">
-  Built exactly for the dashboard charts. The chart code is one line.
+<div style="margin-top: 0.3rem; font-size: 0.6em;">
+  Built exactly for the dashboard charts. The chart code is one line:<br/><code style="font-size: 0.75em;">mart.pivot(index="date", columns="utm_source", values="conversion").plot.bar()</code>
 </div>
+
+Note:
+
+- Six rows, that is the whole dashboard. Ask: "How many rows did we start with?" 259 events and 26 orders. ETL is compression into exactly the shape one question needs.
+
+--
+
+<!-- .slide: data-visibility="hidden" -->
+
+#### Task 3: mart_daily_funnel, step by step <span class="badge">ANSWER</span>
+
+```python [1-4|6-9|11-17|19-21]
+# 1. bring orders to the grain of sessions: one row per session
+orders_per_session = stg_orders.groupby("session_id").agg(
+    orders=("order_id", "count"), revenue_eur=("revenue_eur", "sum")
+)
+
+# 2. left join: sessions without an order must survive (with 0, not NaN)
+sessions = stg_sessions.merge(orders_per_session, on="session_id", how="left")
+sessions = sessions.fillna({"orders": 0, "revenue_eur": 0})
+sessions["orders"] = sessions["orders"].astype(int)
+
+# 3. aggregate to the grain of the dashboard: day x traffic source
+mart_daily_funnel = sessions.groupby(["date", "utm_source"]).agg(
+    sessions=("session_id", "count"), bounces=("bounce", "sum"),
+    add_to_cart=("add_to_cart", "sum"), orders=("orders", "sum"),
+    revenue_eur=("revenue_eur", "sum"),
+).reset_index()
+
+# 4. derived KPI, computed last, from the aggregated columns
+mart_daily_funnel["conversion"] = (
+    100 * mart_daily_funnel["orders"] / mart_daily_funnel["sessions"]).round(1)
+```
+
+<p class="steps">Check: 6 rows, sessions sum to 90, orders to 26, revenue to 3,633.41. Common mistake: <code>how="inner"</code> drops the 64 sessions without an order and the conversion rate becomes 100%.</p>
 
 --
 
