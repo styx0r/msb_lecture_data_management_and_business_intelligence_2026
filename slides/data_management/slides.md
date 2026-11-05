@@ -536,30 +536,31 @@ Note:
 
 <div class="task">
 
-One architecture per group: a <b>briefing</b> (picture plus facts, down arrow under your architecture) and <b>one question</b> the briefing does not answer. 8 min preparation, then 2 min per group at the screen, <b>finger on the picture</b>.
+One architecture per group: a <b>briefing</b> (picture plus facts, down arrow under your architecture) and <b>one question</b> the briefing does not answer. 8 min preparation, then 2 min per architecture at the screen, <b>finger on the picture</b>. The two harder architectures have two groups: the second group only adds what the first one missed (1 min).
 
 <table class="small-list" style="margin: 0.5em auto;">
   <tr><th>Group</th><th>Architecture</th><th>Your question</th></tr>
-  <tr><td>1 and 5</td><td>Data Warehouse</td><td>After a year ShopNow changes the definition of "bounce". What has to happen in your architecture, and what does it cost?</td></tr>
-  <tr><td>2 and 6</td><td>Data Lake</td><td>Three years in, nobody knows what the 400 folders contain. What went wrong, and why is every query more expensive than in the warehouse?</td></tr>
-  <tr><td>3</td><td>Hybrid Data Lake</td><td>You store everything twice. Name one company where that is still right and one where it is waste. What decides?</td></tr>
-  <tr><td>4</td><td>Lakehouse</td><td>What does the lakehouse need that the warehouse already includes, and which skill does your team need for it?</td></tr>
+  <tr><td>1</td><td>Data Warehouse</td><td>After a year ShopNow changes the definition of "bounce". What has to happen in your architecture, and what does it cost?</td></tr>
+  <tr><td>2</td><td>Data Lake</td><td>Three years in, nobody knows what the 400 folders contain. What went wrong, and why is every query more expensive than in the warehouse?</td></tr>
+  <tr><td>3 and 5</td><td>Hybrid Data Lake</td><td>You store everything twice. Name one company where that is still right and one where it is waste. What decides?</td></tr>
+  <tr><td>4 and 6</td><td>Lakehouse</td><td>What does the lakehouse need that the warehouse already includes, and which skill does your team need for it?</td></tr>
 </table>
 
-Also name <b>one company situation</b> where you would pick your architecture. Asking an LLM is allowed, reading its answer from the phone is not.
+Also name <b>one company situation</b> where you would pick your architecture.
 
 </div>
 
 Note:
 
-- Presentation order: warehouse, lake, hybrid, lakehouse. The later groups may build on the earlier ones ("hybrid is both of those").
-- During the 8 minutes go to groups 3 and 4 first, they have the hardest pictures.
+- Presentation order: warehouse (1), lake (2), hybrid (3, then 5 adds), lakehouse (4, then 6 adds). The later groups may build on the earlier ones ("hybrid is both of those"). Second groups add only, no repetition: 4 x 2 min + 2 x 1 min = 10 min.
+- Hybrid and lakehouse are doubled on purpose: the pictures are the hardest, two groups means one of them usually gets it, and the students hear the hard ones twice. The warehouse they built themselves this morning.
+- During the 8 minutes go to groups 3 to 6 first, they have the hardest pictures.
 - The answers are on hidden slides (ANSWER badge) under each briefing. They are hidden while `SHOW_SOLUTIONS` at the top of index.html is false; set it to true and commit after the lecture. After all four talks: correct only what was wrong, max 4 minutes, then the summary slide.
-- With fewer than 6 groups: warehouse and lake once each, hybrid and lakehouse once each.
+- With 5 groups: drop group 6, lakehouse once. With 4 groups: one group per architecture.
 
 --
 
-#### Briefing: <span style="color: orange;">Data Warehouse</span> (groups 1 and 5)
+#### Briefing: <span style="color: orange;">Data Warehouse</span> (group 1)
 
 <img
   src="../assets/data_management/imgs/imgs.002.png"
@@ -599,7 +600,7 @@ Note:
 
 --
 
-#### Briefing: <span style="color: orange;">Data Lake</span> (groups 2 and 6)
+#### Briefing: <span style="color: orange;">Data Lake</span> (group 2)
 
 <img
   src="../assets/data_management/imgs/imgs.003.png"
@@ -638,7 +639,7 @@ Note:
 
 --
 
-#### Briefing: <span style="color: orange;">Hybrid Data Lake</span> (group 3)
+#### Briefing: <span style="color: orange;">Hybrid Data Lake</span> (groups 3 and 5)
 
 <img
   src="../assets/data_management/imgs/imgs.004.png"
@@ -676,7 +677,7 @@ Note:
 
 --
 
-#### Briefing: <span style="color: orange;">Data Lakehouse</span> (group 4)
+#### Briefing: <span style="color: orange;">Data Lakehouse</span> (groups 4 and 6)
 
 <img
   src="../assets/data_management/imgs/imgs.005.png"
