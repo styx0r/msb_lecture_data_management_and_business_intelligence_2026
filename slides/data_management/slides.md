@@ -504,25 +504,31 @@ Note:
 
 ---
 
-### How to read the pictures
+### Four architectures, one legend
 
-<div class="task">
+<p class="smaller-text" style="margin: 0 0 0.3em 0; text-align: left;">You know this picture, it is what you built this morning: the <b>Data Warehouse</b>. Three variations are coming (Data Lake, Hybrid, Lakehouse). All four use the same parts and differ in only two things: <b>where</b> data is stored, and <b>when</b> it is transformed.</p>
 
-All four architecture pictures are built from the same parts. They differ in only two things: <b>where</b> data is stored and <b>when</b> it is transformed.
-
-<table class="small-list" style="margin: 0.5em auto;">
-  <tr><th>In the picture</th><th>Meaning</th><th>Ask yourself</th></tr>
-  <tr><td>grey column with "persistence"</td><td>a place where data is stored, short-term or long-term</td><td>how many storages? what is kept raw, what cleaned?</td></tr>
-  <tr><td>gear</td><td>Transform: cleaning, joining, aggregating (your notebook)</td><td>before or after the long-term storage?</td></tr>
-  <tr><td>orange arrows E, L</td><td>Extract and Load: data moves</td><td>how often is data copied, and where to?</td></tr>
-  <tr><td>right column</td><td>who uses the data: reporting, data science</td><td>what do they need: fast queries or raw material?</td></tr>
-</table>
-
+<div class="two-col" style="gap: 1rem; align-items: center;">
+  <div style="flex: 0 0 54%;">
+    <img src="../assets/data_management/imgs/imgs.002.png" alt="Data Warehouse" style="width: 100%; margin: 0; background: transparent;" />
+  </div>
+  <div style="flex: 1;">
+    <table class="tbl" style="font-size: 0.4em; white-space: normal; margin: 0;">
+      <tr><th>In the picture</th><th>Meaning</th><th>Ask yourself</th></tr>
+      <tr><td>grey column, <span style="color: lightgreen;">persistence</span></td><td>a place where data is stored, short-term (sources) or long-term</td><td>how many storages? raw or cleaned?</td></tr>
+      <tr><td>gear</td><td><b>Transform</b>: cleaning, joining, aggregating. Your notebook</td><td>before or after the long-term storage?</td></tr>
+      <tr><td>orange arrows <b>E</b>, <b>L</b></td><td>Extract and Load: data is copied</td><td>how often, and where to?</td></tr>
+      <tr><td>right column</td><td>who uses the data: reporting, data science</td><td>fast queries, or raw material?</td></tr>
+    </table>
+    <p class="steps" style="margin: 0.4em 0 0 0;">Warehouse answered: <b>one</b> long-term storage, cleaned marts only, transform <b>before</b> storing, reporting on the right.</p>
+  </div>
 </div>
 
 Note:
 
-- 3 minutes, lecturer. This is the key to all four pictures. Point at the warehouse picture: one long-term storage, transform before it, reporting on the right. Every other picture is a variation of that.
+- 3 minutes, lecturer. Point at the warehouse picture while reading the four rows: sources on the left are short-term persistence, the gear in the middle is their notebook, the warehouse is the one long-term storage, reporting on the right.
+- Then the hook: the next pictures move the gear, add a storage, or merge two. When a group presents, make them say where the gear is and how many storages they count. If they can answer the "ask yourself" column, they understand their architecture.
+- Hand out the groups on the next slide right after this one, do not let the legend stand alone.
 
 ---
 
