@@ -108,8 +108,6 @@ ShopNow wants a daily funnel dashboard: sessions → add to cart → orders, per
   <li>get as far as you can, stop when the timer rings</li>
 </ul>
 
-<p class="smaller-text">No laptop? Paper: which columns and rows does the dashboard table need, and how do you get them from the raw tables (next slide)?</p>
-
 </div>
 
 Note:
