@@ -532,11 +532,11 @@ Note:
 
 ---
 
-### 2. Expert groups <span class="badge">8 + 2 MIN</span>
+### 2. Expert groups <span class="badge">15 + 5 MIN</span>
 
 <div class="task">
 
-<p style="font-size: 0.85em; margin: 0;">One architecture per group: a <b>briefing</b> (picture plus facts, down arrow under your architecture) and <b>one question</b> the briefing does not answer. 8 min preparation, then 2 min at the screen. Groups 5 and 6 only add what 3 and 4 missed (1 min).</p>
+<p style="font-size: 0.85em; margin: 0;">One architecture per group: a <b>briefing</b> (picture plus facts, down arrow under your architecture) and <b>one question</b> the briefing does not answer. 15 min preparation, then 5 min per architecture at the screen. Groups 5 and 6 share the slot with 3 and 4 and add what they missed.</p>
 
 <table class="small-list" style="margin: 0.3em auto; font-size: 0.55em;">
   <tr><th>Group</th><th>Architecture</th><th>Your question</th></tr>
@@ -548,7 +548,7 @@ Note:
 
 <div class="two-col" style="font-size: 0.55em; gap: 1.5rem; margin-top: 0.3em;">
   <div>
-    <b style="color: lightgreen;">Your 2 minutes, finger on the picture</b>
+    <b style="color: lightgreen;">Your 5 minutes, finger on the picture</b>
     <ol style="margin: 0.2em 0 0 1.2em;">
       <li><b>Read the picture</b> with the legend: how many storages, raw or cleaned, where is the gear?</li>
       <li><b>Answer your question.</b></li>
@@ -558,7 +558,7 @@ Note:
   </div>
   <div>
     <b style="color: lightgreen;">Everyone else, while listening</b>
-    <p style="margin: 0.2em 0 0 0;">Write down one strength and one weakness per architecture. You need them in 20 minutes: in the cost competition you must recommend an architecture that is <b>not your own</b>.</p>
+    <p style="margin: 0.2em 0 0 0;">Write down one strength and one weakness per architecture. You need them right after: in the cost competition you must recommend an architecture that is <b>not your own</b>.</p>
   </div>
 </div>
 
@@ -567,9 +567,9 @@ Note:
 Note:
 
 - How a talk runs: step 1 is the legend applied to their picture, that is where you see whether they understood it. Step 2 is the transfer question. Step 3 forces them to derive pro and con from their own answer instead of reading the briefing. Step 4 anchors it. Interrupt only if step 1 is wrong (wrong number of storages, gear in the wrong place), everything else you correct at the end.
-- Presentation order: warehouse (1), lake (2), hybrid (3, then 5 adds), lakehouse (4, then 6 adds). The later groups may build on the earlier ones ("hybrid is both of those"). Second groups add only, no repetition: 4 x 2 min + 2 x 1 min = 10 min.
+- Presentation order: warehouse (1), lake (2), hybrid (3, then 5 adds), lakehouse (4, then 6 adds). The later groups may build on the earlier ones ("hybrid is both of those"). Second groups add only, no repetition, inside the 5 minutes of their architecture: 4 x 5 min = 20 min.
 - Hybrid and lakehouse are doubled on purpose: the pictures are the hardest, two groups means one of them usually gets it, and the students hear the hard ones twice. The warehouse they built themselves this morning.
-- During the 8 minutes go to groups 3 to 6 first, they have the hardest pictures.
+- During the 15 minutes go to groups 3 to 6 first, they have the hardest pictures.
 - The answers are on hidden slides (ANSWER badge) under each briefing. They are hidden while `SHOW_SOLUTIONS` at the top of index.html is false; set it to true and commit after the lecture. After all four talks: correct only what was wrong, max 4 minutes, then the summary slide.
 - With 5 groups: drop group 6, lakehouse once. With 4 groups: one group per architecture.
 
