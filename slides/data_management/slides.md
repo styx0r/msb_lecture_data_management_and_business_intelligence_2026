@@ -387,45 +387,108 @@ Note:
 
 --
 
-#### What makes a good ETL process?
+#### Monday, 9:00: the dashboard is wrong
 
-<ul class="small-list">
-  <li><b>Schema documentation:</b> clear column names and types (order_date is a date, not text)</li>
-  <li><b>Traceability:</b> know the source of each mart (dependency graph raw → staging → mart)</li>
-  <li><b>Monitoring and alerts:</b> missing data triggers a notification (Slack, email)</li>
-  <li><b>Testing and logging:</b> row counts, null checks, unknown currencies, errors are logged</li>
-</ul>
+<table class="tbl" style="font-size: 0.5em; white-space: normal; margin: 0 auto;">
+  <tr><th>What happened upstream</th><th>What your notebook does</th><th>What the CEO sees</th></tr>
+  <tr><td>Tracking tool had an outage, <code>raw_web_events</code> is empty for yesterday</td><td>runs fine, 0 rows in, 0 rows out</td><td>"0 sessions yesterday", or worse: yesterday is simply missing</td></tr>
+  <tr><td>Shop starts selling in Switzerland, orders arrive in CHF</td><td><code>np.where(currency == "USD", ...)</code> treats CHF like EUR, no error</td><td>revenue 10% too high, nobody notices for weeks</td></tr>
+  <tr><td>Tracking tool renames <code>utm_source</code> to <code>source</code></td><td><code>KeyError</code> at 3:00 in the night, nobody is awake</td><td>the dashboard shows Friday's numbers on Monday, looks normal</td></tr>
+  <tr><td>Someone changes the bounce rule in the mart, not in staging</td><td>marketing mart says 30% bounce, product mart says 18%</td><td>two numbers for one thing, trust in both dashboards gone</td></tr>
+</table>
 
-<span style="color: lightgreen;">Task 4 in the notebook: where would you put a test so that a broken tracking tool is noticed before the dashboard is wrong?</span>
+<span style="color: lightgreen; font-size: 0.75em;">Three of the four fail <b>silently</b>. Where would you catch each one?</span>
 
 Note:
 
-- Take two answers from the reflection task. Expected: between raw and staging (row counts per day, no nulls in session_id, only known currencies). The CHF question shows the silent failure: np.where treats CHF like EUR, no error, wrong revenue.
+- These are the four failure modes of every pipeline, told with the notebook they just wrote. Let them map: which row is Task 4, question 1 (CHF), which is question 3 (tracking outage)?
+- Point: a pipeline that runs without error is not the same as a pipeline that is correct. Row 1 and 2 produce no error at all. Row 3 produces an error that nobody sees. Row 4 is not even a bug, it is missing discipline.
+- Ask for the "where" before showing the next slide. Most say "check the dashboard", the answer is: as early as possible, before the bad data spreads.
 
 --
 
-#### Use tooling meant for this purpose
+#### What makes a good ETL process?
 
-<ul class="small-list">
-  <li>Often done with plain Python: connect to sources, transform, load into the warehouse. Works, until the third person touches it.</li>
-  <li>By far better: a tool like <b>dbt</b>. Each staging and mart table is one SQL file, by convention in a folder structure; documentation, tests and lineage come for free.</li>
-</ul>
+<table class="tbl" style="font-size: 0.47em; white-space: normal; margin: 0 auto;">
+  <tr><th>Practice</th><th>Where it lives</th><th>In our pipeline</th><th>Catches</th></tr>
+  <tr><td><b>Tests on the way in</b></td><td>between <b>raw and staging</b>: the first point where the data is ours. Everything downstream inherits what passes here</td><td>rows per day &gt; 0, no null <code>session_id</code>, <code>currency in (EUR, USD)</code>, every order's session exists in events</td><td>outage, CHF</td></tr>
+  <tr><td><b>Tests on the way out</b></td><td>between <b>staging and mart</b></td><td>sum of <code>revenue_eur</code> in the mart equals the sum in <code>stg_orders</code>, conversion between 0 and 100</td><td>wrong joins (inner instead of left)</td></tr>
+  <tr><td><b>Monitoring and alerts</b></td><td>around the <b>whole run</b></td><td>did last night's run finish, how long did it take, a failed test posts to Slack before 8:00</td><td>the 3:00 KeyError</td></tr>
+  <tr><td><b>Schema documentation</b></td><td>on every <b>staging table</b></td><td>column, type, meaning: "bounce = session with exactly one event", defined once</td><td>two bounce rates</td></tr>
+  <tr><td><b>Traceability (lineage)</b></td><td>for every <b>mart</b>: which staging tables, which sources</td><td>raw_orders broken? Then you know which three dashboards are wrong, and whom to tell</td><td>the search on Monday morning</td></tr>
+</table>
 
-<img
-  src="../assets/data_management/imgs/imgs.010.png"
-  alt="dbt documentation web UI with lineage graph"
-  style="
-    max-height: 300px;
-    width: auto;
-    margin: 0 auto 0 auto;
-    background: transparent;
-  "
-/>
+<p class="steps" style="margin-top: 0.3em;">Why at the entrance? A failed test at 3:00 is seen by one engineer. A wrong mart at 9:00 is seen by the whole management meeting. Fail early, fail loudly.</p>
 
 Note:
 
-- The screenshot is the dbt docs UI: every box is a table, the arrows are the lineage raw → staging → mart. This is "traceability" from the slide before, generated from the code.
-- One sentence on ELT vs ETL: with cheap storage people load raw data first and transform inside the warehouse. Same steps, different order, the lake slides explain why.
+- Walk the table row by row with the previous slide in mind: each practice has a row it would have caught.
+- "Between raw and staging" is not a convention, it is the cheapest place: data is still one table per source, the checks are trivial (count, nulls, allowed values), and nothing has been joined or aggregated yet, so a failure points to exactly one source. After the merge in Task 3, a wrong number could come from either table.
+- Task 4, question 3 asks exactly this. Take two answers, then show the table. Question 2 (finance report) belongs to the schema documentation row: finance can only reuse stg_orders if its columns are documented.
+- The next slide shows that dbt gives you rows 1, 2, 4 and 5 as a few lines of YAML next to the SQL.
+
+--
+
+#### Use tooling meant for this purpose: dbt
+
+<p class="smaller-text" style="margin: 0 0 0.4em 0;">Plain Python works, until the third person touches it. With <b>dbt</b> every staging and mart table is <b>one SQL file</b>, and tests, documentation and lineage are generated from those files.</p>
+
+<div class="two-col" style="gap: 1.5rem; align-items: flex-start;">
+  <div style="flex: 0 0 36%;">
+    <img src="../assets/data_management/imgs/dbt_tree.png" alt="dbt project folder structure" style="max-height: 330px; width: 100%; margin: 0; background: transparent;" />
+    <div class="steps" style="margin: 0.2em 0 0 0;">The folders are the layers from Task 2 and 3: <code>staging</code>, <code>intermediate</code>, <code>marts</code>. Next to <code>orders.sql</code>: <code>orders.yml</code> with tests and column descriptions.</div>
+  </div>
+  <div style="flex: 1;">
+    <img src="../assets/data_management/imgs/dbt_sql.png" alt="dbt model SQL with ref()" style="max-height: 330px; width: 100%; margin: 0; background: transparent;" />
+    <div class="steps" style="margin: 0.2em 0 0 0;"><code>marts/orders.sql</code> is a plain SELECT. <code>ref('...')</code> instead of a table name: dbt knows the build order and draws the dependency graph from it.</div>
+  </div>
+</div>
+
+Note:
+
+- Left: the project is folders and files under version control. The convention staging / intermediate / marts is exactly what they did by hand: Task 2 = staging, Task 3 = marts.
+- Right: no Python loop, no notebook. One SQL file per table, "with ... as" blocks, and ref() for every upstream table. That one function is the trick: dbt resolves it to the real table name, orders the build, and records the dependency.
+- Our notebook as a dbt project would be five files: stg_sessions.sql, stg_orders.sql, mart_daily_funnel.sql, plus a schema.yml per folder.
+
+--
+
+#### dbt: lineage and tests for free
+
+<img src="../assets/data_management/imgs/dbt_lineage.png" alt="dbt lineage graph" style="width: 100%; margin: 0; background: transparent;" />
+<div class="steps" style="margin: 0 0 0.4em 0;">Every <code>ref()</code> becomes an arrow. Break <code>stg_payments</code> and you read off which marts and dashboards are affected: that is the traceability row, for free.</div>
+
+<div class="two-col" style="gap: 1.5rem; align-items: flex-start;">
+  <div style="flex: 1;">
+
+```yaml
+# models/staging/schema.yml
+models:
+  - name: stg_orders
+    description: one row per order, revenue in EUR
+    columns:
+      - name: order_id
+        tests: [not_null, unique]
+      - name: currency
+        tests:
+          - accepted_values:
+              values: [EUR, USD]
+```
+
+  </div>
+  <div style="flex: 1;">
+    <ul class="smaller-list" style="margin: 0; font-size: 0.5em;">
+      <li><b>Tests</b> are declared next to the table, a few lines each, and run on every build: the "tests on the way in" from the slide before. CHF arrives, the build fails, Slack gets a message.</li>
+      <li><b>Documentation</b> lives in the same file: the description and column meanings become a searchable website, so finance can find <code>stg_orders</code> without asking you.</li>
+    </ul>
+  </div>
+</div>
+
+Note:
+
+- Top: this is the dbt lineage view, generated, nothing drawn by hand. Walk it left to right: staging, intermediate, the orders mart, metrics. Ask: "stg_payments delivers garbage tonight, which boxes are wrong?" Everything to the right of it, nothing to the left.
+- Bottom left: the YAML is the whole test and documentation effort for one table. not_null, unique, accepted_values are built in. accepted_values on currency is exactly the CHF catch from Task 4.
+- Bottom right: dbt docs generates a website from these files: every table, every column, the lineage graph. That is the "schema documentation" row.
+- One sentence on ELT vs ETL: with cheap storage people load raw data first and transform inside the warehouse, dbt is built for that. Same steps, different order, the lake slides explain why.
 
 --
 
