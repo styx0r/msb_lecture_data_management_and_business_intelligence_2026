@@ -538,14 +538,14 @@ Note:
 
 <div class="task">
 
-<p style="font-size: 0.85em; margin: 0;">One architecture per group: a <b>briefing</b> (picture plus facts, down arrow under your architecture) and <b>one question</b> the briefing does not answer. 15 min preparation, then 5 min per architecture at the screen. Groups 5 and 6 share the slot with 3 and 4 and add what they missed.</p>
+<p style="font-size: 0.85em; margin: 0;">Form <b>four new groups</b>, one architecture each: a <b>briefing</b> (picture plus facts, down arrow under your architecture) and <b>one question</b> the briefing does not answer. 15 min preparation, then 5 min per group at the screen.</p>
 
 <table class="small-list" style="margin: 0.3em auto; font-size: 0.55em;">
   <tr><th>Group</th><th>Architecture</th><th>Your question</th></tr>
   <tr><td>1</td><td>Data Warehouse</td><td>After a year ShopNow changes the definition of "bounce". What has to happen in your architecture, and what does it cost?</td></tr>
   <tr><td>2</td><td>Data Lake</td><td>Three years in, nobody knows what the 400 folders contain. What went wrong, and why is every query more expensive than in the warehouse?</td></tr>
-  <tr><td>3 and 5</td><td>Hybrid Data Lake</td><td>You store everything twice. Name one company where that is still right and one where it is waste. What decides?</td></tr>
-  <tr><td>4 and 6</td><td>Lakehouse</td><td>What does the lakehouse need that the warehouse already includes, and which skill does your team need for it?</td></tr>
+  <tr><td>3</td><td>Hybrid Data Lake</td><td>You store everything twice. Name one company where that is still right and one where it is waste. What decides?</td></tr>
+  <tr><td>4</td><td>Lakehouse</td><td>What does the lakehouse need that the warehouse already includes, and which skill does your team need for it?</td></tr>
 </table>
 
 <div class="two-col" style="font-size: 0.55em; gap: 1.5rem; margin-top: 0.3em;">
@@ -569,11 +569,9 @@ Note:
 Note:
 
 - How a talk runs: step 1 is the legend applied to their picture, that is where you see whether they understood it. Step 2 is the transfer question. Step 3 forces them to derive pro and con from their own answer instead of reading the briefing. Step 4 anchors it. Interrupt only if step 1 is wrong (wrong number of storages, gear in the wrong place), everything else you correct at the end.
-- Presentation order: warehouse (1), lake (2), hybrid (3, then 5 adds), lakehouse (4, then 6 adds). The later groups may build on the earlier ones ("hybrid is both of those"). Second groups add only, no repetition, inside the 5 minutes of their architecture: 4 x 5 min = 20 min.
-- Hybrid and lakehouse are doubled on purpose: the pictures are the hardest, two groups means one of them usually gets it, and the students hear the hard ones twice. The warehouse they built themselves this morning.
-- During the 15 minutes go to groups 3 to 6 first, they have the hardest pictures.
+- Four new groups for this block, numbered 1 to 4 (with 16 to 20 people that is 4 to 5 per group, count off 1-2-3-4 around the room). Presentation order: warehouse (1), lake (2), hybrid (3), lakehouse (4). The later groups may build on the earlier ones ("hybrid is both of those"). 4 x 5 min = 20 min.
+- Group 1 has the easiest picture, they built the warehouse themselves this morning. During the 15 minutes go to groups 3 and 4 first, they have the hardest pictures.
 - The answers are on hidden slides (ANSWER badge) under each briefing. They are hidden while `SHOW_SOLUTIONS` at the top of index.html is false; set it to true and commit after the lecture. After all four talks: correct only what was wrong, max 4 minutes, then the summary slide.
-- With 5 groups: drop group 6, lakehouse once. With 4 groups: one group per architecture.
 
 --
 
@@ -656,7 +654,7 @@ Note:
 
 --
 
-#### Briefing: <span style="color: orange;">Hybrid Data Lake</span> (groups 3 and 5)
+#### Briefing: <span style="color: orange;">Hybrid Data Lake</span> (group 3)
 
 <img
   src="../assets/data_management/imgs/imgs.004.png"
@@ -694,7 +692,7 @@ Note:
 
 --
 
-#### Briefing: <span style="color: orange;">Data Lakehouse</span> (groups 4 and 6)
+#### Briefing: <span style="color: orange;">Data Lakehouse</span> (group 4)
 
 <img
   src="../assets/data_management/imgs/imgs.005.png"
@@ -771,7 +769,7 @@ Note:
 
 - Whiteboard table: rows = architectures, columns = acquisition, storage, transfer, queries, maintenance, total. Prepare it during the expert round.
 - Reference numbers (solution notebook, month = 365/12 days): Lakehouse 16,723, Data Lake 17,077, Data Warehouse 17,990, Hybrid 18,770 dollars in 2 years. Acquisition (12,103, of which 9,600 is the purchased financial feed) and transfer (1,821) are identical for all, so the ranking comes from storage, queries and maintenance. The extra question is where the feed starts to matter: only the warehouse has to buy it again.
-- When two groups have the same architecture and different numbers: that is the discussion. Typical causes: month = 30 vs 365/12 days, TB vs GB, forgetting that storage is billed every month on the growing volume.
+- When a number is far off the reference: that is the discussion. Typical causes: month = 30 vs 365/12 days, TB vs GB, forgetting that storage is billed every month on the growing volume.
 - Recommendation round: the "not your own" rule forces them to use the other groups' arguments. Push for non-cost arguments: team skills, share of unstructured data, how often schemas change, how many dashboard users.
 - Wrap up in 3 sentences: cheapest on paper is the lakehouse, the warehouse buys speed and governance, hybrid only when both are hard requirements. Expensive purchased data is the strongest argument for keeping raw data somewhere. And: cost is never the only factor.
 
