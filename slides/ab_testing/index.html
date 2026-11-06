@@ -269,7 +269,59 @@
 
         <!-- ======================= WHERE ARE WE ======================= -->
         <section>
+        <section>
           <h3>Where are we?</h3>
+<svg viewBox="200 190 1700 700" style="width: 100%; max-height: 440px; background: transparent" font-family="Helvetica, Arial, sans-serif" fill="#fff" text-anchor="middle" font-size="56">
+  <rect x="355" y="213" width="1145" height="120" fill="#f0b03f"/>
+  <text x="928" y="291" font-size="56">Decisions</text>
+  <rect x="355" y="347" width="1145" height="120" fill="#8e8e8e"/>
+  <text x="928" y="425" font-size="56">Reporting (Visualisation)</text>
+  <rect x="355" y="481" width="1145" height="120" fill="#f0b03f"/>
+  <text x="928" y="559" font-size="56">Data Analysis &amp; Exploration</text>
+  <rect x="355" y="615" width="1145" height="120" fill="#8e8e8e"/>
+  <text x="928" y="693" font-size="56">Data Warehousing / Data Marts</text>
+  <rect x="355" y="749" width="1145" height="120" fill="#5f5f5f"/>
+  <text x="928" y="827" font-size="48">Raw Data (self produced or foreign sources)</text>
+  <rect x="230" y="213" width="110" height="654" fill="#5f5f5f"/><text x="285" y="560">AI</text>
+  <path d="M1500,807 H1550 V673 H1517" fill="none" stroke="#c8c8c8" stroke-width="6"/><polygon points="1503,673 1527,658 1527,688" fill="#c8c8c8"/>
+  <text x="1560" y="720" font-size="42" fill="#c8c8c8" text-anchor="start">Data Integration</text><text x="1560" y="765" font-size="42" fill="#c8c8c8" text-anchor="start">ETL / ELT</text>
+  <path d="M1500,273 H1600 V540 H1517" fill="none" stroke="#f0b03f" stroke-width="6"/><polygon points="1503,540 1527,525 1527,555" fill="#f0b03f"/>
+  <text x="1560" y="440" font-size="42" fill="#f0b03f" text-anchor="start">ship / no ship?</text>
+</svg>
+          <p style="font-size: 0.6em; margin: 0.2em 0 0 0">
+            <span class="accent">Analysis</span> answers "is the difference real?",
+            <span class="accent">Decisions</span> ask "do we ship it?". A/B testing is the bridge between the two.
+          </p>
+          <aside class="notes">
+            30 seconds. The same stack as in every deck. This morning we were on the warehouse layer. Now we jump
+            up: the data is clean, the dashboard exists, and somebody has to decide. The analysis layer is where
+            the test is computed, the decision layer is where the result is used. And the decision produces new
+            raw data, next slide.
+          </aside>
+        </section>
+
+        <section>
+          <h3>Where are we in the loop?</h3>
+          <div style="display: flex; align-items: center; gap: 1rem">
+            <img src="../assets/business_intelligence/imgs/imgs.016.png" alt="OODA loop" style="flex: 0 0 62%; width: 62%; background: transparent" />
+            <div style="flex: 1; text-align: left; font-size: 0.55em">
+              <p><b class="accent">Decide</b>: "testing hypotheses" was on this slide on day 1. Today is that box.</p>
+              <p><b class="accent">Act</b>: ship the new checkout to everyone, or not.</p>
+              <p><b class="accent">Observe</b>: the shipped version produces new raw data, the loop starts again.</p>
+              <p class="muted">Dashboards (Orient) tell you <em>what</em> changed. Only an experiment tells you <em>whether your change caused it</em>.</p>
+            </div>
+          </div>
+          <aside class="notes">
+            The OODA loop from the BI deck (day 1). Point at "Testing hypotheses" under Decide: that was a
+            placeholder then, today we fill it. Orient is what BI does (analysis, classify findings), Decide is
+            where this module sits, Act is the ship decision, Observe is the new raw data after the ship. Emphasise
+            the last line: the dashboard shows a change, the experiment shows causation. That is the whole module
+            in one sentence.
+          </aside>
+        </section>
+
+        <section>
+          <h3>Where are we in the course?</h3>
           <div class="cards">
             <div class="card blue">
               <h4>(I) Business Intelligence</h4>
@@ -302,6 +354,7 @@
             one place in the course where we talk about causality. Keep the maths
             light, the goal is intuition and one tool (statsmodels).
           </aside>
+        </section>
         </section>
 
         <!-- ======================= MOTIVATION ======================= -->
