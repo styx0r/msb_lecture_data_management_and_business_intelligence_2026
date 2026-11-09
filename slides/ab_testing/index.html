@@ -577,6 +577,57 @@
         <!-- ======================= NOISE ======================= -->
         <section>
           <section>
+            <h3>One experiment, a thousand times</h3>
+            <div class="cards">
+              <div class="card blue">
+                <h4>1. One experiment</h4>
+                <ul>
+                  <li>two weeks, coin flip per visitor</li>
+                  <li>A: 5,000 visitors, <b>250</b> buy = 5.00%</li>
+                  <li>B: 5,000 visitors, <b>262</b> buy = 5.24%</li>
+                  <li>lift = 5.24 &minus; 5.00 = <b class="accent">+0.24 pp</b></li>
+                  <li>that is the whole result of one A/B test: <b>one number</b></li>
+                </ul>
+              </div>
+              <div class="card fragment">
+                <h4>2. Rewind, run it again</h4>
+                <ul>
+                  <li>same checkout, same two weeks, other visitors</li>
+                  <li>A: 243 buy, B: 239 buy: lift <b class="accent">&minus;0.08 pp</b></li>
+                  <li>and again: <b class="accent">+0.31 pp</b>, and again: <b class="accent">&minus;0.19 pp</b></li>
+                  <li>nothing was changed, the number moves anyway</li>
+                  <li>that movement is <b>noise</b></li>
+                </ul>
+              </div>
+              <div class="card green fragment">
+                <h4>3. 1,000 reruns = a histogram</h4>
+                <ul>
+                  <li>the simulator reruns the experiment 1,000 times in a second</li>
+                  <li>each <b>bar</b> counts how many of the 1,000 reruns ended with a lift in that small range</li>
+                  <li>tall bar at 0: most reruns land near zero</li>
+                  <li>orange part of a bar: the test said "significant" in those reruns</li>
+                </ul>
+              </div>
+            </div>
+            <div class="takeaway fragment" style="margin-top: 0.6em">
+              In real life you run the experiment <span class="accent">once</span> and never see the histogram.
+              The next slides pick the number of users so that your single number behaves:
+              <span class="accent">at most 5% false alarms</span> and
+              <span class="accent">a real effect found 80% of the time</span>.
+            </div>
+            <aside class="notes">
+              This is the bridge for beginners, do not skip it. Card 1: an experiment is one run of the test, two
+              numbers, one difference. Make them compute the lift once. Card 2: the thought experiment of a time
+              machine, same two weeks with different people. Ask: would the number be exactly the same? Why not?
+              Card 3: the simulator is that time machine. Say explicitly: x-axis = the lift one rerun showed, bar
+              height = how many reruns showed that lift. Takeaway: we only ever get one bar's worth of information
+              in reality, so we design the test (number of users) such that the invisible histogram has the
+              properties we want: 5% and 80% are design targets, not results. Then go to the live slide and press
+              "1 experiment" three times before pressing +1000.
+            </aside>
+          </section>
+
+          <section>
             <h3>The enemy: noise <span class="muted" style="font-size: 0.6em">(live)</span></h3>
             <p class="lead" style="margin: 0 0 0.2em; font-size: 0.65em">
               Same checkout in both groups (an <span class="accent">A/A test</span>). What lift do we see anyway?
@@ -591,7 +642,8 @@
             <aside class="notes">
               Key intuition for the whole lecture, so take 5 minutes here.
               Script: lift 0, 5,000 users. Click "1 experiment" a few times: every run shows a different lift,
-              nothing was changed. Then +1000: the histogram. Read the range out loud: nothing changed, and still we saw
+              nothing was changed. The small marker shows where the last experiment landed, so one click = one
+              count in one bar. Then +1000: the histogram. Read the range out loud: nothing changed, and still we saw
               anything between about -1.3 and +1.4 pp. Then back to the checkout: +3 pp is far outside the band, so it is
               not noise, but that only helps if the two groups were random (they were not, logged-in users only).
               Orange bars are p below 0.05, about 5% of them: that is alpha, before we even define it.

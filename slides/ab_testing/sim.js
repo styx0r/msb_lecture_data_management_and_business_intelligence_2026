@@ -363,6 +363,16 @@
         ctx.fillStyle = COL.accent;
         ctx.fillRect(xl, p.y(cntAll[b]), xr - xl, p.y(cntAll[b] - cntSig[b]) - p.y(cntAll[b]));
       }
+      if (last) {
+        // marker on the bin of the most recent experiment
+        const v = last.t.diff * 100, b = Math.min(bins - 1, Math.max(0, Math.floor((v - x0) / w)));
+        const mx = p.x(x0 + (b + 0.5) * w), my = p.y(cntAll[b]) - 6;
+        ctx.save();
+        ctx.fillStyle = COL.text;
+        ctx.beginPath(); ctx.moveTo(mx, my); ctx.lineTo(mx - 7, my - 12); ctx.lineTo(mx + 7, my - 12); ctx.closePath(); ctx.fill();
+        ctx.restore();
+        text(ctx, "last experiment", mx, my - 17, { align: "center", color: COL.text, size: 12 });
+      }
       vline(p, 0, COL.text, [], 1);
       text(ctx, "noise alone: \u00b1" + (Z * se).toFixed(2) + " pp (95%)", p.x(Math.min(x1, Z * se)) - 6, p.top + 34, { align: "right", color: COL.muted, size: 13 });
       if (d !== 0) {
@@ -382,9 +392,9 @@
       const s = sig.filter(Boolean).length / N;
       const l = last.t;
       const first = d === 0
-        ? `<b>${fmtInt(N)}</b> experiments, nothing changed between A and B. Observed lifts ranged from <b>${fmtPP(lo, 2)}</b> to <b>${fmtPP(hi, 2)}</b>. ` +
+        ? `<b>${fmtInt(N)}</b> experiment${N === 1 ? "" : "s"}, nothing changed between A and B. Observed lifts ranged from <b>${fmtPP(lo, 2)}</b> to <b>${fmtPP(hi, 2)}</b>. ` +
           `The test said "significant" (p &lt; 0.05) in <b>${fmtPct(s, 1)}</b> of them: that is &alpha;, the false alarm rate.`
-        : `<b>${fmtInt(N)}</b> experiments, B really is <b>${fmtPP(d, 2)}</b> better. Observed lifts ranged from <b>${fmtPP(lo, 2)}</b> to <b>${fmtPP(hi, 2)}</b>. ` +
+        : `<b>${fmtInt(N)}</b> experiment${N === 1 ? "" : "s"}, B really is <b>${fmtPP(d, 2)}</b> better. Observed lifts ranged from <b>${fmtPP(lo, 2)}</b> to <b>${fmtPP(hi, 2)}</b>. ` +
           `The test found it (p &lt; 0.05) in <b>${fmtPct(s, 1)}</b> of them: that is the power at this sample size and lift.`;
       $("noise-stats").innerHTML = first + `<br/>` +
         `last one: A ${fmtInt(last.a)} / ${fmtInt(last.n)} = ${fmtPct(l.pa, 2)}, B ${fmtInt(last.b)} / ${fmtInt(last.n)} = ${fmtPct(l.pb, 2)}, lift ${fmtPP(l.diff * 100, 2)}, ${fmtP(l.p)}`;
