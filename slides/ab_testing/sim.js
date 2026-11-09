@@ -321,6 +321,7 @@
       draw();
     }
 
+    const N_total = () => diffs.length;
     function draw() {
       const n = getN(), d = getD();
       const se = seNull(n) * 100;
@@ -335,7 +336,7 @@
         cntAll[b]++;
         if (sig[i]) cntSig[b]++;
       });
-      const ymax = Math.max(5, ...cntAll) * 1.3; // headroom for the band and lift labels
+      const ymax = Math.max(5, ...cntAll) * 1.45; // headroom for the band and lift labels
       clear(c);
       const p = plot(c, { x0, x1, y0: 0, y1: ymax, ml: 64 });
       // noise band: 95% of A/A experiments land inside +-1.96 SE (Z * se), set only by n and the baseline rate
@@ -363,6 +364,16 @@
         ctx.fillStyle = COL.accent;
         ctx.fillRect(xl, p.y(cntAll[b]), xr - xl, p.y(cntAll[b] - cntSig[b]) - p.y(cntAll[b]));
       }
+      if (N_total() >= 30) {
+        // what the formula predicts: a bell curve with mean = true lift and SD = SE, scaled to counts per bin
+        const xs = [], ys = [];
+        for (let i = 0; i <= 120; i++) {
+          const v = x0 + ((x1 - x0) * i) / 120;
+          xs.push(v);
+          ys.push((N_total() * w * Math.exp(-0.5 * Math.pow((v - d) / se, 2))) / (se * Math.sqrt(2 * Math.PI)));
+        }
+        polyline(p, xs, ys, COL.green, 2, [8, 5]);
+      }
       if (last) {
         // marker on the bin of the most recent experiment
         const v = last.t.diff * 100, b = Math.min(bins - 1, Math.max(0, Math.floor((v - x0) / w)));
@@ -374,13 +385,15 @@
         text(ctx, "last experiment", mx, my - 17, { align: "center", color: COL.text, size: 12 });
       }
       vline(p, 0, COL.text, [], 1);
-      text(ctx, "noise alone: \u00b1" + (Z * se).toFixed(2) + " pp (95%)", p.x(Math.min(x1, Z * se)) - 6, p.top + 34, { align: "right", color: COL.muted, size: 13 });
+      const bx = p.x(Math.min(x1, Z * se)) - 6;
+      text(ctx, "noise alone: \u00b1" + (Z * se).toFixed(2) + " pp (95%)", bx, p.top + 34, { align: "right", color: COL.muted, size: 13 });
+      text(ctx, "calculated from the expected bell curve (normal distribution), not from the reruns", bx, p.top + 50, { align: "right", color: COL.muted, size: 11 });
       if (d !== 0) {
         vline(p, d, COL.green);
         const inside = Math.abs(d) < Z * se;
         text(ctx, "true lift " + fmtPP(d, 2) + (inside ? " (inside the noise)" : " (outside the noise)"), p.x(d) + 6, p.top + 14, { color: COL.green, size: 13 });
       }
-      legend(ctx, p.right - 170, p.top + 14, [["p < 0.05", COL.accent], ["not significant", COL.blue]]);
+      legend(ctx, p.right - 190, p.top + 14, [["p < 0.05", COL.accent], ["not significant", COL.blue], ["formula (bell curve)", COL.green]]);
       if (!diffs.length) text(ctx, "click 'run' to simulate", (p.left + p.right) / 2, (p.top + p.bottom) / 2, { align: "center", color: COL.muted, size: 18 });
 
       const N = diffs.length;
