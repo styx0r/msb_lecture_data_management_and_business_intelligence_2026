@@ -304,13 +304,18 @@
     const getN = stepSlider("noise-n", N_STEPS, fmtInt, reset);
     const getD = numSlider("noise-d", (v) => fmtPP(v, 2), reset);
 
+    // Significance on this slide uses the noise of the known 5% baseline (SE under H0), so that
+    // "p < 0.05" and the grey band are exactly the same rule: orange = outside the band.
+    const Z = zq(0.975);
+    const seNull = (n) => Math.sqrt((2 * P0 * (1 - P0)) / n);
     function run(k) {
-      const n = getN(), d = getD() / 100;
+      const n = getN(), d = getD() / 100, se = seNull(n);
       for (let i = 0; i < k; i++) {
         const a = binom(n, P0), b = binom(n, P0 + d);
-        const t = ztest(a, n, b, n);
-        diffs.push(t.diff * 100);
-        sig.push(t.p < 0.05);
+        const pa = a / n, pb = b / n, diff = pb - pa, z = diff / se;
+        const t = { pa, pb, diff, z, p: 2 * (1 - Phi(Math.abs(z))) };
+        diffs.push(diff * 100);
+        sig.push(Math.abs(z) > Z);
         last = { a, b, n, t };
       }
       draw();
@@ -318,21 +323,34 @@
 
     function draw() {
       const n = getN(), d = getD();
-      const se = Math.sqrt((2 * P0 * (1 - P0)) / n) * 100;
+      const se = seNull(n) * 100;
       const half = Math.max(4.5 * se, 0.75);
-      const x0 = Math.floor((d - half) * 4) / 4, x1 = Math.ceil((d + half) * 4) / 4;
-      const bins = 40, w = (x1 - x0) / bins;
+      // bins aligned to the band: 8 bins per half band, so the band edges are bin edges
+      const w = (Z * se) / 8;
+      const x0 = Math.floor((d - half) / w) * w, x1 = Math.ceil((d + half) / w) * w;
+      const bins = Math.round((x1 - x0) / w);
       const cntAll = new Array(bins).fill(0), cntSig = new Array(bins).fill(0);
       diffs.forEach((v, i) => {
         const b = Math.min(bins - 1, Math.max(0, Math.floor((v - x0) / w)));
         cntAll[b]++;
         if (sig[i]) cntSig[b]++;
       });
-      const ymax = Math.max(5, ...cntAll) * 1.12;
+      const ymax = Math.max(5, ...cntAll) * 1.3; // headroom for the band and lift labels
       clear(c);
       const p = plot(c, { x0, x1, y0: 0, y1: ymax, ml: 64 });
+      // noise band: 95% of A/A experiments land inside +-1.96 SE (Z * se), set only by n and the baseline rate
+      {
+        const { ctx } = p, lo = Math.max(x0, -Z * se), hi = Math.min(x1, Z * se);
+        ctx.save();
+        ctx.fillStyle = "rgba(255,255,255,0.07)";
+        ctx.fillRect(p.x(lo), p.top, p.x(hi) - p.x(lo), p.bottom - p.top);
+        ctx.strokeStyle = COL.muted; ctx.lineWidth = 1; ctx.setLineDash([4, 4]);
+        ctx.beginPath(); ctx.moveTo(p.x(lo), p.top); ctx.lineTo(p.x(lo), p.bottom);
+        ctx.moveTo(p.x(hi), p.top); ctx.lineTo(p.x(hi), p.bottom); ctx.stroke();
+        ctx.restore();
+      }
       axes(p, {
-        xticks: niceTicks(x0, x1, 8), xfmt: (v) => (v > 0 ? "+" : "") + v,
+        xticks: niceTicks(x0, x1, 10), xfmt: (v) => (v > 0 ? "+" : "") + v,
         yticks: niceTicks(0, ymax, 4), ygrid: true,
         xlabel: "observed lift B - A (percentage points)", ylabel: "experiments",
       });
@@ -346,24 +364,29 @@
         ctx.fillRect(xl, p.y(cntAll[b]), xr - xl, p.y(cntAll[b] - cntSig[b]) - p.y(cntAll[b]));
       }
       vline(p, 0, COL.text, [], 1);
+      text(ctx, "noise alone: \u00b1" + (Z * se).toFixed(2) + " pp (95%)", p.x(Math.min(x1, Z * se)) - 6, p.top + 34, { align: "right", color: COL.muted, size: 13 });
       if (d !== 0) {
         vline(p, d, COL.green);
-        text(ctx, "true lift " + fmtPP(d, 2), p.x(d) + 6, p.top + 14, { color: COL.green, size: 13 });
+        const inside = Math.abs(d) < Z * se;
+        text(ctx, "true lift " + fmtPP(d, 2) + (inside ? " (inside the noise)" : " (outside the noise)"), p.x(d) + 6, p.top + 14, { color: COL.green, size: 13 });
       }
       legend(ctx, p.right - 170, p.top + 14, [["p < 0.05", COL.accent], ["not significant", COL.blue]]);
       if (!diffs.length) text(ctx, "click 'run' to simulate", (p.left + p.right) / 2, (p.top + p.bottom) / 2, { align: "center", color: COL.muted, size: 18 });
 
       const N = diffs.length;
       if (!N) {
-        $("noise-stats").innerHTML = `Every visitor converts with ${fmtPct(P0, 0)} in A and ${fmtPct(P0 + d / 100, 2)} in B. Noise alone moves the observed lift by about <b>&plusmn;${(1.96 * se).toFixed(2)} pp</b> (95% of the time) at this sample size.`;
+        $("noise-stats").innerHTML = `Every visitor converts with ${fmtPct(P0, 0)} in A and ${fmtPct(P0 + d / 100, 2)} in B. Noise alone moves the observed lift by about <b>&plusmn;${(Z * se).toFixed(2)} pp</b> (95% of the time, grey band). The band depends only on the users per group and the 5% baseline, there is no separate noise knob for yes/no data.`;
         return;
       }
-      const big = diffs.filter((v) => Math.abs(v) > 1).length / N;
+      const lo = Math.min(...diffs), hi = Math.max(...diffs);
       const s = sig.filter(Boolean).length / N;
-      const what = d === 0 ? "that is &alpha;, the false alarm rate" : "that is the power at this sample size and lift";
       const l = last.t;
-      $("noise-stats").innerHTML =
-        `<b>${fmtInt(N)}</b> experiments &middot; |lift| &gt; 1 pp in <b>${fmtPct(big, 1)}</b> &middot; p &lt; 0.05 in <b>${fmtPct(s, 1)}</b> (${what})<br/>` +
+      const first = d === 0
+        ? `<b>${fmtInt(N)}</b> experiments, nothing changed between A and B. Observed lifts ranged from <b>${fmtPP(lo, 2)}</b> to <b>${fmtPP(hi, 2)}</b>. ` +
+          `The test said "significant" (p &lt; 0.05) in <b>${fmtPct(s, 1)}</b> of them: that is &alpha;, the false alarm rate.`
+        : `<b>${fmtInt(N)}</b> experiments, B really is <b>${fmtPP(d, 2)}</b> better. Observed lifts ranged from <b>${fmtPP(lo, 2)}</b> to <b>${fmtPP(hi, 2)}</b>. ` +
+          `The test found it (p &lt; 0.05) in <b>${fmtPct(s, 1)}</b> of them: that is the power at this sample size and lift.`;
+      $("noise-stats").innerHTML = first + `<br/>` +
         `last one: A ${fmtInt(last.a)} / ${fmtInt(last.n)} = ${fmtPct(l.pa, 2)}, B ${fmtInt(last.b)} / ${fmtInt(last.n)} = ${fmtPct(l.pb, 2)}, lift ${fmtPP(l.diff * 100, 2)}, ${fmtP(l.p)}`;
     }
 

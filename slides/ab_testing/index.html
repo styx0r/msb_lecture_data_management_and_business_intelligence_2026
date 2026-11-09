@@ -362,8 +362,9 @@
           <section>
             <h3>ShopNow: the new checkout</h3>
             <p class="lead">
-              The product team built a <span class="accent">one-page checkout</span>.
-              After two weeks they report:
+              The product team built a <span class="accent">one-page checkout</span> and
+              switched it on for <span class="accent">some customers</span> as a two-week test phase.
+              The rest kept the old one. Now they report:
             </p>
             <div class="cards" style="max-width: 760px; margin: 0 auto">
               <div class="card blue" style="text-align: center">
@@ -381,7 +382,8 @@
               <span class="green">Would you ship it?</span>
             </p>
             <aside class="notes">
-              Let them vote. Then ask: who saw the new checkout? Usually: beta
+              The slide says "some customers" on purpose and not who: that is the
+              question of the next slide. Let them vote. Then ask: who saw the new checkout? Usually: beta
               users, app users, logged-in customers, people who opted in. Those
               people buy more anyway.
             </aside>
@@ -580,7 +582,7 @@
               Same checkout in both groups (an <span class="accent">A/A test</span>). What lift do we see anyway?
             </p>
             <div class="ctrl">
-              <label>users per group <input type="range" id="noise-n" value="3" /> <span class="val" id="noise-n-v"></span></label>
+              <label>users per group (sets the noise) <input type="range" id="noise-n" value="3" /> <span class="val" id="noise-n-v"></span></label>
               <label>true lift of B <input type="range" id="noise-d" min="-1" max="3" step="0.25" value="0" /> <span class="val" id="noise-d-v"></span></label>
               <span>run <button class="btn primary" id="noise-run1">1 experiment</button> <button class="btn" id="noise-run100">+100</button> <button class="btn" id="noise-run1000">+1000</button> <button class="btn" id="noise-reset">reset</button></span>
             </div>
@@ -589,9 +591,13 @@
             <aside class="notes">
               Key intuition for the whole lecture, so take 5 minutes here.
               Script: lift 0, 5,000 users. Click "1 experiment" a few times: every run shows a different lift,
-              nothing was changed. Then +1000: the histogram. Ask: how often more than 1 pp? Then: so is +0.9 pp for the
-              new checkout real? Orange bars are p below 0.05, about 5% of them: that is alpha, before we even define it.
-              Now users to 50,000: histogram narrows. Then lift to +1 pp: the orange share is the power.
+              nothing was changed. Then +1000: the histogram. Read the range out loud: nothing changed, and still we saw
+              anything between about -1.3 and +1.4 pp. Then back to the checkout: +3 pp is far outside the band, so it is
+              not noise, but that only helps if the two groups were random (they were not, logged-in users only).
+              Orange bars are p below 0.05, about 5% of them: that is alpha, before we even define it.
+              Now users to 50,000: the grey band and the histogram narrow. The band is the only "noise knob" there is:
+              for yes/no data the spread is fixed by n and the baseline rate, SE = sqrt(2 p (1-p) / n).
+              Then lift to +1 pp: the green line leaves the band, the orange share is the power.
               Every observed difference is effect + noise. Statistics quantifies how big noise alone can be.
             </aside>
           </section>
