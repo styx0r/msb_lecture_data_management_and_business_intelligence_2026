@@ -421,6 +421,81 @@
     draw();
   }
 
+  // ====================================================== 1b. p-value as a picture
+  function simPvalue() {
+    if (!$("pv-canvas")) return;
+    const c = canvas("pv-canvas");
+    const getN = stepSlider("pv-n", N_STEPS, fmtInt, draw);
+    const getObs = numSlider("pv-d", (v) => fmtPP(v, 1), draw);
+    $("pv-a").addEventListener("change", draw);
+
+    function draw() {
+      const n = getN(), obs = getObs(), alpha = +$("pv-a").value;
+      const se = Math.sqrt((2 * P0 * (1 - P0)) / n) * 100;
+      const crit = zq(1 - alpha / 2) * se;
+      const a = Math.abs(obs);
+      const pval = 2 * (1 - Phi(a / se));
+      const x0 = -Math.max(3.8 * se, a + 1.4 * se), x1 = -x0;
+      const ymax = phi(0) / se;
+      clear(c);
+      const p = plot(c, { x0, x1, y0: 0, y1: ymax * 1.2, ml: 30 });
+      const { ctx } = p;
+      const xs = [], ys = [];
+      for (let i = 0; i <= 500; i++) {
+        const x = x0 + ((x1 - x0) * i) / 500;
+        xs.push(x);
+        ys.push(phi(x / se) / se);
+      }
+      // alpha band: fixed before the test
+      ctx.save();
+      ctx.fillStyle = "rgba(255,255,255,0.07)";
+      ctx.fillRect(p.x(-crit), p.top, p.x(crit) - p.x(-crit), p.bottom - p.top);
+      ctx.strokeStyle = COL.muted; ctx.lineWidth = 1; ctx.setLineDash([4, 4]);
+      ctx.beginPath(); ctx.moveTo(p.x(-crit), p.top); ctx.lineTo(p.x(-crit), p.bottom);
+      ctx.moveTo(p.x(crit), p.top); ctx.lineTo(p.x(crit), p.bottom); ctx.stroke();
+      ctx.restore();
+      // p-value: red area beyond the observed lift, both sides
+      function fill(from, to) {
+        ctx.save();
+        ctx.globalAlpha = 0.7;
+        ctx.fillStyle = COL.red;
+        ctx.beginPath();
+        ctx.moveTo(p.x(from), p.bottom);
+        xs.forEach((x, i) => { if (x >= from && x <= to) ctx.lineTo(p.x(x), p.y(ys[i])); });
+        ctx.lineTo(p.x(to), p.bottom);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+      }
+      fill(a, x1);
+      fill(x0, -a);
+      polyline(p, xs, ys, COL.blue);
+      vline(p, 0, COL.text, [], 1);
+      vline(p, obs, COL.accent, [], 3);
+      const rightSide = p.x(obs) < (p.left + p.right) / 2; // label on the side with more room
+      text(ctx, "observed lift " + fmtPP(obs, 1) + " (our one experiment)", p.x(obs) + (rightSide ? 8 : -8), p.top + 16, { color: COL.accent, size: 13, align: rightSide ? "left" : "right" });
+      text(ctx, "α = " + fmtPct(alpha, 0) + ": band ±" + crit.toFixed(2) + " pp, fixed before the test", p.x(0), p.bottom - 10, { color: COL.muted, size: 13, align: "center" });
+      const pTxt = pval < 0.0001 ? "p = red area < 0.01%" : "p = red area = " + fmtPct(pval, 1);
+      const pLeft = p.x(a) + 8 > p.right - 160; // near the right edge: put the label left of the line
+      text(ctx, pTxt, p.x(a) + (pLeft ? -8 : 8), p.y(ymax * 0.28), { color: COL.red, size: 14, bold: true, align: pLeft ? "right" : "left" });
+      axes(p, {
+        xticks: niceTicks(x0, x1, 8), xfmt: (v) => (v > 0 ? "+" : "") + v,
+        xlabel: "lift B - A (percentage points)",
+      });
+      legend(ctx, p.left + 12, p.top + 16, [
+        ["noise alone: what we see if B changes nothing (H0)", COL.blue],
+        ["p-value: noise alone gives at least this lift", COL.red],
+        ["inside the band: could be noise", "rgba(255,255,255,0.2)"],
+      ]);
+      const sig = pval < alpha;
+      $("pv-stats").innerHTML = sig
+        ? `<b>${fmtP(pval)}</b> &lt; &alpha; = ${fmtPct(alpha, 0)}: the line is <b class="accent">outside the band</b>. Noise alone produces such a lift in ${pval < 0.0001 ? "less than 0.01%" : "only " + fmtPct(pval, 1)} of A/A tests, so we call it <b>statistically significant</b> and reject H0.`
+        : `<b>${fmtP(pval)}</b> &ge; &alpha; = ${fmtPct(alpha, 0)}: the line is <b class="accent">inside the band</b>. Noise alone produces such a lift in ${fmtPct(pval, 1)} of A/A tests, that is too often to rule out noise. <b>Not significant</b>, we keep H0.`;
+    }
+    redraws["pv-canvas"] = draw;
+    draw();
+  }
+
   // ====================================================== 2. errors and power
   function simErrors() {
     if (!$("err-canvas")) return;
@@ -755,6 +830,7 @@
   // ------------------------------------------------------------------ init
   function init() {
     simNoise();
+    simPvalue();
     simErrors();
     simPlan();
     simPeek();

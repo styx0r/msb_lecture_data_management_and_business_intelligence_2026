@@ -685,16 +685,27 @@
           </section>
 
           <section>
-            <h3>The p-value as a picture</h3>
-            <img class="fig" src="../assets/ab_testing/null_pvalue.svg" alt="null distribution and p-value" />
-            <div class="takeaway">
-              <span class="accent">Decision rule:</span> fix a threshold before the test, usually
-              α = 5%. p &lt; α: "statistically significant", we reject H0. Here: p = 0.039, so yes.
+            <h3>The p-value as a picture <span class="muted" style="font-size: 0.6em">(live)</span></h3>
+            <div class="ctrl">
+              <label>users per group <input type="range" id="pv-n" value="3" /> <span class="val" id="pv-n-v"></span></label>
+              <label>observed lift <input type="range" id="pv-d" min="-3" max="3" step="0.1" value="0.9" /> <span class="val" id="pv-d-v"></span></label>
+              <label>α <select id="pv-a"><option value="0.01">1%</option><option value="0.05" selected>5%</option><option value="0.1">10%</option></select></label>
+            </div>
+            <canvas id="pv-canvas" class="sim" width="1800" height="640"></canvas>
+            <div class="simout" id="pv-stats"></div>
+            <div class="takeaway" style="margin-top: 0.2em; font-size: 0.55em">
+              <span class="accent">α</span> is the band, chosen <em>before</em> the test.
+              <span class="red">p</span> is the red area, computed <em>after</em> it from our one number.
+              p &lt; α and "outside the band" are the same statement.
             </div>
             <aside class="notes">
-              The blue curve is the histogram from the A/A slide, smoothed and
-              scaled. Two-sided: we would also be surprised by a big negative
-              difference. Alpha 5% is a convention, not a law of nature.
+              Same bell curve and same grey band as on the noise slide, nothing new is computed. New is the orange
+              line: the one number our real experiment gave us. The red area is the p-value: how often noise alone
+              would produce a lift at least that far from zero, on either side (two-sided: a big negative lift
+              would surprise us too). Script: start at +0.9 pp, p = 3.9%, outside the band. Slide to +0.5: inside,
+              p = 25%, not significant. Slide to +3.0 (the checkout story): p practically zero, which is why the
+              dashboard number looked so convincing, and why the problem there was the groups, not the statistics.
+              Then alpha to 1%: the band widens, +0.9 is now inside. Alpha is a convention, not a law of nature.
             </aside>
           </section>
 
