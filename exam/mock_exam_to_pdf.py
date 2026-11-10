@@ -15,6 +15,7 @@ If dependencies are missing, install with:
 from __future__ import annotations
 
 import argparse
+import re
 import sys
 from pathlib import Path
 
@@ -118,6 +119,7 @@ def _build_html(
     sections: list[tuple[str, str]],
     answer_md: str,
     base_url: str,
+    section_breaks: bool = True,
 ) -> str:
     from markdown import markdown
 
@@ -126,11 +128,21 @@ def _build_html(
     for idx, (heading, body_md) in enumerate(sections):
         heading_html = markdown(f"## {heading}", extensions=["extra"])
         body_html = markdown(body_md, extensions=["extra"]) if body_md else ""
-        section_class = "section first-section" if idx == 0 and preface_md else "section"
+        # keep the question numbers from the markdown (each section is its own <ol>, which would restart at 1)
+        first = re.search(r"^\s*(\d+)\.\s", body_md, re.M) if body_md else None
+        if first and first.group(1) != "1":
+            body_html = body_html.replace("<ol>", f'<ol start="{first.group(1)}">', 1)
+        section_class = "section first-section" if (idx == 0 and preface_md) or not section_breaks else "section"
         sections_html.append(
             f'<div class="{section_class}">{heading_html}<div class="questions">{body_html}</div></div>'
         )
     answer_html = markdown(answer_md, extensions=["extra"]) if answer_md else ""
+
+    preface_block = "<div class=\"questions preface\">" + preface_html + "</div>" if preface_html else ""
+
+    sections_block = "".join(sections_html)
+
+    answer_block = "<div class=\"answer-key\">" + answer_html + "</div>" if answer_html else ""
 
     return f"""<!doctype html>
 <html>
@@ -186,9 +198,9 @@ def _build_html(
     </style>
   </head>
   <body>
-    {"<div class=\"questions preface\">" + preface_html + "</div>" if preface_html else ""}
-    {"".join(sections_html)}
-    {"<div class=\"answer-key\">" + answer_html + "</div>" if answer_html else ""}
+    {preface_block}
+    {sections_block}
+    {answer_block}
   </body>
 </html>
 """
@@ -227,6 +239,11 @@ def main() -> int:
         action="store_true",
         help="Include the answer key at the end of the PDF.",
     )
+    parser.add_argument(
+        "--no-section-breaks",
+        action="store_true",
+        help="Do not start every section on a new page (for short tests).",
+    )
     args = parser.parse_args()
 
     run_interactive = args.interactive or len(sys.argv) == 1
@@ -260,7 +277,10 @@ def main() -> int:
         formatted_sections.append((heading, body_md))
     if not include_answers:
         answer_md = ""
-    html = _build_html(preface_md, formatted_sections, answer_md, base_url=str(input_path.parent))
+    html = _build_html(
+        preface_md, formatted_sections, answer_md, base_url=str(input_path.parent),
+        section_breaks=not args.no_section_breaks,
+    )
 
     from weasyprint import HTML
 
