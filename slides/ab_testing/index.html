@@ -1221,11 +1221,56 @@ lo, hi = confint_proportions_2indep(
 
           <section>
             <h3>Simpson's paradox</h3>
-            <img class="fig small" src="../assets/ab_testing/simpson.svg" alt="Simpson's paradox" />
-            <div class="takeaway">
+            <div style="position: relative; display: inline-block">
+              <img class="fig small" src="../assets/ab_testing/simpson_segments.svg" alt="B wins in both segments" />
+              <img class="fig small fragment fade-in" src="../assets/ab_testing/simpson.svg" alt="B loses overall"
+                   style="position: absolute; left: 0; top: 0; background: var(--r-background-color)" />
+            </div>
+            <div class="takeaway fragment">
               B got mostly mobile users (low conversion), A got mostly desktop users. Happens when the split differs by segment:
               ramp-ups per platform, or observational data. Proper randomization prevents it, segment checks detect it.
             </div>
+            <aside class="notes">
+              First click: only the segments. Ask: B wins on mobile and on desktop, so what does B do overall? Everyone
+              says "wins". Second click: it loses. Let that sit, then the next slide shows why with the counts.
+            </aside>
+          </section>
+
+          <section>
+            <h3>Simpson's paradox in numbers</h3>
+            <table class="simple" style="font-size: 0.55em; max-width: 900px">
+              <tr><th></th><th>mobile</th><th>desktop</th><th class="c">overall</th></tr>
+              <tr>
+                <td class="blue"><b>A</b> (old checkout)</td>
+                <td>1,000 users &times; 3.0% = <b>30</b> buyers</td>
+                <td>4,000 users &times; 8.0% = <b>320</b> buyers</td>
+                <td class="c">350 / 5,000 = <b>7.0%</b></td>
+              </tr>
+              <tr>
+                <td class="green"><b>B</b> (new checkout)</td>
+                <td>4,000 users &times; 3.5% = <b>140</b> buyers</td>
+                <td>1,000 users &times; 9.0% = <b>90</b> buyers</td>
+                <td class="c">230 / 5,000 = <b>4.6%</b></td>
+              </tr>
+              <tr class="fragment">
+                <td class="muted">who is in the group?</td>
+                <td class="muted">A: 20% of its users, B: 80%</td>
+                <td class="muted">A: 80% of its users, B: 20%</td>
+                <td class="c muted">same size, different mix</td>
+              </tr>
+            </table>
+            <div class="takeaway fragment">
+              The overall rate is a <span class="accent">weighted</span> average: 80% of B's users sit in the segment where almost
+              nobody buys. "Overall" compares desktop people with mobile people, not the two checkouts.
+              With a coin flip per user both groups get the same mix, and the winner of every segment also wins overall.
+            </div>
+            <aside class="notes">
+              Walk through the buyers, not the rates: 30 + 320 against 140 + 90. The rates per segment favour B, the
+              counts favour A, because the counts carry the mix. Then the last row: it is the mix that differs, not the
+              checkout. Back to randomization: a coin flip per user gives both groups the same mix, so this cannot happen
+              in a clean A/B test. It happens in ramp-ups per platform and whenever people compare observational data.
+              The segment check in the SQL slide later is how you detect it.
+            </aside>
           </section>
         </section>
 

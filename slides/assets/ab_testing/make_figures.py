@@ -231,7 +231,8 @@ def fig_novelty():
 
 
 # ----------------------------------------------------------- 8. Simpson paradox
-def fig_simpson():
+def fig_simpson(with_overall=True):
+    # with_overall=False: same axes, the "overall" slot stays empty (first click on the slide)
     seg = ["mobile", "desktop", "overall"]
     users_a = np.array([1000, 4000])
     users_b = np.array([4000, 1000])
@@ -246,9 +247,14 @@ def fig_simpson():
     fig, ax = plt.subplots(figsize=(7.5, 4.2))
     ax.bar(x - w / 2, rates_a, w, color=BLUE, label="A (old checkout)")
     ax.bar(x + w / 2, rates_b, w, color=GREEN, label="B (new checkout)")
-    for i in range(3):
+    if not with_overall:
+        for bar in list(ax.containers[0])[2:] + list(ax.containers[1])[2:]:
+            bar.set_visible(False)
+    for i in range(3 if with_overall else 2):
         ax.text(x[i] - w / 2, rates_a[i] + 0.15, f"{rates_a[i]:.1f}%", ha="center", color=TEXT, fontsize=11)
         ax.text(x[i] + w / 2, rates_b[i] + 0.15, f"{rates_b[i]:.1f}%", ha="center", color=TEXT, fontsize=11)
+    if not with_overall:
+        ax.text(x[2], 4, "?", ha="center", color=ACCENT, fontsize=28, fontweight="bold")
     ax.set_xticks(x)
     ax.set_xticklabels(
         [
@@ -258,9 +264,10 @@ def fig_simpson():
         ]
     )
     ax.set_ylabel("conversion rate (%)")
-    ax.set_title("B wins in every segment ... and loses overall")
+    ax.set_ylim(0, 10.5)
+    ax.set_title("B wins in every segment ... and loses overall" if with_overall else "B wins in every segment ... and overall?")
     ax.legend(loc="upper left")
-    save(fig, "simpson")
+    save(fig, "simpson" if with_overall else "simpson_segments")
 
 
 # ------------------------------------------------------- 9. confidence intervals
@@ -292,5 +299,6 @@ if __name__ == "__main__":
     fig_peeking()
     fig_multiple_testing()
     fig_novelty()
+    fig_simpson(with_overall=False)
     fig_simpson()
     fig_ci()
