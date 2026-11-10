@@ -928,7 +928,7 @@ from statsmodels.stats.proportion import proportion_effectsize
 
 baseline = 0.05          # 5.0% convert today
 mde      = 0.005         # we care about +0.5 pp (5.0% -> 5.5%)
-effect   = proportion_effectsize(baseline + mde, baseline)
+effect   = proportion_effectsize(baseline + mde, baseline)   # pp -> one number for statsmodels (Cohen's h), never interpreted
 
 n_per_group = NormalIndPower().solve_power(
     effect_size=effect, alpha=0.05, power=0.8, alternative="two-sided"
