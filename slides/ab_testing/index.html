@@ -648,7 +648,7 @@
               not noise, but that only helps if the two groups were random (they were not, logged-in users only).
               Orange bars are p below 0.05, about 5% of them: that is alpha, before we even define it.
               Now users to 50,000: the grey band and the histogram narrow. The band is the only "noise knob" there is:
-              for yes/no data the spread is fixed by n and the baseline rate, SE = sqrt(2 p (1-p) / n).
+              for yes/no data the spread is fixed by n and the baseline rate b, SE = sqrt(2 b (1-b) / n).
               Say where the band comes from in two sentences: each visitor is a coin with 5% heads, add up 5,000
               coins and you get a bell curve whose width is known in advance (the dashed green line). The band is the
               middle 95% of that bell curve, computed before any experiment ran. The bars are the check: the reruns
@@ -821,49 +821,63 @@
         <section>
           <section>
             <h3>3. How many users do we need?</h3>
-            <p class="lead">Four knobs, three of them are decisions, not data:</p>
+            <p class="lead" style="font-size: 0.6em; margin-bottom: 0.3em">
+              The order is fixed. The one real decision is the <span class="accent">smallest lift worth shipping</span>.
+              α and power are conventions. Users and days are the result.
+            </p>
             <div class="cards">
               <div class="card blue">
-                <h4>Baseline</h4>
+                <h4>1. Baseline</h4>
                 <div class="big">5%</div>
-                <ul><li>current conversion rate, from your BI dashboard</li></ul>
+                <ul><li>a fact, from the BI dashboard</li></ul>
               </div>
               <div class="card">
-                <h4>Minimum detectable effect</h4>
-                <div class="big">+0.5 pp</div>
-                <ul><li>smallest lift worth shipping (business decision!)</li></ul>
+                <h4>2. MDE</h4>
+                <div class="big" style="font-size: 1.6em">+0.5 pp</div>
+                <ul><li>the decision: minimum detectable effect, below this we would not ship</li></ul>
               </div>
-              <div class="card red">
-                <h4>α</h4>
-                <div class="big">5%</div>
-                <ul><li>false alarm rate we accept</li></ul>
+              <div class="card muted">
+                <h4>3. α, power</h4>
+                <div class="big" style="font-size: 1.6em">5%, 80%</div>
+                <ul><li>conventions, the same in every test</li></ul>
               </div>
               <div class="card green">
-                <h4>Power</h4>
-                <div class="big">80%</div>
-                <ul><li>chance to detect the MDE if it is real</li></ul>
+                <h4>4. Users, days</h4>
+                <div class="big" style="font-size: 1.6em">31,200</div>
+                <ul><li>the result, not a knob: per group, a month at 2,000 visitors/day</li></ul>
               </div>
             </div>
-            <div class="takeaway fragment">
-              <span class="accent">Intuition:</span> small effects hide in noise. To see a
-              <em>half</em> as big effect you need <em>four</em> times the users.
+            <div class="takeaway fragment" style="font-size: 0.55em; margin-top: 0.4em">
+              <span class="accent">Lots of traffic, big effect:</span> the formula says days. Run it short, move on.
+              <span class="accent">Little traffic or a small effect:</span> it says months. Then test a bigger change, or accept that
+              effects this small are invisible to you. Lowering the power until the number fits is not planning, it is deciding the answer first.
             </div>
+            <aside class="notes">
+              The order matters: baseline is measured, the MDE is the one business decision, alpha and power are conventions,
+              users and days fall out. Students (and product teams) tend to run it backwards: "we have two weeks, which
+              parameters make two weeks enough?" Say why that is self-deception: power down to 60% means you miss a real
+              effect in 40% of the cases and only feel like you planned; MDE up to +1 pp means you are no longer testing the
+              question you had. The sample size is the number you get, not the number you want. The two practical cases:
+              big shop and a bold change, the test is over in days, do not run it longer than needed. Small shop or a
+              subtle change, the formula says months; then test bigger changes or be honest that this test cannot answer
+              the question. The next slides give the formula, the numbers and the live planner.
+            </aside>
           </section>
 
           <section>
             <h3>The one formula of the day (for demonstration only)</h3>
             <div class="formula">
-              \[ n_{\text{per group}} \;\approx\; \frac{16 \cdot p\,(1-p)}{\delta^{2}} \]
+              \[ n_{\text{per group}} \;\approx\; \frac{16 \cdot b\,(1-b)}{\delta^{2}} \]
             </div>
             <p class="lead muted" style="font-size: 0.55em">
-              rule of thumb for α = 5%, power = 80%; p = baseline rate, δ = minimum detectable effect (absolute). The 16 hides the α and power choices.
+              rule of thumb for α = 5%, power = 80%. b = baseline conversion rate (not the p-value, hence a different letter), δ = MDE, the minimum detectable effect in percentage points. The 16 hides the α and power choices.
             </p>
             <div class="takeaway fragment">
               Halve the effect, quadruple the users. That is the δ² in the denominator, and the
               reason small shops cannot test small changes.
             </div>
             <aside class="notes">
-              This is Lehr's rule. Full version: n = (z_{1-α/2} + z_{1-β})² · 2·p(1-p) / δ².
+              This is Lehr's rule. Full version: n = (z_{1-α/2} + z_{1-β})² · 2·b(1-b) / δ². Textbooks write p for the baseline rate, we use b so it does not collide with the p-value.
               With z = 1.96 and 0.84 the squared sum is 7.85, times 2 is about 16.
               We will not derive it, the notebook uses statsmodels.
             </aside>
@@ -872,7 +886,7 @@
           <section>
             <h3>The formula in numbers</h3>
             <table class="simple" style="font-size: 0.55em; max-width: 760px">
-              <tr><th>Baseline p</th><th>MDE δ</th><th class="c">rule of thumb</th><th class="c">statsmodels</th><th>at 2,000 visitors/day</th></tr>
+              <tr><th>Baseline rate b</th><th>MDE δ (minimum detectable effect)</th><th class="c">rule of thumb</th><th class="c">statsmodels</th><th>at 2,000 visitors/day</th></tr>
               <tr><td>5%</td><td>+2.0 pp (40% relative)</td><td class="c">1,900</td><td class="c">2,200 per group</td><td>2 days</td></tr>
               <tr><td>5%</td><td>+1.0 pp (20% relative)</td><td class="c">7,600</td><td class="c">8,100 per group</td><td>8 days</td></tr>
               <tr><td>5%</td><td>+0.5 pp (10% relative)</td><td class="c">30,400</td><td class="c">31,200 per group</td><td>1 month</td></tr>
@@ -897,8 +911,10 @@
             <div class="simout" id="plan-stats"></div>
             <aside class="notes">
               Pick your MDE, go right until you hit 80%, read off the users per group. That is the whole planning step.
-              Then the negotiation: marketing wants an answer in 7 days. Move "days you have" and watch the blue line:
-              the smallest detectable lift grows. Halve the MDE: the orange line moves four times to the right.
+              Then the reality check: marketing wants an answer in 7 days. Move "days you have" and watch the blue line:
+              the text says which lift 7 days can show at all. The answer to "can we do it in a week" is either "yes, we
+              only need 3 days" or "a week shows +1.2 pp or more, nothing smaller", never "let's lower the power".
+              Halve the MDE: the orange line moves four times to the right.
               This slide also solves tasks 1 and 2 of "Your turn" (baseline 2%, MDE +0.4 pp, 3,000 visitors/day),
               let them verify their notebook numbers here.
             </aside>

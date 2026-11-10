@@ -682,8 +682,10 @@
       $("plan-stats").innerHTML =
         `<b>Plan:</b> ${fmtInt(n)} users per group (rule of thumb: ${fmtInt(rule)}), ${fmtInt(2 * n)} in total, ` +
         `at ${fmtInt(v)} visitors/day that is <b>${daysNeeded} days</b>.<br/>` +
-        `<b>Negotiate:</b> in ${days} days you get ${fmtInt(nAvail)} per group, power for ${fmtPP(mde * 100, 2)} is only <b>${fmtPct(pwAvail, 0)}</b>. ` +
-        `The smallest lift you can detect in ${days} days: <b>${fmtPP(mdeMin * 100, 2)}</b> (${fmtPct(mdeMin / p0, 0)} relative).`;
+        (daysNeeded <= days
+          ? `<b>Fits:</b> ${days} days give ${fmtInt(nAvail)} per group, more than needed. Run it for ${daysNeeded} days, not longer.`
+          : `<b>Does not fit:</b> in ${days} days you get ${fmtInt(nAvail)} per group, power for ${fmtPP(mde * 100, 2)} is only <b>${fmtPct(pwAvail, 0)}</b>. ` +
+            `What ${days} days <em>can</em> show: a lift of at least <b>${fmtPP(mdeMin * 100, 2)}</b> (${fmtPct(mdeMin / p0, 0)} relative). Smaller effects are invisible in this time, whatever you set the power to.`);
     }
     redraws["plan-canvas"] = draw;
     draw();
