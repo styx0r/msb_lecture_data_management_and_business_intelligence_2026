@@ -850,6 +850,58 @@
     run();
   }
 
+  // ===================================================== 5b. the CI is the band, moved
+  function simCIBand() {
+    if (!$("cib-canvas")) return;
+    const c = canvas("cib-canvas");
+    const STEPS = [5000, 10000, 20000, 31250, 50000, 100000];
+    const getN = stepSlider("cib-n", STEPS, fmtInt, draw);
+    const getObs = numSlider("cib-d", (v) => fmtPP(v, 2), draw);
+
+    function draw() {
+      const n = getN(), obs = getObs();
+      const se = Math.sqrt((2 * P0 * (1 - P0)) / n) * 100;
+      const h = 1.96 * se;
+      const lo = obs - h, hi = obs + h;
+      const span = Math.max(1.2, Math.abs(obs) + h + 0.3);
+      clear(c);
+      const p = plot(c, { x0: -span, x1: span, y0: 0, y1: 3, ml: 30, mt: 16, mb: 46 });
+      const { ctx } = p;
+      axes(p, { xticks: niceTicks(-span, span, 10), xfmt: (v) => (v > 0 ? "+" : "") + v, xlabel: "lift B - A (percentage points)" });
+      const row = (yc, from, to, color, alpha, label, center, centerCol) => {
+        const y0 = p.y(yc + 0.38), y1 = p.y(yc - 0.38);
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = color;
+        ctx.fillRect(p.x(from), y0, p.x(to) - p.x(from), y1 - y0);
+        ctx.restore();
+        ctx.save();
+        ctx.strokeStyle = centerCol; ctx.lineWidth = 3;
+        ctx.beginPath(); ctx.moveTo(p.x(center), y0); ctx.lineTo(p.x(center), y1); ctx.stroke();
+        ctx.restore();
+        text(ctx, label, p.left + 10, y0 - 6, { color: centerCol, size: 13, bold: true });
+      };
+      row(2.1, -h, h, "#ffffff", 0.12, "the band around 0: is our number inside?  (p-value view)", 0, COL.text);
+      row(0.9, lo, hi, COL.accent, 0.35, "the same band around our number: 95% confidence interval", obs, COL.accent);
+      vline(p, 0, COL.text, [3, 4], 1);
+      // observed lift as a dot on the top row too
+      ctx.save();
+      ctx.fillStyle = COL.accent;
+      ctx.beginPath(); ctx.arc(p.x(obs), p.y(2.1), 6, 0, 2 * Math.PI); ctx.fill();
+      ctx.restore();
+      text(ctx, "observed " + fmtPP(obs, 2), p.x(obs) + 10, p.y(2.1) + 5, { color: COL.accent, size: 13 });
+      text(ctx, "[" + fmtPP(lo, 2) + ", " + fmtPP(hi, 2) + "]", p.x(obs), p.y(0.9) + 5 + 34, { color: COL.accent, size: 13, align: "center" });
+      const sig = !(lo <= 0 && 0 <= hi);
+      $("cib-stats").innerHTML =
+        `95% CI = ${fmtPP(obs, 2)} &plusmn; ${h.toFixed(2)} = <b class="accent">[${fmtPP(lo, 2)}, ${fmtPP(hi, 2)}]</b>. ` +
+        (sig
+          ? `It does <b>not contain 0</b>: significant, same verdict as p &lt; 5%. Read it as: the true lift is somewhere in here, most likely near ${fmtPP(obs, 2)}, but it could be as small as ${fmtPP(lo, 2)}.`
+          : `It <b>contains 0</b>: not significant. Read it as: the true lift could be ${fmtPP(hi, 2)}, zero, or even ${fmtPP(lo, 2)}. We do not know the sign.`);
+    }
+    redraws["cib-canvas"] = draw;
+    draw();
+  }
+
   // ===================================================== 6. multiple testing
   function simMulti() {
     if (!$("multi-canvas")) return;
@@ -911,6 +963,7 @@
     simErrors();
     simPlan();
     simPeek();
+    simCIBand();
     simCI();
     simMulti();
     if (window.Reveal && Reveal.on) {

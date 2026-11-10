@@ -1002,7 +1002,36 @@ print(f"{n_per_group:,.0f} users per group")
         <!-- ======================= ANALYSIS ======================= -->
         <section>
           <section>
-            <h3>6. Analyze: proportions</h3>
+            <h3>6. Analyze: day 31, the test is over</h3>
+            <div class="cards" style="max-width: 760px; margin: 0 auto">
+              <div class="card blue" style="text-align: center">
+                <h4>A: old checkout</h4>
+                <div class="big">4.99%</div>
+                <ul style="list-style: none; padding: 0"><li>1,560 of 31,250 visitors bought</li></ul>
+              </div>
+              <div class="card green" style="text-align: center">
+                <h4>B: new checkout</h4>
+                <div class="big">5.71%</div>
+                <ul style="list-style: none; padding: 0"><li>1,780 of 31,180 visitors bought</li></ul>
+              </div>
+            </div>
+            <p class="lead" style="margin: 0.4em 0 0.2em">Lift: <span class="accent">+0.72 pp</span>. The business asks three questions:</p>
+            <table class="simple" style="font-size: 0.55em; max-width: 820px">
+              <tr class="fragment"><td>1. Is the difference <b>real</b>, or noise?</td><td>the <span class="accent">p-value</span>: here p = 0.0001, far outside the band</td></tr>
+              <tr class="fragment"><td>2. How <b>big</b> is the effect?</td><td>the <span class="accent">lift</span>: +0.72 pp, about 14% more buyers</td></tr>
+              <tr class="fragment"><td>3. How <b>sure</b> are we about that size?</td><td>the <span class="accent">confidence interval</span>: +0.36 to +1.07 pp. New, next slides</td></tr>
+            </table>
+            <aside class="notes">
+              This is the moment after the test. Two numbers come back from the dashboard. Ask the room what they would
+              report to the product team: most say "+0.72 pp". Then the three questions. The p-value answers only the
+              first one, and by now they can read it: +0.72 is far outside the ±0.35 band for 31,000 users per group.
+              The second is just subtraction. The third is the new thing: the same number could have been +0.5 or
+              +0.9 in a rerun, and the business wants to know how far off we might be. That is the confidence interval.
+            </aside>
+          </section>
+
+          <section>
+            <h3>The tool: three lines of statsmodels</h3>
             <pre><code class="language-python" data-trim data-line-numbers="1-2|4-6|8-9|11-15">
 from statsmodels.stats.proportion import proportions_ztest
 from statsmodels.stats.proportion import confint_proportions_2indep
@@ -1032,7 +1061,32 @@ lo, hi = confint_proportions_2indep(
           </section>
 
           <section>
-            <h3>Confidence intervals: the honest summary</h3>
+            <h3>Confidence interval: the band, moved <span class="muted" style="font-size: 0.6em">(live)</span></h3>
+            <div class="ctrl">
+              <label>users per group <input type="range" id="cib-n" value="3" /> <span class="val" id="cib-n-v"></span></label>
+              <label>observed lift <input type="range" id="cib-d" min="-1" max="2" step="0.02" value="0.72" /> <span class="val" id="cib-d-v"></span></label>
+            </div>
+            <canvas id="cib-canvas" class="sim" width="1800" height="420"></canvas>
+            <div class="simout" id="cib-stats"></div>
+            <div class="takeaway" style="margin-top: 0.2em; font-size: 0.55em">
+              So far the band sat around 0 and we asked "is our number inside?". Put the same band around our number instead:
+              that is the <span class="accent">95% confidence interval</span>. If it does not contain 0, the result is significant,
+              and the interval tells the business how big the effect could be.
+            </div>
+            <aside class="notes">
+              Nothing new is computed here. The band width is the noise level from the A/A slide, ±1.96 SE. Top row:
+              the band around 0, the p-value view. Bottom row: the same band around our observed +0.72, the interval
+              view. Both say the same thing about significance (0 is outside the orange band exactly when +0.72 is
+              outside the grey band), but the interval also says how big the effect could plausibly be: anywhere from
+              +0.36 to +1.07, most likely near +0.72. Slide the observed lift to +0.3: the orange band now contains 0,
+              not significant, and the business sees that the true effect could be zero or even negative. Users down
+              to 5,000: both bands widen. statsmodels uses the observed rates for the width, which is why its interval
+              differs in the second decimal.
+            </aside>
+          </section>
+
+          <section>
+            <h3>Why 95%? The moved band, 20 times</h3>
             <div class="ctrl">
               <label>users per group <input type="range" id="ci-n" value="5" /> <span class="val" id="ci-n-v"></span></label>
               <label>true lift of B <input type="range" id="ci-d" min="-1" max="3" step="0.1" value="0.8" /> <span class="val" id="ci-d-v"></span></label>
@@ -1041,14 +1095,16 @@ lo, hi = confint_proportions_2indep(
             <canvas id="ci-canvas" class="sim" width="1800" height="640"></canvas>
             <div class="simout" id="ci-stats"></div>
             <div class="takeaway" style="margin-top: 0.2em; font-size: 0.55em">
-              A 95% CI is the range of effects that are compatible with the data. Over many experiments,
-              19 out of 20 of these intervals contain the true effect. If it excludes 0, p &lt; 0.05.
+              Each line is one rerun: its observed lift (dot) with the band around it. The true lift is the orange line.
+              In 19 of 20 reruns the band catches it, in 1 it misses (red). That is what "95%" promises, and the one miss is not a mistake, it is the 5%.
             </div>
             <aside class="notes">
-              The CI carries more information than the p-value: effect size,
-              direction, and uncertainty. "+0.72 pp [0.25, 1.18]" lets the business
-              judge if it is worth it. Also note: the red ones are not mistakes
-              of the analyst, that is the 5% at work.
+              Press "20 new experiments" a few times: the dots jump around, the bands jump with them, and almost always
+              19 or 20 of them catch the true lift. In reality we get one line and do not know whether it is a green or
+              the red one, we only know that red is rare. The interval carries more information than the p-value: effect
+              size, direction, and uncertainty. "+0.72 pp [0.36, 1.07]" lets the business judge if it is worth it.
+              True lift to 0: now many bands contain 0, those are the "not significant" ones, and the ones that do not
+              contain 0 are the 5% false alarms again.
             </aside>
           </section>
 
