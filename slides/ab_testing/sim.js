@@ -147,7 +147,7 @@
   function plot(c, o) {
     const ml = o.ml ?? 60, mr = o.mr ?? 20, mt = o.mt ?? 24, mb = o.mb ?? 46;
     const left = (o.left ?? 0) + ml, right = (o.right ?? c.W) - mr;
-    const top = mt, bottom = c.H - mb;
+    const top = o.top ?? mt, bottom = o.bottom ?? c.H - mb; // top/bottom: explicit panel bounds (stacked plots)
     const fx = o.xlog ? Math.log10 : (v) => v;
     const x0 = fx(o.x0), x1 = fx(o.x1);
     return {
@@ -393,7 +393,7 @@
         const inside = Math.abs(d) < Z * se;
         text(ctx, "true lift " + fmtPP(d, 2) + (inside ? " (inside the noise)" : " (outside the noise)"), p.x(d) + 6, p.top + 14, { color: COL.green, size: 13 });
       }
-      legend(ctx, p.right - 190, p.top + 14, [["p < 0.05", COL.accent], ["not significant", COL.blue], ["formula (bell curve)", COL.green]]);
+      legend(ctx, p.right - 210, p.top + 14, [["significant (p < α = 5%)", COL.accent], ["not significant", COL.blue], ["formula (bell curve)", COL.green]]);
       if (!diffs.length) text(ctx, "click 'run' to simulate", (p.left + p.right) / 2, (p.top + p.bottom) / 2, { align: "center", color: COL.muted, size: 18 });
 
       const N = diffs.length;
@@ -406,9 +406,9 @@
       const l = last.t;
       const first = d === 0
         ? `<b>${fmtInt(N)}</b> experiment${N === 1 ? "" : "s"}, nothing changed between A and B. Observed lifts ranged from <b>${fmtPP(lo, 2)}</b> to <b>${fmtPP(hi, 2)}</b>. ` +
-          `The test said "significant" (p &lt; 0.05) in <b>${fmtPct(s, 1)}</b> of them: that is &alpha;, the false alarm rate.`
+          `The test said "significant" (outside the band) in <b>${fmtPct(s, 1)}</b> of them: that is &alpha;, the false alarm rate.`
         : `<b>${fmtInt(N)}</b> experiment${N === 1 ? "" : "s"}, B really is <b>${fmtPP(d, 2)}</b> better. Observed lifts ranged from <b>${fmtPP(lo, 2)}</b> to <b>${fmtPP(hi, 2)}</b>. ` +
-          `The test found it (p &lt; 0.05) in <b>${fmtPct(s, 1)}</b> of them: that is the power at this sample size and lift.`;
+          `The test found it (outside the band) in <b>${fmtPct(s, 1)}</b> of them: that is the power at this sample size and lift.`;
       $("noise-stats").innerHTML = first + `<br/>` +
         `last one: A ${fmtInt(last.a)} / ${fmtInt(last.n)} = ${fmtPct(l.pa, 2)}, B ${fmtInt(last.b)} / ${fmtInt(last.n)} = ${fmtPct(l.pb, 2)}, lift ${fmtPP(l.diff * 100, 2)}, ${fmtP(l.p)}`;
     }
@@ -425,28 +425,43 @@
   function simPvalue() {
     if (!$("pv-canvas")) return;
     const c = canvas("pv-canvas");
+    const REPS = 1000;
+    const Z = zq(0.975);
+    let reps = [], repsN = 0; // A/A reruns (lift in pp) for the current n
     const getN = stepSlider("pv-n", N_STEPS, fmtInt, draw);
     const getObs = numSlider("pv-d", (v) => fmtPP(v, 1), draw);
     $("pv-a").addEventListener("change", draw);
 
+    function rerun(n) {
+      reps = [];
+      for (let i = 0; i < REPS; i++) reps.push(((binom(n, P0) - binom(n, P0)) / n) * 100);
+      repsN = n;
+    }
+
     function draw() {
       const n = getN(), obs = getObs(), alpha = +$("pv-a").value;
+      if (repsN !== n) rerun(n);
       const se = Math.sqrt((2 * P0 * (1 - P0)) / n) * 100;
       const crit = zq(1 - alpha / 2) * se;
       const a = Math.abs(obs);
       const pval = 2 * (1 - Phi(a / se));
-      const x0 = -Math.max(3.8 * se, a + 1.4 * se), x1 = -x0;
-      const ymax = phi(0) / se;
+      const far = reps.filter((v) => Math.abs(v) >= a).length;
+      // bins aligned to the 5% band as on the noise slide
+      const w = (Z * se) / 8;
+      const half = Math.max(4.5 * se, a + 1.4 * se);
+      const x0 = Math.floor(-half / w) * w, x1 = -x0;
+      const bins = Math.round((x1 - x0) / w);
+      const cntAll = new Array(bins).fill(0), cntFar = new Array(bins).fill(0);
+      reps.forEach((v) => {
+        const k = Math.min(bins - 1, Math.max(0, Math.floor((v - x0) / w)));
+        cntAll[k]++;
+        if (Math.abs(v) >= a) cntFar[k]++;
+      });
+      const ymax = Math.max(5, ...cntAll) * 1.45;
       clear(c);
-      const p = plot(c, { x0, x1, y0: 0, y1: ymax * 1.2, ml: 30 });
+      const p = plot(c, { x0, x1, y0: 0, y1: ymax, ml: 64 });
       const { ctx } = p;
-      const xs = [], ys = [];
-      for (let i = 0; i <= 500; i++) {
-        const x = x0 + ((x1 - x0) * i) / 500;
-        xs.push(x);
-        ys.push(phi(x / se) / se);
-      }
-      // alpha band: fixed before the test
+      // alpha band
       ctx.save();
       ctx.fillStyle = "rgba(255,255,255,0.07)";
       ctx.fillRect(p.x(-crit), p.top, p.x(crit) - p.x(-crit), p.bottom - p.top);
@@ -454,43 +469,46 @@
       ctx.beginPath(); ctx.moveTo(p.x(-crit), p.top); ctx.lineTo(p.x(-crit), p.bottom);
       ctx.moveTo(p.x(crit), p.top); ctx.lineTo(p.x(crit), p.bottom); ctx.stroke();
       ctx.restore();
-      // p-value: red area beyond the observed lift, both sides
-      function fill(from, to) {
-        ctx.save();
-        ctx.globalAlpha = 0.7;
+      axes(p, {
+        xticks: niceTicks(x0, x1, 10), xfmt: (v) => (v > 0 ? "+" : "") + v,
+        yticks: niceTicks(0, ymax, 4), ygrid: true,
+        xlabel: "lift B - A in the rerun (percentage points)", ylabel: "A/A reruns",
+      });
+      for (let k = 0; k < bins; k++) {
+        if (!cntAll[k]) continue;
+        const xl = p.x(x0 + k * w) + 1, xr = p.x(x0 + (k + 1) * w) - 1;
+        ctx.fillStyle = COL.blue;
+        ctx.fillRect(xl, p.y(cntAll[k] - cntFar[k]), xr - xl, p.bottom - p.y(cntAll[k] - cntFar[k]));
         ctx.fillStyle = COL.red;
-        ctx.beginPath();
-        ctx.moveTo(p.x(from), p.bottom);
-        xs.forEach((x, i) => { if (x >= from && x <= to) ctx.lineTo(p.x(x), p.y(ys[i])); });
-        ctx.lineTo(p.x(to), p.bottom);
-        ctx.closePath();
-        ctx.fill();
-        ctx.restore();
+        ctx.fillRect(xl, p.y(cntAll[k]), xr - xl, p.y(cntAll[k] - cntFar[k]) - p.y(cntAll[k]));
       }
-      fill(a, x1);
-      fill(x0, -a);
-      polyline(p, xs, ys, COL.blue);
+      // formula curve, as on the noise slide
+      const xs = [], ys = [];
+      for (let i = 0; i <= 120; i++) {
+        const v = x0 + ((x1 - x0) * i) / 120;
+        xs.push(v);
+        ys.push((REPS * w * Math.exp(-0.5 * Math.pow(v / se, 2))) / (se * Math.sqrt(2 * Math.PI)));
+      }
+      polyline(p, xs, ys, COL.green, 2, [8, 5]);
       vline(p, 0, COL.text, [], 1);
       vline(p, obs, COL.accent, [], 3);
-      const rightSide = p.x(obs) < (p.left + p.right) / 2; // label on the side with more room
-      text(ctx, "observed lift " + fmtPP(obs, 1) + " (our one experiment)", p.x(obs) + (rightSide ? 8 : -8), p.top + 16, { color: COL.accent, size: 13, align: rightSide ? "left" : "right" });
-      text(ctx, "α = " + fmtPct(alpha, 0) + ": band ±" + crit.toFixed(2) + " pp, fixed before the test", p.x(0), p.bottom - 10, { color: COL.muted, size: 13, align: "center" });
-      const pTxt = pval < 0.0001 ? "p = red area < 0.01%" : "p = red area = " + fmtPct(pval, 1);
-      const pLeft = p.x(a) + 8 > p.right - 160; // near the right edge: put the label left of the line
-      text(ctx, pTxt, p.x(a) + (pLeft ? -8 : 8), p.y(ymax * 0.28), { color: COL.red, size: 14, bold: true, align: pLeft ? "right" : "left" });
-      axes(p, {
-        xticks: niceTicks(x0, x1, 8), xfmt: (v) => (v > 0 ? "+" : "") + v,
-        xlabel: "lift B - A (percentage points)",
-      });
+      if (a > 0) vline(p, -obs, COL.accent, [2, 4], 1);
+      const rightSide = p.x(obs) < (p.left + p.right) / 2;
+      text(ctx, "our one real experiment: " + fmtPP(obs, 1), p.x(obs) + (rightSide ? 8 : -8), p.top + 16, { color: COL.accent, size: 13, bold: true, align: rightSide ? "left" : "right" });
+      text(ctx, "α = " + fmtPct(alpha, 0) + ": the band, ±" + crit.toFixed(2) + " pp, fixed before the test", p.x(0), p.top + 36, { color: COL.muted, size: 12, align: "center" });
       legend(ctx, p.left + 12, p.top + 16, [
-        ["noise alone: what we see if B changes nothing (H0)", COL.blue],
-        ["p-value: noise alone gives at least this lift", COL.red],
-        ["inside the band: could be noise", "rgba(255,255,255,0.2)"],
+        ["rerun with nothing changed (A/A)", COL.blue],
+        ["rerun at least as far from 0 as ours", COL.red],
+        ["formula (bell curve)", COL.green],
       ]);
       const sig = pval < alpha;
-      $("pv-stats").innerHTML = sig
-        ? `<b>${fmtP(pval)}</b> &lt; &alpha; = ${fmtPct(alpha, 0)}: the line is <b class="accent">outside the band</b>. Noise alone produces such a lift in ${pval < 0.0001 ? "less than 0.01%" : "only " + fmtPct(pval, 1)} of A/A tests, so we call it <b>statistically significant</b> and reject H0.`
-        : `<b>${fmtP(pval)}</b> &ge; &alpha; = ${fmtPct(alpha, 0)}: the line is <b class="accent">inside the band</b>. Noise alone produces such a lift in ${fmtPct(pval, 1)} of A/A tests, that is too often to rule out noise. <b>Not significant</b>, we keep H0.`;
+      const pTxt = pval < 0.0001 ? "less than 0.01%" : fmtPct(pval, 1);
+      $("pv-stats").innerHTML =
+        `Under H0, a difference of at least ${fmtPP(a, 1)} (either side) has probability <b class="red">p = ${pTxt}</b> (formula). ` +
+        `Check with the reruns: <b class="red">${far}</b> of ${fmtInt(REPS)} landed that far out, ${fmtPct(far / REPS, 1)}.<br/>` +
+        (sig
+          ? `p &lt; &alpha; = ${fmtPct(alpha, 0)}, our line is <b class="accent">outside the band</b>: noise alone rarely does this, <b>statistically significant</b>, reject H0.`
+          : `p &ge; &alpha; = ${fmtPct(alpha, 0)}, our line is <b class="accent">inside the band</b>: noise alone does this all the time, <b>not significant</b>, keep H0.`);
     }
     redraws["pv-canvas"] = draw;
     draw();
@@ -500,62 +518,119 @@
   function simErrors() {
     if (!$("err-canvas")) return;
     const c = canvas("err-canvas");
+    const REPS = 1000;
+    const Z = zq(0.975);
+    let reps = [], repsKey = ""; // reruns (lift in pp) in the world set by the true-lift slider
     const getN = stepSlider("err-n", N_STEPS, fmtInt, draw);
     const getD = numSlider("err-d", (v) => fmtPP(v, 1), draw);
+    const getObs = numSlider("err-obs", (v) => fmtPP(v, 1), draw);
     $("err-a").addEventListener("change", draw);
 
+    function rerun(n, d) {
+      reps = [];
+      for (let i = 0; i < REPS; i++) reps.push(((binom(n, P0 + d / 100) - binom(n, P0)) / n) * 100);
+      repsKey = n + "/" + d;
+    }
+
     function draw() {
-      const n = getN(), d = getD(), alpha = +$("err-a").value;
+      const n = getN(), d = getD(), obs = getObs(), alpha = +$("err-a").value;
+      if (repsKey !== n + "/" + d) rerun(n, d);
+      const h0 = d === 0; // world 1: B changes nothing
       const se = Math.sqrt((2 * P0 * (1 - P0)) / n) * 100;
       const crit = zq(1 - alpha / 2) * se;
       const beta = Phi((crit - d) / se) - Phi((-crit - d) / se);
-      const x0 = -3.6 * se, x1 = Math.max(d + 3.6 * se, crit + 1.5 * se);
-      const ymax = phi(0) / se;
-      clear(c);
-      const p = plot(c, { x0, x1, y0: 0, y1: ymax * 1.15, ml: 30 });
-      const { ctx } = p;
-      const xs = [], y0s = [], y1s = [];
-      for (let i = 0; i <= 400; i++) {
-        const x = x0 + ((x1 - x0) * i) / 400;
-        xs.push(x);
-        y0s.push(phi(x / se) / se);
-        y1s.push(phi((x - d) / se) / se);
-      }
-      function fill(ys, from, to, color, alpha) {
-        ctx.save();
-        ctx.globalAlpha = alpha;
-        ctx.fillStyle = color;
-        ctx.beginPath();
-        ctx.moveTo(p.x(from), p.bottom);
-        xs.forEach((x, i) => { if (x >= from && x <= to) ctx.lineTo(p.x(x), p.y(ys[i])); });
-        ctx.lineTo(p.x(to), p.bottom);
-        ctx.closePath();
-        ctx.fill();
-        ctx.restore();
-      }
-      fill(y0s, crit, x1, COL.red, 0.75);
-      fill(y0s, x0, -crit, COL.red, 0.75);
-      fill(y1s, -crit, crit, COL.muted, 0.45);
-      fill(y1s, crit, x1, COL.green, 0.3);
-      polyline(p, xs, y0s, COL.blue);
-      polyline(p, xs, y1s, COL.green);
-      vline(p, crit, COL.accent);
-      vline(p, -crit, COL.accent, [2, 4], 1);
-      text(ctx, "decision threshold", p.x(crit) + 6, p.top + 14, { color: COL.accent, size: 13 });
-      axes(p, {
-        xticks: niceTicks(x0, x1, 8), xfmt: (v) => (v > 0 ? "+" : "") + v,
-        xlabel: "observed lift B - A (percentage points)",
+      const w = (Z * se) / 8;
+      const half = Math.max(4 * se, Math.abs(obs) + 1.2 * se);
+      const x0 = Math.floor(-half / w) * w, x1 = Math.ceil((d + half) / w) * w;
+      const bins = Math.round((x1 - x0) / w);
+      const cnt = new Array(bins).fill(0), flag = new Array(bins).fill(0);
+      // flagged reruns: outside the band in world 1 (false alarms), inside the band otherwise (missed effects)
+      reps.forEach((v) => {
+        const k = Math.min(bins - 1, Math.max(0, Math.floor((v - x0) / w)));
+        cnt[k]++;
+        if (h0 ? Math.abs(v) > crit : Math.abs(v) <= crit) flag[k]++;
       });
-      legend(ctx, p.left + 12, p.top + 16, [
-        ["no effect (H0)", COL.blue],
-        ["true lift " + fmtPP(d, 1) + " (H1)", COL.green],
-        ["α: false alarm (type I)", COL.red],
-        ["β: missed effect (type II)", COL.muted],
-        ["power = 1 - β", "rgba(144,238,144,0.4)"],
-      ]);
-      $("err-stats").innerHTML =
-        `noise level (standard error) <b>${se.toFixed(2)} pp</b> &middot; threshold <b>&plusmn;${crit.toFixed(2)} pp</b> &middot; ` +
-        `&alpha; = <b>${fmtPct(alpha, 0)}</b> &middot; &beta; = <b>${fmtPct(beta, 0)}</b> &middot; power = <b>${fmtPct(1 - beta, 0)}</b>`;
+      const flagged = flag.reduce((a, b) => a + b, 0);
+      const ymax = Math.max(5, ...cnt) * 1.5;
+      clear(c);
+      const p = plot(c, { x0, x1, y0: 0, y1: ymax, ml: 64 });
+      const { ctx } = p;
+      // band
+      ctx.save();
+      ctx.fillStyle = "rgba(255,255,255,0.07)";
+      ctx.fillRect(p.x(-crit), p.top, p.x(crit) - p.x(-crit), p.bottom - p.top);
+      ctx.strokeStyle = COL.muted; ctx.lineWidth = 1; ctx.setLineDash([4, 4]);
+      ctx.beginPath(); ctx.moveTo(p.x(-crit), p.top); ctx.lineTo(p.x(-crit), p.bottom);
+      ctx.moveTo(p.x(crit), p.top); ctx.lineTo(p.x(crit), p.bottom); ctx.stroke();
+      ctx.restore();
+      axes(p, {
+        xticks: niceTicks(x0, x1, 10), xfmt: (v) => (v > 0 ? "+" : "") + v,
+        yticks: niceTicks(0, ymax, 4), ygrid: true,
+        xlabel: "lift B - A in the rerun (percentage points)", ylabel: "reruns",
+      });
+      // H0 curve (formula) and, in world 2, its red tails = alpha
+      const xs = [], y0s = [];
+      for (let i = 0; i <= 200; i++) {
+        const v = x0 + ((x1 - x0) * i) / 200;
+        xs.push(v);
+        y0s.push((REPS * w * phi(v / se)) / se);
+      }
+      // bars: the world we are in
+      const base = h0 ? COL.blue : COL.green, flagCol = h0 ? COL.red : COL.muted;
+      for (let k = 0; k < bins; k++) {
+        if (!cnt[k]) continue;
+        const xl = p.x(x0 + k * w) + 1, xr = p.x(x0 + (k + 1) * w) - 1;
+        ctx.fillStyle = base;
+        ctx.fillRect(xl, p.y(cnt[k] - flag[k]), xr - xl, p.bottom - p.y(cnt[k] - flag[k]));
+        ctx.fillStyle = flagCol;
+        ctx.fillRect(xl, p.y(cnt[k]), xr - xl, p.y(cnt[k] - flag[k]) - p.y(cnt[k]));
+      }
+      if (!h0) {
+        const fill = (from, to) => {
+          ctx.save();
+          ctx.globalAlpha = 0.75;
+          ctx.fillStyle = COL.red;
+          ctx.beginPath();
+          ctx.moveTo(p.x(from), p.bottom);
+          xs.forEach((x, i) => { if (x >= from && x <= to) ctx.lineTo(p.x(x), p.y(y0s[i])); });
+          ctx.lineTo(p.x(to), p.bottom);
+          ctx.closePath();
+          ctx.fill();
+          ctx.restore();
+        };
+        fill(crit, x1);
+        fill(x0, -crit);
+      }
+      polyline(p, xs, y0s, COL.blue, 1.5, [8, 5]);
+      if (!h0) {
+        const y1s = xs.map((v) => (REPS * w * phi((v - d) / se)) / se);
+        polyline(p, xs, y1s, COL.green, 1.5, [8, 5]);
+        vline(p, d, COL.green, [6, 4], 2);
+        text(ctx, "true lift " + fmtPP(d, 1), p.x(d) + 6, p.top + 36, { color: COL.green, size: 12 });
+      }
+      vline(p, 0, COL.text, [], 1);
+      vline(p, obs, COL.accent, [], 3);
+      text(ctx, "α = " + fmtPct(alpha, 0) + ": the band, ±" + crit.toFixed(2) + " pp", p.x(crit) - 6, p.top + 16, { color: COL.muted, size: 12, align: "right" });
+      const rightSide = p.x(obs) < (p.left + p.right) / 2;
+      text(ctx, "our one real experiment: " + fmtPP(obs, 1), p.x(obs) + (rightSide ? 8 : -8), p.top + 56, { color: COL.accent, size: 13, bold: true, align: rightSide ? "left" : "right" });
+      legend(ctx, p.left + 12, p.top + 16, h0
+        ? [["rerun, B changes nothing (H0)", COL.blue], ["outside the band: false alarm (α)", COL.red]]
+        : [["rerun, B really adds " + fmtPP(d, 1), COL.green], ["inside the band: missed effect (β)", COL.muted], ["H0 curve, its tails outside the band: α", COL.red]]);
+
+      const inside = Math.abs(obs) <= crit;
+      let line1, verdict;
+      if (h0) {
+        line1 = `<span class="blue">World 1, B changes nothing:</span> <b class="red">${flagged}</b> of ${fmtInt(REPS)} reruns land outside the band = ${fmtPct(flagged / REPS, 1)}. Those are the false alarms, formula: &alpha; = ${fmtPct(alpha, 0)}. No effect to miss, so no &beta; here.`;
+        verdict = inside
+          ? `Our number is <b class="accent">inside the band</b>: "not significant", and in this world that is right.`
+          : `Our number is <b class="accent">outside the band</b>: "significant", and in this world that is a <b>type I error</b>.`;
+      } else {
+        line1 = `<span class="green">World 2, B really adds ${fmtPP(d, 1)}:</span> <b>${flagged}</b> of ${fmtInt(REPS)} reruns land inside the band = ${fmtPct(flagged / REPS, 1)}. Those are the missed effects, formula: &beta; = ${fmtPct(beta, 0)}, power = ${fmtPct(1 - beta, 0)}. &alpha; = ${fmtPct(alpha, 0)} is still the red tail of the H0 curve: what world 1 would have produced.`;
+        verdict = inside
+          ? `Our number is <b class="accent">inside the band</b>: "not significant", and in this world that is a <b>type II error</b>.`
+          : `Our number is <b class="accent">outside the band</b>: "significant", and in this world that is right.`;
+      }
+      $("err-stats").innerHTML = line1 + `<br/>` + verdict + ` We never know which world we are in.`;
     }
     redraws["err-canvas"] = draw;
     draw();

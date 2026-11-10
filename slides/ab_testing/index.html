@@ -686,26 +686,33 @@
 
           <section>
             <h3>The p-value as a picture <span class="muted" style="font-size: 0.6em">(live)</span></h3>
+            <p class="lead" style="margin: 0 0 0.2em; font-size: 0.6em">
+              We run the experiment <span class="accent">once</span> and get one number. Even so, we can compute the bell curve for
+              "B changes nothing" (H0) without any reruns. Then we ask: <span class="red">if H0 is true, how likely is a difference this big or bigger?</span>
+              That probability is p.
+            </p>
             <div class="ctrl">
               <label>users per group <input type="range" id="pv-n" value="3" /> <span class="val" id="pv-n-v"></span></label>
               <label>observed lift <input type="range" id="pv-d" min="-3" max="3" step="0.1" value="0.9" /> <span class="val" id="pv-d-v"></span></label>
               <label>α <select id="pv-a"><option value="0.01">1%</option><option value="0.05" selected>5%</option><option value="0.1">10%</option></select></label>
             </div>
-            <canvas id="pv-canvas" class="sim" width="1800" height="640"></canvas>
+            <canvas id="pv-canvas" class="sim" width="1800" height="500"></canvas>
             <div class="simout" id="pv-stats"></div>
             <div class="takeaway" style="margin-top: 0.2em; font-size: 0.55em">
-              <span class="accent">α</span> is the band, chosen <em>before</em> the test.
-              <span class="red">p</span> is the red area, computed <em>after</em> it from our one number.
-              p &lt; α and "outside the band" are the same statement.
+              1. The H0 bell curve is known in advance (formula), the reruns only illustrate it.<br/>
+              2. <span class="red">p</span> = probability under H0 of our difference or a bigger one, on either side.<br/>
+              3. <span class="red">p</span> &lt; <span class="accent">α</span> (5%, fixed before the test): statistically significant, we reject H0.
             </div>
             <aside class="notes">
-              Same bell curve and same grey band as on the noise slide, nothing new is computed. New is the orange
-              line: the one number our real experiment gave us. The red area is the p-value: how often noise alone
-              would produce a lift at least that far from zero, on either side (two-sided: a big negative lift
-              would surprise us too). Script: start at +0.9 pp, p = 3.9%, outside the band. Slide to +0.5: inside,
-              p = 25%, not significant. Slide to +3.0 (the checkout story): p practically zero, which is why the
-              dashboard number looked so convincing, and why the problem there was the groups, not the statistics.
-              Then alpha to 1%: the band widens, +0.9 is now inside. Alpha is a convention, not a law of nature.
+              This slide only adds one thing to the noise slide: our real experiment, the orange line. Say it slowly:
+              in reality we run the test once and get one number, +0.9 pp. The 1,000 blue reruns are the time machine
+              where nothing changed. Red = the reruns that landed at least 0.9 pp away from zero, on either side (a
+              big negative lift would surprise us just as much). Count them: 41 of 1,000, that is p. The formula gives
+              the same number without rerunning anything. Alpha is the other thing on the slide: the band we fixed
+              before the test, 5%. Orange bars on the noise slide were exactly the reruns outside this band.
+              Script: slide to +0.5, p = 25%, inside the band, noise does this all the time. Slide to +3.0 (the
+              checkout story): no rerun ever got there, p under 0.01%, which is why the dashboard number looked so
+              convincing. The problem there was the groups, not the statistics. Then alpha to 1%: the band widens.
             </aside>
           </section>
 
@@ -731,7 +738,7 @@
               </tr>
             </table>
             <div class="takeaway fragment">
-              Always report the <span class="accent">effect size with a confidence interval</span> next to the p-value.
+              Always report the <span class="accent">effect size with a confidence interval</span> next to the p-value (what that is: in the Analyze section).
             </div>
           </section>
         </section>
@@ -786,20 +793,26 @@
             <h3>α, β and power in one picture <span class="muted" style="font-size: 0.6em">(live)</span></h3>
             <div class="ctrl">
               <label>users per group <input type="range" id="err-n" value="3" /> <span class="val" id="err-n-v"></span></label>
-              <label>true lift of B <input type="range" id="err-d" min="0" max="3" step="0.1" value="1" /> <span class="val" id="err-d-v"></span></label>
+              <label>true lift of B <input type="range" id="err-d" min="0" max="3" step="0.1" value="0" /> <span class="val" id="err-d-v"></span></label>
+              <label>observed lift <input type="range" id="err-obs" min="-1" max="3" step="0.1" value="0.7" /> <span class="val" id="err-obs-v"></span></label>
               <label>α <select id="err-a"><option value="0.01">1%</option><option value="0.05" selected>5%</option><option value="0.1">10%</option></select></label>
             </div>
-            <canvas id="err-canvas" class="sim" width="1800" height="700"></canvas>
+            <canvas id="err-canvas" class="sim" width="1800" height="560"></canvas>
             <div class="simout" id="err-stats"></div>
             <div class="takeaway" style="margin-top: 0.2em; font-size: 0.55em">
-              The only ways to shrink <em>both</em> errors: more users (curves get narrower)
-              or a bigger true effect (curves move apart).
+              True lift 0: the p-value picture, the only world with false alarms (α). True lift above 0: the reruns move right,
+              the ones left inside the band are missed effects (β). The band decides what we <em>say</em>, the world decides whether we were <em>right</em>.
             </div>
             <aside class="notes">
-              Blue: what we would see if B did nothing. Green: what we see if B really adds the lift.
-              Let a student drive: alpha to 10%: threshold moves left, more power, more false alarms.
-              Alpha to 1%: the opposite. Users up: both curves narrow, beta shrinks. Lift up: curves move apart.
-              This trade-off is why sample size matters, next section.
+              Start with true lift 0: this is the p-value picture again, blue reruns, red ones outside the band are
+              the false alarms, alpha. Then turn the true lift up to +1.0: the bars move right and turn green, this is
+              the world where B really works. Grey = the reruns that still land inside the band, we would say "not
+              significant" although B works: beta. The H0 curve stays as a dashed line with red tails: alpha is a
+              property of the band, it does not change when the truth changes. Then the orange line, our one real
+              experiment: at +0.7 inside the band. With true lift 0 that verdict is right, with true lift +1.0 it is a
+              type II error. Slide it to +1.2: now "significant", a false alarm at true lift 0, right at +1.0. We never
+              know which world we are in. Let a student drive: alpha to 10%: band narrower, less beta, more alpha.
+              Users up: everything narrows, beta shrinks. This trade-off is why sample size matters, next section.
             </aside>
           </section>
         </section>
