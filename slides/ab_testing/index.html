@@ -1194,7 +1194,6 @@ lo, hi = confint_proportions_2indep(
             <div class="ctrl">
               <label>metrics tested <input type="range" id="multi-k" min="1" max="50" step="1" value="20" /> <span class="val" id="multi-k-v"></span></label>
               <label>α per metric <select id="multi-a"><option value="0.01">1%</option><option value="0.05" selected>5%</option><option value="0.1">10%</option></select></label>
-              <label><input type="checkbox" id="multi-bonf" /> Bonferroni (α / metrics)</label>
               <button class="btn primary" id="multi-run">new dashboard</button>
             </div>
             <canvas id="multi-canvas" class="sim" width="1800" height="620"></canvas>
@@ -1206,7 +1205,8 @@ lo, hi = confint_proportions_2indep(
             <aside class="notes">
               Nothing works in this dashboard, every metric is pure noise. Slide the metric count up and watch
               tiles light up. "New dashboard" rolls again: a different metric wins every time, that is the point.
-              Tick Bonferroni: the lights go out, and so does most of your power. Better: one primary metric.
+              The fix is not a stricter threshold (there are corrections for that, we skip them), it is deciding one
+              primary metric before the test. Everything else on the dashboard is for finding ideas, not for shipping.
             </aside>
           </section>
 

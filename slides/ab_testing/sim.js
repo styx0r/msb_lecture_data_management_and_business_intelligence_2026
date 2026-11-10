@@ -840,12 +840,11 @@
     const roll = () => { u = Array.from({ length: KMAX }, Math.random); draw(); };
     const getK = numSlider("multi-k", (v) => String(v), draw);
     $("multi-a").addEventListener("change", draw);
-    $("multi-bonf").addEventListener("change", draw);
 
     function draw() {
-      const k = getK(), alpha = +$("multi-a").value, bonf = $("multi-bonf").checked;
-      const thr = bonf ? alpha / k : alpha;
-      const pAtLeastOne = (kk) => 1 - Math.pow(1 - (bonf ? alpha / kk : alpha), kk);
+      const k = getK(), alpha = +$("multi-a").value;
+      const thr = alpha;
+      const pAtLeastOne = (kk) => 1 - Math.pow(1 - alpha, kk);
       clear(c);
       const p = plot(c, { x0: 1, x1: KMAX, y0: 0, y1: 1, ml: 60, right: c.W * 0.58, mr: 16 });
       axes(p, {
@@ -876,7 +875,7 @@
         if (win) text(p.ctx, "win!", x + size / 2, y + size / 2 + 4, { align: "center", size: Math.max(9, Math.min(14, size / 3.2)), bold: true, color: "#111" });
       }
       $("multi-stats").innerHTML =
-        `with ${k} metrics at α = ${fmtPct(alpha, 0)}${bonf ? ` and Bonferroni (threshold ${fmtPct(thr, 2)} each)` : ""}: ` +
+        `with ${k} metrics at α = ${fmtPct(alpha, 0)}: ` +
         `chance of at least one false "win" = <b>${fmtPct(pAtLeastOne(k), 0)}</b> &middot; this dashboard shows <b>${wins}</b> false win${wins === 1 ? "" : "s"}`;
     }
 
