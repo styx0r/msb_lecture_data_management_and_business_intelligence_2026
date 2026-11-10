@@ -1070,11 +1070,15 @@ lo, hi = confint_proportions_2indep(
             <div class="simout" id="cib-stats"></div>
             <div class="takeaway" style="margin-top: 0.2em; font-size: 0.55em">
               So far the band sat around 0 and we asked "is our number inside?". Put the same band around our number instead:
-              that is the <span class="accent">95% confidence interval</span>. If it does not contain 0, the result is significant,
-              and the interval tells the business how big the effect could be.
+              that is the <span class="accent">95% confidence interval</span>. Read it as:
+              <span class="accent">we are 95% confident that the true lift lies somewhere in this interval.</span>
+              If it does not contain 0, the result is significant, and the interval tells the business how big the effect could be.
             </div>
             <aside class="notes">
-              Nothing new is computed here. The band width is the noise level from the A/A slide, ±1.96 SE. Top row:
+              Nothing new is computed here. The band width is the noise level from the A/A slide, ±1.96 SE. What "95%
+              confident" means precisely: if we reran the experiment many times and built this band around each result,
+              19 of 20 of those bands would contain the true lift. We get one of them and do not know whether it is one
+              of the 19, we only know that misses are rare. Say it once, then use the plain reading on the slide. Top row:
               the band around 0, the p-value view. Bottom row: the same band around our observed +0.72, the interval
               view. Both say the same thing about significance (0 is outside the orange band exactly when +0.72 is
               outside the grey band), but the interval also says how big the effect could plausibly be: anywhere from
@@ -1082,29 +1086,6 @@ lo, hi = confint_proportions_2indep(
               not significant, and the business sees that the true effect could be zero or even negative. Users down
               to 5,000: both bands widen. statsmodels uses the observed rates for the width, which is why its interval
               differs in the second decimal.
-            </aside>
-          </section>
-
-          <section>
-            <h3>Why 95%? The moved band, 20 times</h3>
-            <div class="ctrl">
-              <label>users per group <input type="range" id="ci-n" value="5" /> <span class="val" id="ci-n-v"></span></label>
-              <label>true lift of B <input type="range" id="ci-d" min="-1" max="3" step="0.1" value="0.8" /> <span class="val" id="ci-d-v"></span></label>
-              <button class="btn primary" id="ci-run">20 new experiments</button>
-            </div>
-            <canvas id="ci-canvas" class="sim" width="1800" height="640"></canvas>
-            <div class="simout" id="ci-stats"></div>
-            <div class="takeaway" style="margin-top: 0.2em; font-size: 0.55em">
-              Each line is one rerun: its observed lift (dot) with the band around it. The true lift is the orange line.
-              In 19 of 20 reruns the band catches it, in 1 it misses (red). That is what "95%" promises, and the one miss is not a mistake, it is the 5%.
-            </div>
-            <aside class="notes">
-              Press "20 new experiments" a few times: the dots jump around, the bands jump with them, and almost always
-              19 or 20 of them catch the true lift. In reality we get one line and do not know whether it is a green or
-              the red one, we only know that red is rare. The interval carries more information than the p-value: effect
-              size, direction, and uncertainty. "+0.72 pp [0.36, 1.07]" lets the business judge if it is worth it.
-              True lift to 0: now many bands contain 0, those are the "not significant" ones, and the ones that do not
-              contain 0 are the 5% false alarms again.
             </aside>
           </section>
 

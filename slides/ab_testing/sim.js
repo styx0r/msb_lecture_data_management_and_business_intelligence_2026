@@ -779,77 +779,6 @@
     draw();
   }
 
-  // ================================================= 5. confidence intervals
-  function simCI() {
-    if (!$("ci-canvas")) return;
-    const c = canvas("ci-canvas");
-    const REPS = 20;
-    let batch = [], tot = 0, cover = 0, sigTot = 0;
-    const rerun = () => { tot = 0; cover = 0; sigTot = 0; run(); };
-    const getN = stepSlider("ci-n", N_STEPS, fmtInt, rerun);
-    const getD = numSlider("ci-d", (v) => fmtPP(v, 1), rerun);
-
-    function run() {
-      const n = getN(), d = getD();
-      batch = [];
-      for (let i = 0; i < REPS; i++) {
-        const a = binom(n, P0), b = binom(n, P0 + d / 100);
-        const pa = a / n, pb = b / n;
-        const est = (pb - pa) * 100;
-        const se = Math.sqrt((pa * (1 - pa)) / n + (pb * (1 - pb)) / n) * 100;
-        const lo = est - 1.96 * se, hi = est + 1.96 * se;
-        const ok = lo <= d && d <= hi, sig = !(lo <= 0 && 0 <= hi);
-        batch.push({ est, lo, hi, ok, sig });
-        tot++;
-        if (ok) cover++;
-        if (sig) sigTot++;
-      }
-      draw();
-    }
-
-    function draw() {
-      const d = getD();
-      const lo = Math.min(0, d, ...batch.map((b) => b.lo)) - 0.2;
-      const hi = Math.max(0, d, ...batch.map((b) => b.hi)) + 0.2;
-      clear(c);
-      const p = plot(c, { x0: lo, x1: hi, y0: 0, y1: REPS + 1.5, ml: 64 });
-      axes(p, {
-        xticks: niceTicks(lo, hi, 8), xfmt: (v) => (v > 0 ? "+" : "") + v,
-        yticks: [1, 5, 10, 15, 20], yfmt: (v) => String(v),
-        xlabel: "estimated lift B - A with 95% confidence interval (pp)", ylabel: "experiment #",
-        title: `the same experiment repeated ${REPS} times, ${fmtInt(getN())} users per group`,
-      });
-      vline(p, 0, COL.text, [], 1);
-      vline(p, d, COL.accent);
-      text(p.ctx, "true lift", p.x(d) + 6, p.top + 14, { color: COL.accent, size: 13 });
-      batch.forEach((b, i) => {
-        const y = p.y(REPS - i);
-        const col = b.ok ? COL.green : COL.red;
-        p.ctx.save();
-        p.ctx.strokeStyle = col;
-        p.ctx.lineWidth = 2.4;
-        p.ctx.beginPath();
-        p.ctx.moveTo(p.x(b.lo), y);
-        p.ctx.lineTo(p.x(b.hi), y);
-        p.ctx.stroke();
-        p.ctx.fillStyle = col;
-        p.ctx.beginPath();
-        p.ctx.arc(p.x(b.est), y, 4, 0, 2 * Math.PI);
-        p.ctx.fill();
-        p.ctx.restore();
-      });
-      const okN = batch.filter((b) => b.ok).length, sigN = batch.filter((b) => b.sig).length;
-      $("ci-stats").innerHTML =
-        `this batch: <b>${okN} / ${REPS}</b> intervals contain the true lift, <b>${sigN} / ${REPS}</b> exclude 0 (significant) &middot; ` +
-        `all ${fmtInt(tot)} so far: coverage <b>${fmtPct(cover / tot, 1)}</b> (promised 95%), significant <b>${fmtPct(sigTot / tot, 1)}</b>` +
-        (d === 0 ? " (should be 5%)" : " (that is the power)");
-    }
-
-    onClick("ci-run", run);
-    redraws["ci-canvas"] = draw;
-    run();
-  }
-
   // ===================================================== 5b. the CI is the band, moved
   function simCIBand() {
     if (!$("cib-canvas")) return;
@@ -964,7 +893,6 @@
     simPlan();
     simPeek();
     simCIBand();
-    simCI();
     simMulti();
     if (window.Reveal && Reveal.on) {
       Reveal.on("slidechanged", (e) => {
