@@ -1349,26 +1349,6 @@ GROUP BY a.variant;
           </div>
         </section>
 
-        <!-- ======================= LAB ======================= -->
-        <section>
-          <h3>Lab: ShopNow checkout experiment</h3>
-          <div class="flow">
-            <div class="step"><span class="n">1</span><b>Plan</b><span>sample size and power curve with statsmodels</span></div>
-            <div class="step"><span class="n">2</span><b>Simulate</b><span>coin flip, conversions with and without effect</span></div>
-            <div class="step"><span class="n">3</span><b>Analyze</b><span>z-test, confidence interval, decision</span></div>
-            <div class="step"><span class="n">4</span><b>Peek</b><span>data arrives daily, see what goes wrong</span></div>
-            <div class="step"><span class="n">5</span><b>Revenue</b><span>t-test for a continuous metric</span></div>
-            <div class="step"><span class="n">6</span><b>Checks</b><span>sample ratio mismatch, segments</span></div>
-          </div>
-          <p class="lead" style="margin-top: 1em">
-            Notebook: <code>colab/ab_testing.ipynb</code> (solution available after the lab)
-          </p>
-          <div class="takeaway">
-            You will simulate the experiment yourself. That is the best way to feel what noise does,
-            because you know the true effect and can check whether the test finds it.
-          </div>
-        </section>
-
         <!-- ======================= SUMMARY ======================= -->
         <section>
           <h3>Takeaways</h3>
@@ -1396,6 +1376,26 @@ GROUP BY a.variant;
             Kohavi &amp; Thomke (2017): <a href="https://hbr.org/2017/09/the-surprising-power-of-online-experiments">The Surprising Power of Online Experiments</a>, HBR ·
             Bruce, Bruce &amp; Gedeck (2020): <em>Practical Statistics for Data Scientists</em>, chapter 3 ·
             Evan Miller: <a href="https://www.evanmiller.org/ab-testing/sample-size.html">sample size calculator</a> and <a href="https://www.evanmiller.org/how-not-to-run-an-ab-test.html">How not to run an A/B test</a>
+          </div>
+        </section>
+
+        <!-- ======================= LAB ======================= -->
+        <section>
+          <h3>Lab: ShopNow checkout experiment</h3>
+          <div class="flow">
+            <div class="step"><span class="n">1</span><b>Plan</b><span>sample size and power curve with statsmodels</span></div>
+            <div class="step"><span class="n">2</span><b>Simulate</b><span>coin flip, conversions with and without effect</span></div>
+            <div class="step"><span class="n">3</span><b>Analyze</b><span>z-test, confidence interval, decision</span></div>
+            <div class="step"><span class="n">4</span><b>Peek</b><span>data arrives daily, see what goes wrong</span></div>
+            <div class="step"><span class="n">5</span><b>Revenue</b><span>t-test for a continuous metric</span></div>
+            <div class="step"><span class="n">6</span><b>Checks</b><span>sample ratio mismatch, segments</span></div>
+          </div>
+          <p class="lead" style="margin-top: 1em">
+            Notebook: <code>colab/ab_testing.ipynb</code> (solution available after the lab)
+          </p>
+          <div class="takeaway">
+            You will simulate the experiment yourself. That is the best way to feel what noise does,
+            because you know the true effect and can check whether the test finds it.
           </div>
         </section>
       </div>
