@@ -15,21 +15,969 @@
 
     <!-- Theme for syntax highlighting -->
     <link rel="stylesheet" href="../reveal.js/plugin/highlight/monokai.css" />
+
+    <style>
+      :root {
+        --accent: #ffa726;
+        --green: #90ee90;
+        --blue: #4fc3f7;
+        --red: #ef5350;
+        --purple: #ce93d8;
+        --muted: #9e9e9e;
+        --card: rgba(255, 255, 255, 0.06);
+        --card-border: rgba(255, 255, 255, 0.14);
+      }
+
+      .reveal h3 { font-size: 1.25em; margin-bottom: 0.5em; }
+      .reveal h4 { text-transform: none; }
+      .reveal .accent { color: var(--accent); }
+      .reveal .green { color: var(--green); }
+      .reveal .blue { color: var(--blue); }
+      .reveal .red { color: var(--red); }
+      .reveal .purple { color: var(--purple); }
+      .reveal .muted { color: var(--muted); }
+      .reveal .bigq { font-size: 1.5em; line-height: 1.3; }
+      .reveal p.lead { font-size: 0.8em; }
+
+      /* ---------- cards ---------- */
+      .cards { display: flex; gap: 1em; justify-content: center; align-items: stretch; width: 100%; }
+      .card {
+        flex: 1;
+        background: var(--card);
+        border: 1px solid var(--card-border);
+        border-radius: 14px;
+        padding: 0.6em 0.8em;
+        text-align: left;
+        font-size: 0.5em;
+      }
+      .card h4 { margin: 0 0 0.4em 0; font-size: 1.2em; color: var(--accent); text-transform: none; }
+      .card ul { margin: 0; padding-left: 1.1em; }
+      .card li { margin: 0.15em 0; }
+      .card .big { font-size: 2.4em; line-height: 1; margin-bottom: 0.2em; color: #eee; font-weight: 700; }
+      .card.green h4 { color: var(--green); }
+      .card.blue h4 { color: var(--blue); }
+      .card.red h4 { color: var(--red); }
+      .card.purple h4 { color: var(--purple); }
+      .card.muted h4 { color: var(--muted); }
+      .card.active { border-color: var(--accent); box-shadow: 0 0 18px rgba(255, 167, 38, 0.35); }
+
+      /* ---------- "is this AI?" game ---------- */
+      .game { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.4em; width: 100%; }
+      .gcard {
+        background: var(--card);
+        border: 1px solid var(--card-border);
+        border-radius: 12px;
+        padding: 0.35em 0.45em;
+        font-size: 0.34em;
+        line-height: 1.25;
+        text-align: left;
+        cursor: pointer;
+        min-height: 5.2em;
+        position: relative;
+        transition: border-color 0.2s;
+      }
+      .gcard:hover { border-color: var(--accent); }
+      .gcard .n { color: var(--muted); font-size: 0.85em; }
+      .gcard b { display: block; color: #eee; margin: 0.1em 0 0.2em; font-size: 1.05em; }
+      .gcard .q { color: #bbb; }
+      .gcard .a { display: none; margin-top: 0.35em; padding-top: 0.3em; border-top: 1px dashed var(--card-border); }
+      .gcard .a .tag { display: inline-block; padding: 0.05em 0.5em; border-radius: 999px; font-weight: 700; color: #111; margin-bottom: 0.15em; }
+      .gcard .a .why { color: #ccc; }
+      .gcard.on .a { display: block; }
+      .gcard.on { cursor: default; }
+      .tag.notai { background: #9e9e9e; }
+      .tag.sym { background: var(--green); }
+      .tag.ml { background: var(--blue); }
+      .tag.dl { background: var(--purple); }
+      .tag.gen { background: var(--accent); }
+      .legend { font-size: 0.34em; color: #ccc; margin-top: 0.5em; display: flex; gap: 1.2em; justify-content: center; flex-wrap: wrap; }
+      .legend .tag { display: inline-block; padding: 0.05em 0.5em; border-radius: 999px; font-weight: 700; color: #111; }
+
+      /* ---------- misc ---------- */
+      .reveal .two-col { display: flex; gap: 1.5em; text-align: left; font-size: 0.7em; align-items: flex-start; }
+      .reveal .two-col > div { flex: 1; min-width: 0; }
+      .reveal .two-col h4 { text-transform: none; margin-bottom: 0.3em; font-size: 1em; }
+      .reveal .two-col ul { font-size: 0.9em; }
+      .reveal table.simple { font-size: 0.55em; width: 100%; margin: 0.5em auto; }
+      .reveal table.simple th { color: var(--accent); border-bottom: 2px solid var(--card-border); padding: 0.3em 0.6em; text-align: left; }
+      .reveal table.simple td { padding: 0.3em 0.6em; border-bottom: 1px solid var(--card-border); vertical-align: top; text-align: left; }
+      .reveal table.simple td.c, .reveal table.simple th.c { text-align: center; }
+      .reveal .cite { margin-top: 0.6em; font-size: 0.38em; color: var(--muted); text-align: left; line-height: 1.3; }
+      .reveal .cite a { color: var(--muted); }
+      .reveal .fig { background: transparent; max-height: 460px; max-width: 100%; margin: 0 auto; }
+      .reveal .takeaway {
+        display: inline-block;
+        margin-top: 0.6em;
+        padding: 0.3em 0.9em;
+        border-left: 5px solid var(--accent);
+        background: var(--card);
+        font-size: 0.65em;
+        text-align: left;
+      }
+      .reveal .task {
+        border: 2px solid var(--green);
+        border-radius: 14px;
+        padding: 0.5em 1em;
+        text-align: left;
+        font-size: 0.6em;
+      }
+      .reveal .task h4 { color: var(--green); margin: 0 0 0.3em 0; }
+      .reveal .task ol, .reveal .task ul { margin: 0.2em 0 0.2em 1.2em; }
+      .reveal .quote { font-size: 0.8em; font-style: italic; color: #ddd; border-left: 5px solid var(--card-border); padding-left: 0.8em; text-align: left; }
+      .reveal .pill { display: inline-block; padding: 0.15em 0.7em; margin: 0.15em; border-radius: 999px; border: 1px solid var(--card-border); background: var(--card); font-size: 0.55em; color: #ddd; }
+      .reveal .formula { font-size: 0.75em; background: var(--card); border: 1px solid var(--card-border); border-radius: 14px; padding: 0.4em 1em; margin: 0.4em auto; display: inline-block; }
+      .reveal .katex-display { margin: 0.3em 0; }
+      .reveal .bignum { font-size: 2.6em; font-weight: 700; line-height: 1; color: var(--accent); }
+      .reveal pre { width: 100%; font-size: 0.5em; box-shadow: none; }
+      .reveal pre code { max-height: 480px; border-radius: 10px; }
+
+      /* ---------- interactive (ai.js) ---------- */
+      .reveal .ctrl { display: flex; flex-wrap: wrap; gap: 0.3em 1.3em; align-items: center; justify-content: center; font-size: 0.42em; color: #ddd; margin: 0.1em 0 0.3em; }
+      .reveal .ctrl label { display: flex; align-items: center; gap: 0.5em; white-space: nowrap; }
+      .reveal .ctrl input[type="range"] { width: 130px; accent-color: var(--accent); margin: 0; }
+      .reveal .ctrl input[type="checkbox"] { accent-color: var(--accent); width: 1em; height: 1em; margin: 0; }
+      .reveal .ctrl .val { color: var(--accent); font-family: monospace; min-width: 4.5em; display: inline-block; text-align: right; }
+      .reveal .btn { font: inherit; background: var(--card); color: #ddd; border: 1px solid var(--card-border); border-radius: 8px; padding: 0.15em 0.7em; cursor: pointer; }
+      .reveal .btn:hover { border-color: var(--accent); color: var(--accent); }
+      .reveal .btn.primary { background: var(--accent); color: #111; border-color: var(--accent); font-weight: 700; }
+      .reveal .btn.primary:hover { background: #ffb74d; color: #111; }
+      .reveal canvas.sim { width: 900px; max-width: 100%; height: auto; display: block; margin: 0 auto; }
+      .reveal .simout { font-size: 0.42em; color: #ddd; text-align: center; margin-top: 0.3em; min-height: 2.6em; line-height: 1.35; }
+      .reveal .simout b { color: var(--accent); font-weight: 600; }
+    </style>
   </head>
 
   <body>
     <div class="reveal">
       <div class="slides">
-        <!-- Placeholder for dynamically loaded HTML content -->
-        <section id="cover-placeholder">
-          <!-- This section will be populated by the includeHTML function -->
+        <!-- ======================= COVER ======================= -->
+        <section id="cover-placeholder"></section>
+
+        <!-- ======================= WHERE ARE WE ======================= -->
+        <section>
+          <section>
+            <h3>Where are we?</h3>
+<svg viewBox="200 190 1700 700" style="width: 100%; max-height: 440px; background: transparent" font-family="Helvetica, Arial, sans-serif" fill="#fff" text-anchor="middle" font-size="56">
+  <rect x="355" y="213" width="1145" height="120" fill="#8e8e8e"/>
+  <text x="928" y="291" font-size="56">Decisions</text>
+  <rect x="355" y="347" width="1145" height="120" fill="#5f5f5f"/>
+  <text x="928" y="425" font-size="56">Reporting (Visualisation)</text>
+  <rect x="355" y="481" width="1145" height="120" fill="#8e8e8e"/>
+  <text x="928" y="559" font-size="56">Data Analysis &amp; Exploration</text>
+  <rect x="355" y="615" width="1145" height="120" fill="#5f5f5f"/>
+  <text x="928" y="693" font-size="56">Data Warehousing / Data Marts</text>
+  <rect x="355" y="749" width="1145" height="120" fill="#8e8e8e"/>
+  <text x="928" y="827" font-size="48">Raw Data (self produced or foreign sources)</text>
+  <rect x="230" y="213" width="110" height="654" fill="#f0b03f"/><text x="285" y="560" fill="#111" font-weight="bold">AI</text>
+  <path d="M1500,807 H1550 V673 H1517" fill="none" stroke="#c8c8c8" stroke-width="6"/><polygon points="1503,673 1527,658 1527,688" fill="#c8c8c8"/>
+  <text x="1560" y="720" font-size="42" fill="#c8c8c8" text-anchor="start">Data Integration</text><text x="1560" y="765" font-size="42" fill="#c8c8c8" text-anchor="start">ETL / ELT</text>
+  <path d="M1560,540 H1620 V340" fill="none" stroke="#f0b03f" stroke-width="6"/>
+  <text x="1560" y="300" font-size="42" fill="#f0b03f" text-anchor="start">today: what is</text>
+  <text x="1560" y="345" font-size="42" fill="#f0b03f" text-anchor="start">inside this bar?</text>
+</svg>
+            <p style="font-size: 0.6em; margin: 0.2em 0 0 0">
+              Saturday: <span class="accent">AI at every layer</span>. It consumes the warehouse, it needs the lake, it writes the ETL code.
+              Today we open the bar and look inside.
+            </p>
+            <aside class="notes">
+              30 seconds. Same stack as in every deck, but this time the AI bar is orange. On Saturday the last Data
+              Management slide said "AI at every layer": models train on staging tables, documents go to the lake, and
+              most ETL code is now written with an LLM. So far AI was a grey box on the side. Today, and for the rest of
+              the day, we open it.
+            </aside>
+          </section>
+
+          <section>
+            <h3>Where are we in the course?</h3>
+            <div class="cards">
+              <div class="card muted">
+                <h4>Done</h4>
+                <ul>
+                  <li>(I) Business Intelligence: what happened, why?</li>
+                  <li>(II–IV) Python, databases, data management: the pipeline to clean tables</li>
+                  <li>(V) A/B testing: did <em>my</em> change cause it?</li>
+                </ul>
+              </div>
+              <div class="card active">
+                <h4>Now: (VI) Introduction to AI</h4>
+                <ul>
+                  <li>what counts as AI, and what does not</li>
+                  <li>70 years and a lot of money in ten minutes</li>
+                  <li>how a machine learns: three ways</li>
+                  <li>you pitch an AI project to ShopNow management</li>
+                </ul>
+              </div>
+              <div class="card blue">
+                <h4>Rest of today</h4>
+                <ul>
+                  <li>10:40 (VII) Neural networks: the line becomes a neuron</li>
+                  <li>afternoon (VIII) Generative AI &amp; agents</li>
+                </ul>
+              </div>
+            </div>
+            <div class="takeaway" style="margin-top: 0.8em">
+              This morning: <b class="accent">AI that predicts</b> (a number, a label, a group).
+              This afternoon: <b class="accent">AI that generates</b> (text, images, code). Same roots, different job.
+            </div>
+            <aside class="notes">
+              One minute. Make the split explicit, it is the structure of the whole day: the morning is the classic
+              part of AI, machines that look at data and predict something. The afternoon is generative AI, machines
+              that produce new content. Everything this afternoon is built on what we do this morning, so nobody can
+              skip the morning. Then: "but first, a game."
+            </aside>
+          </section>
         </section>
-        <section
-          data-markdown="slides.md"
-          data-separator="^\n---\n"
-          data-separator-vertical="^\n--\n"
-          data-separator-notes="^Note:"
-        ></section>
+
+        <!-- ======================= 1. IS THIS AI? ======================= -->
+        <section>
+          <section>
+            <h3 style="margin-bottom: 0.2em">1. Is this AI?</h3>
+            <p class="lead" style="margin: 0 0 0.3em 0; font-size: 0.6em">Ten things from everyday life. Hands up if you think it is AI, then click the card.</p>
+            <div class="game" id="game">
+              <div class="gcard" data-a="notai"><span class="n">1</span><b>Excel sums a column</b><span class="q">=SUM(B2:B5000)</span>
+                <div class="a"><span class="tag notai">not AI</span><div class="why">arithmetic, no decision, no learning</div></div></div>
+              <div class="gcard" data-a="notai"><span class="n">2</span><b>A thermostat</b><span class="q">if temperature &lt; 20 °C: heat</span>
+                <div class="a"><span class="tag notai">not AI</span><div class="why">one rule is control, not intelligence (in 1965 some would have argued)</div></div></div>
+              <div class="gcard" data-a="sym"><span class="n">3</span><b>Deep Blue beats Kasparov</b><span class="q">chess, 1997</span>
+                <div class="a"><span class="tag sym">symbolic AI</span><div class="why">searches 200 million positions per second with hand-written rules</div></div></div>
+              <div class="gcard" data-a="sym"><span class="n">4</span><b>Google Maps route</b><span class="q">fastest way to the airport</span>
+                <div class="a"><span class="tag sym">symbolic AI</span><div class="why">search on a graph (Dijkstra, A*), nothing learned from data</div></div></div>
+              <div class="gcard" data-a="sym"><span class="n">5</span><b>ShopNow fraud rules</b><span class="q">3 failed payments: block. New customer and &gt; 500 €: review</span>
+                <div class="a"><span class="tag sym">symbolic AI</span><div class="why">an expert system: humans wrote the knowledge as IF/THEN</div></div></div>
+              <div class="gcard" data-a="ml"><span class="n">6</span><b>Spam filter</b><span class="q">trained on 1 million labelled mails</span>
+                <div class="a"><span class="tag ml">machine learning</span><div class="why">nobody wrote the rules, the model found them in examples</div></div></div>
+              <div class="gcard" data-a="ml"><span class="n">7</span><b>Netflix: "because you watched…"</b><span class="q">recommendations</span>
+                <div class="a"><span class="tag ml">machine learning</span><div class="why">learns from millions of viewing histories which titles go together</div></div></div>
+              <div class="gcard" data-a="dl"><span class="n">8</span><b>Face unlock</b><span class="q">your phone recognises you</span>
+                <div class="a"><span class="tag dl">deep learning</span><div class="why">a neural network trained on millions of faces, no human wrote "nose"</div></div></div>
+              <div class="gcard" data-a="gen"><span class="n">9</span><b>ChatGPT writes your cover letter</b><span class="q">"make it sound confident"</span>
+                <div class="a"><span class="tag gen">generative AI</span><div class="why">deep learning that produces new text instead of a label</div></div></div>
+              <div class="gcard" data-a="notai"><span class="n">10</span><b>Saturday's A/B test</b><span class="q">z-test, p = 0.03, ship it</span>
+                <div class="a"><span class="tag notai">not AI</span><div class="why">statistics: a formula, no learning. Still the best tool for "did it work?"</div></div></div>
+            </div>
+            <div class="legend">
+              <span class="tag notai">not AI</span><span class="tag sym">symbolic: humans write the rules</span>
+              <span class="tag ml">machine learning: rules learned from examples</span><span class="tag dl">deep learning: with neural networks</span>
+              <span class="tag gen">generative: creates content</span>
+              <button class="btn" id="game-all" style="font-size: 1em">reveal all</button>
+            </div>
+            <aside class="notes">
+              Five minutes, this is the warm-up and it quietly teaches the whole taxonomy. Go card by card: read it out,
+              ask for hands, then click. Expect disagreement on 2 (thermostat), 4 (Maps) and 10 (A/B test), that is the
+              point. The line to repeat: "Was the knowledge written by a human, or found in data?" If written: symbolic
+              AI. If found: machine learning. If found by a neural network: deep learning. If the output is new content:
+              generative AI. Card 10 is the callback to Saturday: statistics is not AI, and it does not need to be.
+              The legend at the bottom is the summary, point at it before moving on.
+            </aside>
+          </section>
+
+          <section>
+            <h3>So what is AI?</h3>
+            <p class="quote" style="font-size: 0.65em">
+              "The study is to proceed on the basis of the conjecture that every aspect of learning or any other feature
+              of intelligence can in principle be so precisely described that a machine can be made to simulate it."
+            </p>
+            <p class="cite" style="text-align: right">Dartmouth summer research proposal, 1956. The paper in which the term "artificial intelligence" was coined.
+              <a href="http://jmc.stanford.edu/articles/dartmouth/dartmouth.pdf">jmc.stanford.edu</a></p>
+            <p class="fragment" style="font-size: 0.95em; margin-top: 0.8em">
+              <span class="accent">Artificial Intelligence</span> is the <span class="accent">simulation</span> of
+              <span class="accent">intelligence</span>, especially <span class="accent">learning</span>.
+            </p>
+            <p class="fragment lead muted">
+              Nothing about robots, nothing about chips, nothing about ChatGPT. A machine that behaves as if it were intelligent.
+              Whether it "really" is intelligent is a philosophy seminar, not this one.
+            </p>
+            <aside class="notes">
+              Two minutes. Read the quote, then click: the course definition, this one is in the exam. Point out that
+              "simulation" is doing a lot of work: we do not claim the machine understands anything, we claim it behaves
+              as if. The 1956 people thought a summer would do it. It took 70 years and, as we will see, a few trillion dollars.
+            </aside>
+          </section>
+
+          <section>
+            <h3>The map: where the ten cards live</h3>
+            <div style="display: flex; align-items: center; gap: 1em">
+<svg viewBox="0 0 1000 560" style="flex: 0 0 60%; max-height: 500px; background: transparent" font-family="Helvetica, Arial, sans-serif" text-anchor="middle">
+  <ellipse cx="500" cy="285" rx="480" ry="265" fill="rgba(144,238,144,0.12)" stroke="#90ee90" stroke-width="3"/>
+  <text x="500" y="62" fill="#90ee90" font-size="34" font-weight="bold">Artificial Intelligence</text>
+  <text x="500" y="92" fill="#bbb" font-size="20">simulation of intelligence, especially learning</text>
+  <circle cx="215" cy="330" r="135" fill="rgba(144,238,144,0.18)" stroke="#90ee90" stroke-width="2"/>
+  <text x="215" y="300" fill="#eee" font-size="28" font-weight="bold">Symbolic AI</text>
+  <text x="215" y="330" fill="#ccc" font-size="19">humans write the rules</text>
+  <text x="215" y="356" fill="#ccc" font-size="19">rules, logic, search, expert systems</text>
+  <text x="215" y="395" fill="#90ee90" font-size="22" class="fragment" data-fragment-index="1">3  4  5</text>
+  <ellipse cx="640" cy="330" rx="300" ry="195" fill="rgba(79,195,247,0.14)" stroke="#4fc3f7" stroke-width="2"/>
+  <text x="640" y="170" fill="#4fc3f7" font-size="30" font-weight="bold">Machine Learning</text>
+  <text x="640" y="198" fill="#ccc" font-size="19">learns the rules from examples (data)</text>
+  <text x="430" y="330" fill="#4fc3f7" font-size="22" class="fragment" data-fragment-index="1">6  7</text>
+  <ellipse cx="680" cy="370" rx="200" ry="135" fill="rgba(206,147,216,0.16)" stroke="#ce93d8" stroke-width="2"/>
+  <text x="680" y="265" fill="#ce93d8" font-size="28" font-weight="bold">Deep Learning</text>
+  <text x="680" y="291" fill="#ccc" font-size="19">ML with neural networks</text>
+  <text x="560" y="420" fill="#ce93d8" font-size="22" class="fragment" data-fragment-index="1">8</text>
+  <circle cx="720" cy="400" r="80" fill="rgba(255,167,38,0.22)" stroke="#ffa726" stroke-width="2"/>
+  <text x="720" y="395" fill="#ffa726" font-size="26" font-weight="bold">Generative AI</text>
+  <text x="720" y="420" fill="#ddd" font-size="18">creates new content</text>
+  <text x="720" y="450" fill="#ffa726" font-size="22" class="fragment" data-fragment-index="1">9</text>
+  <text x="120" y="530" fill="#9e9e9e" font-size="22" class="fragment" data-fragment-index="1">outside: 1  2  10</text>
+</svg>
+              <div style="flex: 1; text-align: left; font-size: 0.5em">
+                <p><b class="green">Symbolic AI</b> ruled from 1956 to the 1990s. Still everywhere: routing, scheduling, rule engines.</p>
+                <p><b class="blue">Machine learning</b> took over wherever there is data. This morning's main topic.</p>
+                <p><b class="purple">Deep learning</b> is machine learning with neural networks. 10:40.</p>
+                <p><b class="accent">Generative AI</b> is deep learning whose output is new content. This afternoon.</p>
+                <p class="muted fragment" data-fragment-index="1">The ten cards, sorted. Everything in blue is "learns from data": that is what we do until lunch.</p>
+              </div>
+            </div>
+            <aside class="notes">
+              Two minutes. This replaces the two old Venn diagrams. Walk inwards: symbolic AI on the left, machine learning
+              on the right, inside it deep learning, inside that generative AI. Click: the card numbers land in their
+              circles. The one sentence to take home: the morning is the blue ellipse, the afternoon is the orange core.
+            </aside>
+          </section>
+
+          <section>
+            <h3>Generative or general?</h3>
+            <p class="lead muted" style="margin-bottom: 0.4em">Same first syllable, very different claim. The press mixes them up daily.</p>
+            <div class="cards">
+              <div class="card blue">
+                <h4>Narrow AI</h4>
+                <div class="big">one job</div>
+                <ul>
+                  <li>fraud yes/no, fastest route, face unlock</li>
+                  <li>brilliant at its task, useless outside it</li>
+                  <li>everything built from 1956 to 2021</li>
+                </ul>
+              </div>
+              <div class="card active">
+                <h4>Generative AI</h4>
+                <div class="big">creates</div>
+                <ul>
+                  <li>produces text, images, code, audio</li>
+                  <li>one model, thousands of tasks: broad, not general</li>
+                  <li>still a machine learner: it learned from examples</li>
+                  <li>2022 (ChatGPT) to today</li>
+                </ul>
+              </div>
+              <div class="card purple">
+                <h4>General AI (AGI)</h4>
+                <div class="big">anything</div>
+                <ul>
+                  <li>any intellectual task a human can do, as well as a human</li>
+                  <li>does not exist (2026)</li>
+                  <li>the bet behind the money on the next slides</li>
+                </ul>
+              </div>
+            </div>
+            <div class="takeaway">
+              Generative is not general. ChatGPT writes your cover letter and still cannot run ShopNow. Whether the second
+              follows from the first is the open question of the decade.
+            </div>
+            <aside class="notes">
+              Two minutes. The pun is the memory hook: generative vs general. Narrow AI: one job, this is 99% of AI in
+              companies today, including ShopNow's fraud model. Generative AI: one model, many tasks, still learned from
+              data, still makes things up. General AI: the thing in the movies, does not exist, but it is what the investors
+              on the next slides are betting on. Keep this slide in mind for the debate this afternoon.
+            </aside>
+          </section>
+        </section>
+
+        <!-- ======================= 2. 70 YEARS AND THE MONEY ======================= -->
+        <section>
+          <section>
+            <h3>2. Seventy years in three acts</h3>
+            <img src="../assets/introduction_to_ai/imgs/imgs.002.png" alt="AI timeline 1900 to 2025" class="fig" style="max-height: 400px" />
+            <div style="display: flex; gap: 1em; font-size: 0.45em; text-align: left; margin-top: 0.3em">
+              <div style="flex: 1"><b class="green">Act 1 (1956–1990s): write the rules.</b> Logic, search, expert systems. Two "AI winters": the promises were bigger than the computers, funding was cut.</div>
+              <div style="flex: 1"><b class="blue">Act 2 (1990s–2012): learn from data.</b> Statistics meets computing. Deep Blue 1997, spam filters, Netflix. Small data, small models.</div>
+              <div style="flex: 1"><b class="accent">Act 3 (2012–): deep learning, then generative.</b> AlexNet 2012, AlphaGo 2016, transformers 2017, ChatGPT 2022. The grey half of the picture.</div>
+            </div>
+            <p class="cite">Image: Wikimedia Commons, AI-History-Timeline. Self-study for the exam: the individual milestones. Exam: "Era 1 (pre-deep learning) focused on rules, logic, expert systems".</p>
+            <aside class="notes">
+              Three minutes, use the picture as a map, do not read every box. Act 1: people wrote the intelligence down by
+              hand, it worked for chess and for 200 rules, not for 2 million. Winters: 1974 and 1987, the money left
+              because the promises were too big. Act 2: let the machine find the rules, works as soon as you have data.
+              Act 3: neural networks become deep, and from 2022 they generate. The timeline's own grey/blue split is
+              exactly our morning/afternoon split. Then: "What changed in 2012? Three things."
+            </aside>
+          </section>
+
+          <section>
+            <h3>Why 2012? Three ingredients arrived at once</h3>
+            <div class="cards">
+              <div class="card blue">
+                <h4>Data</h4>
+                <div class="big">10<sup>7</sup></div>
+                <ul>
+                  <li>the internet produced labelled examples for free: photos with captions, clicks, reviews</li>
+                  <li>ImageNet (2009): 14 million labelled images</li>
+                  <li>Saturday's lake and warehouse are the company version of this</li>
+                </ul>
+              </div>
+              <div class="card green">
+                <h4>Compute</h4>
+                <div class="big">×2 / 2 yr</div>
+                <ul>
+                  <li>Moore's law: transistors per chip double every two years, since 1970</li>
+                  <li>GPUs (built for games) turned out to be perfect for neural networks</li>
+                  <li>training compute for AI doubled every ~6 months since 2010</li>
+                </ul>
+              </div>
+              <div class="card purple">
+                <h4>Algorithms</h4>
+                <div class="big">3 papers</div>
+                <ul>
+                  <li>backpropagation (1986): how a network learns from its errors</li>
+                  <li>AlexNet (2012): deep network + GPU wins ImageNet by a mile</li>
+                  <li>"Attention is all you need" (2017): the transformer behind every LLM</li>
+                </ul>
+              </div>
+            </div>
+            <div class="takeaway">
+              The ideas are old. Backpropagation is from 1986, the perceptron from 1957. What was missing was data and compute.
+              That is why the winters ended, and why the money arrived.
+            </div>
+            <aside class="notes">
+              Two minutes. The nice thing for a business audience: AI did not get smart because someone had a genius idea
+              in 2012. The idea is from 1986. It got smart because data and compute became cheap at the same time. That
+              reframes the Moore's law chart from the old deck in one sentence (you can show it from the asset folder if
+              asked). Then: "and when something works, money follows. Guess how much."
+            </aside>
+          </section>
+
+          <section>
+            <h3>Follow the money (live)</h3>
+            <p class="lead muted" style="margin: 0 0 0.2em 0">Private investment in AI companies worldwide, billions of US dollars. Before I press play: your guess for 2025?</p>
+            <div class="ctrl">
+              <button class="btn primary" id="inv-play">play</button>
+              <button class="btn" id="inv-next">+1 year</button>
+              <button class="btn" id="inv-reset">reset</button>
+              <label><input type="checkbox" id="inv-gen" /> show the generative AI share</label>
+            </div>
+            <canvas id="inv-canvas" class="sim" width="1800" height="640"></canvas>
+            <div class="simout" id="inv-out"></div>
+            <p class="cite">Source: Stanford AI Index Report 2026, chapter 4 (data: Quid). Values before 2017 and the generative share before 2025 read from the charts, rounded.
+              Total corporate investment (incl. mergers and acquisitions) 2025: 581.7 bn, up 130% in one year.</p>
+            <aside class="notes">
+              Four minutes. Ask for guesses first, write two or three on the board. Then play: the bars come year by year.
+              Pause at 2021 (the pandemic tech boom, 145 bn), at 2022/23 (it went DOWN, interest rates, some said the hype was
+              over), then 2025: 345 bn, more than double. Tick the checkbox: nearly half of it is generative AI companies,
+              171 bn, up 200% in a year. In 2019 that share was 1 bn. The summary line under the chart does the arithmetic:
+              2025 alone is more than the first eight years (2013–2020) combined. Then: "and that is only start-ups. The big four spend
+              more on their own."
+            </aside>
+          </section>
+
+          <section>
+            <h3>One year of Big Tech vs. history's mega-projects</h3>
+            <p class="lead muted" style="margin: 0 0 0.3em 0">Inflation-adjusted, billions of US dollars (2024). What did it cost to…</p>
+<svg viewBox="0 0 1360 430" style="width: 100%; max-height: 400px; background: transparent" font-family="Helvetica, Arial, sans-serif" font-size="24" fill="#ddd">
+  <g text-anchor="end">
+    <text x="660" y="52">build the atomic bomb (Manhattan Project, 1942–46)</text>
+    <text x="660" y="124">build the International Space Station (1984–2011)</text>
+    <text x="660" y="196">put 12 people on the moon (Apollo, 1960–73)</text>
+    <text x="660" y="268">build the US Interstate Highway System (1956–92)</text>
+    <text x="660" y="340" fill="#ffa726" font-weight="bold">AI data centres, four companies, the year 2026 alone</text>
+  </g>
+  <g>
+    <rect x="680" y="30" width="29" height="34" fill="#8e8e8e"/><text x="719" y="55">36</text>
+    <rect x="680" y="102" width="120" height="34" fill="#8e8e8e"/><text x="810" y="127">150</text>
+    <rect x="680" y="174" width="200" height="34" fill="#8e8e8e"/><text x="890" y="199">250</text>
+    <rect x="680" y="246" width="496" height="34" fill="#8e8e8e"/><text x="1186" y="271">620</text>
+    <g class="fragment">
+      <rect x="680" y="318" width="584" height="34" fill="#ffa726"/><text x="1274" y="343" fill="#ffa726" font-weight="bold">~730</text>
+      <text x="680" y="392" fill="#bbb" font-size="21">Amazon ~220, Alphabet ~200, Microsoft ~175, Meta ~140 (guidance, mid-2026).</text>
+      <text x="680" y="420" fill="#bbb" font-size="21">2025: roughly 400. Analysts expect more than 1,000 in 2027.</text>
+    </g>
+  </g>
+</svg>
+            <p class="cite">Mega-projects: Al Jazeera, "Visualising AI spending", April 2026 (2024 dollars). Capex: company guidance as reported July 2026; Amazon's figure includes warehouses and satellites, so treat the bar as an upper bound.</p>
+            <aside class="notes">
+              Two minutes. Read the four grey bars as a quiz, students will know Apollo and the moon. Then click: four
+              companies, one year, more than the whole interstate system over 36 years. The question to leave hanging:
+              what do they expect back? Nobody knows yet. This is also the context for the debate this afternoon. Caveat
+              in the footnote: the capex number is not 100% AI.
+            </aside>
+          </section>
+
+          <section>
+            <h3>Is anybody using it? Three numbers</h3>
+            <div class="cards" style="margin-top: 0.6em">
+              <div class="card active" style="text-align: center">
+                <div class="bignum">53%</div>
+                <h4 style="color: #eee">of US adults use generative AI</h4>
+                <ul style="text-align: left"><li>three years after ChatGPT (Nov 2022)</li><li>the internet reached ~30% three years after 1995, the PC ~20% three years after 1981</li></ul>
+              </div>
+              <div class="card active" style="text-align: center">
+                <div class="bignum">88%</div>
+                <h4 style="color: #eee">of companies use AI in at least one function</h4>
+                <ul style="text-align: left"><li>2017: 20%. 2024: 78%. 2025: 88%</li><li>79% use generative AI regularly</li><li>self-reported, so take it as "they say they do"</li></ul>
+              </div>
+              <div class="card active" style="text-align: center">
+                <div class="bignum">×60</div>
+                <h4 style="color: #eee">private AI investment, 2013 to 2025</h4>
+                <ul style="text-align: left"><li>5.6 bn to 345 bn</li><li>the US alone: 286 bn, 23 times China's reported 12 bn</li><li>Germany, 2013–2024 in total: 13 bn</li></ul>
+              </div>
+            </div>
+            <div class="takeaway">
+              Fastest adoption of any technology on record, and the biggest bet. Both can be true, and the second can still go wrong.
+              Keep that tension for the debate at 16:39.
+            </div>
+            <p class="cite">Stanford AI Index Report 2026, chapter 4 (adoption chart: Project on Workforce at Harvard; company survey: McKinsey State of AI 2025).</p>
+            <aside class="notes">
+              Two minutes, then move on. 53%: faster than the PC or the internet. 88%: nearly every company says it uses
+              AI, which mostly means somebody uses ChatGPT and a spam filter. ×60: the money. Germany's total over eleven
+              years is 13 bn, less than Meta spends in six weeks. Do not editorialise, just leave the numbers.
+            </aside>
+          </section>
+
+          <section>
+            <h3>The rules: EU AI Act (2024)</h3>
+            <div style="display: flex; gap: 1.5em; align-items: center">
+<svg viewBox="0 0 520 360" style="flex: 0 0 45%; max-height: 360px; background: transparent" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" font-size="18">
+  <polygon points="260,20 330,110 190,110" fill="#ef5350"/><text x="260" y="88" fill="#111" font-weight="bold">banned</text>
+  <polygon points="185,118 335,118 395,208 125,208" fill="#ffa726"/><text x="260" y="170" fill="#111" font-weight="bold">high risk</text>
+  <polygon points="120,216 400,216 450,296 70,296" fill="#4fc3f7"/><text x="260" y="262" fill="#111" font-weight="bold">limited risk</text>
+  <polygon points="65,304 455,304 490,355 30,355" fill="#8e8e8e"/><text x="260" y="336" fill="#111" font-weight="bold">minimal risk</text>
+</svg>
+              <div style="flex: 1; text-align: left; font-size: 0.5em">
+                <p><b class="red">Banned:</b> social scoring, manipulative systems, emotion recognition at work.</p>
+                <p><b class="accent">High risk:</b> credit scoring, hiring, medical devices, critical infrastructure. Allowed, but: documented data, human oversight, testing, registration.</p>
+                <p><b class="blue">Limited risk:</b> chatbots and generated content must say so.</p>
+                <p><b class="muted">Minimal risk:</b> spam filters, recommenders, demand forecasts. No new rules.</p>
+                <p class="fragment"><b class="green">Zuruf:</b> where does ShopNow's fraud model sit? The recommender? A model that rejects a payment-by-invoice request?</p>
+              </div>
+            </div>
+            <aside class="notes">
+              Two minutes, skip if behind schedule. Risk pyramid: the rules depend on what the system does, not on how it
+              is built. The Zuruf: recommender and fraud model are minimal risk, but a model that decides who gets
+              credit (payment by invoice is credit) is high risk and needs documentation and a human in the loop. That
+              is the business student's job, not the data scientist's. Obligations phase in 2025–2027.
+            </aside>
+          </section>
+        </section>
+
+        <!-- ======================= 3. HOW DOES A MACHINE LEARN? ======================= -->
+        <section>
+          <section>
+            <h3>3. Rules or examples?</h3>
+            <div class="two-col" style="font-size: 0.5em">
+              <div class="card green" style="font-size: 1em">
+                <h4>Write the rules (symbolic AI)</h4>
+                <pre style="font-size: 0.72em; margin: 0.3em 0"><code class="language-python" data-trim>
+def is_fraud(o):
+    if o.failed_payments >= 3:
+        return "block"
+    if o.new_customer and o.value > 500:
+        return "manual review"
+    if o.billing != o.shipping and o.rush:
+        return "flag"
+    return "approve"
+                </code></pre>
+                <ul>
+                  <li>transparent: every decision has a line number</li>
+                  <li>brittle: fraudsters read the rules too</li>
+                  <li>who writes rule number 10,000?</li>
+                </ul>
+              </div>
+              <div class="card blue" style="font-size: 1em">
+                <h4>Show examples (machine learning)</h4>
+                <table class="simple" style="font-size: 0.8em; margin: 0.3em 0">
+                  <tr><th>value</th><th>new?</th><th>failed</th><th>device</th><th>fraud?</th></tr>
+                  <tr><td>89.90</td><td>no</td><td>0</td><td>iOS</td><td>no</td></tr>
+                  <tr><td>640.00</td><td>yes</td><td>2</td><td>Tor</td><td class="red">yes</td></tr>
+                  <tr><td>23.50</td><td>yes</td><td>0</td><td>Android</td><td>no</td></tr>
+                  <tr><td>…</td><td colspan="3">200,000 more orders</td><td>…</td></tr>
+                </table>
+                <ul>
+                  <li>the model finds the pattern itself: <code>model.fit(X, y)</code></li>
+                  <li>adapts when fraud changes: retrain on new orders</li>
+                  <li>opaque: "why?" is a real question (EU AI Act)</li>
+                  <li>needs the one thing ShopNow has: Saturday's tables</li>
+                </ul>
+              </div>
+            </div>
+            <div class="takeaway">Act 1 was the left side. Since 2012 the right side wins wherever there is data. The rest of the morning is the right side.</div>
+            <aside class="notes">
+              Two minutes. Left: the fraud rules from the game, now as code. Students have seen if/else on day 2, so this
+              is familiar. Right: the same problem, but you hand the machine 200,000 past orders with the answer and it
+              finds the rules. Point at the last column: that column is the "label", remember the word. Then: "there are
+              three ways to show examples."
+            </aside>
+          </section>
+
+          <section>
+            <h3>Three ways to learn</h3>
+            <div class="cards">
+              <div class="card blue">
+                <h4>Supervised</h4>
+                <div class="big" style="font-size: 1.4em">with an answer key</div>
+                <ul>
+                  <li>data: inputs <b>x</b> plus the right answer <b>y</b> (the label)</li>
+                  <li>goal: predict y for new x</li>
+                  <li>output a number: <b>regression</b> (delivery time, demand)</li>
+                  <li>output a category: <b>classification</b> (fraud yes/no, churn)</li>
+                </ul>
+              </div>
+              <div class="card green">
+                <h4>Unsupervised</h4>
+                <div class="big" style="font-size: 1.4em">no answer key</div>
+                <ul>
+                  <li>data: inputs x only, nobody labelled anything</li>
+                  <li>goal: find structure</li>
+                  <li>groups: <b>clustering</b> (customer segments)</li>
+                  <li>the odd ones out: <b>anomaly detection</b></li>
+                </ul>
+              </div>
+              <div class="card red">
+                <h4>Reinforcement</h4>
+                <div class="big" style="font-size: 1.4em">trial, error, reward</div>
+                <ul>
+                  <li>data: none at the start, the agent creates it by acting</li>
+                  <li>goal: maximise reward over time</li>
+                  <li>examples: game AI (AlphaGo), robots, dynamic pricing</li>
+                  <li>and: how ChatGPT learned manners (afternoon)</li>
+                </ul>
+              </div>
+            </div>
+            <div class="takeaway">
+              Ask one question of any AI project: <b class="accent">is there a label?</b> Yes: supervised. No: unsupervised.
+              Nobody knows the right answer until we act: reinforcement.
+            </div>
+            <aside class="notes">
+              Three minutes, this is the slide that structures the pitch. Supervised: like learning with the solutions
+              at the back of the book. Unsupervised: someone dumps a box of photos on your desk and says "sort them".
+              Reinforcement: training a dog, nobody shows it the trick, it gets a treat when it gets closer. The one
+              question at the bottom is the tool the groups need in a minute: is there a label?
+            </aside>
+          </section>
+
+          <section>
+            <h3 class="green">Your turn: pitch an AI project to ShopNow management</h3>
+            <div class="task">
+              <h4>Six groups, each gets one way to learn (two groups per way). 12 minutes preparation, 2 minutes pitch.</h4>
+              <ol>
+                <li><b>Pick a ShopNow problem</b> that your way of learning fits. Remember Saturday's tables: orders, customers, clicks, tickets, returns.</li>
+                <li><b>Fill the template</b> (next slide): Problem, Data, Algorithm, Output, Decision.</li>
+                <li><b>Pitch it</b> in 2 minutes. One slide, a whiteboard, or just talk. Say what changes at ShopNow if it works.</li>
+                <li>Then the room is the <b>management board</b>: every student has two votes, the two best-funded projects win.</li>
+              </ol>
+              <p class="muted" style="margin: 0.3em 0 0 0">LLMs are allowed for ideas. The template must fit your way of learning; the board asks "is there a label?" first.</p>
+            </div>
+            <p style="font-size: 0.5em; margin-top: 0.5em">
+              <span class="pill">groups 1, 2: supervised</span><span class="pill">groups 3, 4: unsupervised</span><span class="pill">groups 5, 6: reinforcement</span>
+            </p>
+            <aside class="notes">
+              Assign the ways by group number, no discussion. Start a visible 12-minute timer. Walk around: the typical
+              mistake is a supervised group without a label ("predict customer happiness": where is the label?) and a
+              reinforcement group that is really supervised. Leave the next two slides on screen during preparation.
+              Pitches: hard 2 minutes. Vote by hands, two votes each. Then the quick reference cards as the wrap-up, 3 minutes.
+            </aside>
+          </section>
+
+          <section>
+            <h3 class="green">The template</h3>
+            <table class="simple" style="width: 96%; font-size: 0.48em">
+              <tr><th style="width: 16%">Step</th><th>What you answer</th><th style="width: 36%">Example (supervised, fraud)</th></tr>
+              <tr><td><b>Problem</b></td><td>What do we want to predict, find or optimise? For whom?</td><td>which orders are fraud, for the payments team</td></tr>
+              <tr><td><b>Data</b></td><td>Which tables, which columns? Is there a label, where does it come from?</td><td>orders + customers, label = chargeback within 90 days</td></tr>
+              <tr><td><b>Algorithm</b></td><td>Name one. Supervised: regression or classification. Unsupervised: k-means. Reinforcement: agent + reward.</td><td>classification (neural network or decision tree)</td></tr>
+              <tr><td><b>Output</b></td><td>A number? A label? A group? An action?</td><td>fraud probability per order</td></tr>
+              <tr><td><b>Decision</b></td><td>What happens differently at ShopNow because of the output?</td><td>above 80%: manual review before shipping</td></tr>
+            </table>
+            <div class="takeaway">The board funds decisions, not models. If the last row is empty, the pitch is not ready.</div>
+          </section>
+
+          <section>
+            <h3 class="green">Quick reference cards</h3>
+            <div class="cards">
+              <div class="card blue">
+                <h4>Supervised learning</h4>
+                <ul>
+                  <li>needs labels (y)</li>
+                  <li>regression: a number (demand, delivery time, lifetime value)</li>
+                  <li>classification: a label (fraud, churn, return likely)</li>
+                  <li>methods: linear/logistic regression, decision trees, neural networks</li>
+                  <li>label sources: the past (chargebacks, cancellations), humans (support tags)</li>
+                </ul>
+              </div>
+              <div class="card green">
+                <h4>Unsupervised learning</h4>
+                <ul>
+                  <li>no labels, find structure</li>
+                  <li>clustering: customer segments, product groups</li>
+                  <li>anomaly detection: strange orders, broken sensors</li>
+                  <li>dimensionality reduction: 200 columns to 2 for a plot</li>
+                  <li>methods: k-means, DBSCAN, PCA</li>
+                </ul>
+              </div>
+              <div class="card red">
+                <h4>Reinforcement learning</h4>
+                <ul>
+                  <li>agent, action, reward, repeat</li>
+                  <li>dynamic pricing, which discount to show, warehouse robots, ad bidding</li>
+                  <li>needs a safe place to fail: a simulator or small traffic</li>
+                  <li>methods: Q-learning, policy gradient, bandits</li>
+                  <li>the A/B test from Saturday is its tiny cousin</li>
+                </ul>
+              </div>
+            </div>
+            <div class="takeaway" style="margin-top: 0.8em">Board question for every pitch: is there a label, and where would ShopNow get it?</div>
+            <aside class="notes">
+              After the vote, 3 minutes: use this slide to correct what the pitches got wrong, no second lecture. Then
+              announce: "Supervised and unsupervised you will now see work, live, in five minutes each."
+            </aside>
+          </section>
+        </section>
+
+        <!-- ======================= 4. SUPERVISED, LIVE ======================= -->
+        <section>
+          <section>
+            <h3>4. Supervised: fit the line (live)</h3>
+            <p class="lead muted" style="margin: 0 0 0.2em 0">ShopNow deliveries: distance to the customer (x) and delivery time (y). Find the line. Then let the machine try.</p>
+            <div class="ctrl">
+              <label>slope w <input type="range" id="fit-w" min="0" max="5" step="0.1" value="1.0" /><span class="val" id="fit-w-v"></span></label>
+              <label>intercept b <input type="range" id="fit-b" min="0" max="40" step="1" value="5" /><span class="val" id="fit-b-v"></span></label>
+              <label>learning rate <input type="range" id="fit-lr" /><span class="val" id="fit-lr-v"></span></label>
+              <button class="btn" id="fit-step">1 step</button>
+              <button class="btn primary" id="fit-run">let the machine learn</button>
+              <button class="btn" id="fit-reset">reset</button>
+              <label><input type="checkbox" id="fit-best" /> show best line</label>
+            </div>
+            <canvas id="fit-canvas" class="sim" width="1800" height="600"></canvas>
+            <div class="simout" id="fit-out"></div>
+            <aside class="notes">
+              Six minutes. Phase 1 (2 min): a student calls out w and b, you move the sliders, everyone watches the loss
+              number. "Lower is better. Who beats 40?" Phase 2: press "1 step" three times and narrate: the machine
+              computes in which direction w and b must move so the loss drops (the gradient), and takes a small step
+              against it. Then "let the machine learn": it repeats until the loss stops improving. Phase 3: set the
+              learning rate to the largest value and run again: it explodes. Step size matters. Tick "show best line":
+              the machine found it, no human wrote a formula for delivery times. Everything on the next slide is in the exam.
+            </aside>
+          </section>
+
+          <section>
+            <h3>What the machine just did: training</h3>
+            <div class="cards">
+              <div class="card">
+                <h4>1. Predict</h4>
+                <div class="formula" style="font-size: 0.9em">\( \hat{y} = w \cdot x + b \)</div>
+                <ul><li>the model is a line with two parameters</li><li>start with random w and b</li></ul>
+              </div>
+              <div class="card">
+                <h4>2. Measure the error: loss</h4>
+                <div class="formula" style="font-size: 0.9em">\( L = \frac{1}{n}\sum_{i=1}^{n} (\hat{y}_i - y_i)^2 \)</div>
+                <ul><li>mean squared error (MSE): the average squared distance between line and points</li><li>one number, lower is better</li></ul>
+              </div>
+              <div class="card">
+                <h4>3. Update: gradient descent</h4>
+                <div class="formula" style="font-size: 0.9em">\( w \leftarrow w - \eta \, \frac{\partial L}{\partial w} \)</div>
+                <ul><li>the gradient says in which direction the loss grows</li><li>move <b>opposite</b> to it, by a step of size η: the <b>learning rate</b></li></ul>
+              </div>
+              <div class="card">
+                <h4>4. Repeat</h4>
+                <div class="formula" style="font-size: 0.9em">until L stops improving</div>
+                <ul><li>each round: predict, loss, update</li><li>too large a step: it explodes, too small: it takes forever</li></ul>
+              </div>
+            </div>
+            <div class="takeaway">
+              This recipe, predict → loss → update → repeat, is <b class="accent">all of machine learning</b>. A neural network
+              has millions of w's instead of one. ChatGPT has a trillion. Same loop.
+            </div>
+            <aside class="notes">
+              Two minutes, four exam facts: MSE is the loss for regression, gradient descent moves opposite the gradient,
+              the learning rate is the step size, training stops when the loss stops improving. The takeaway is the
+              bridge to 10:40: the NN deck starts exactly here, with this line, and adds more parameters.
+            </aside>
+          </section>
+
+          <section>
+            <h3>Same recipe, different output: classification</h3>
+            <div style="display: flex; gap: 1.5em; align-items: center">
+<svg viewBox="0 0 900 330" style="flex: 0 0 60%; max-height: 360px; background: transparent" font-family="Helvetica, Arial, sans-serif" font-size="27" fill="#ddd">
+  <rect x="10" y="30" width="270" height="270" rx="14" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.2)"/>
+  <text x="145" y="72" text-anchor="middle" fill="#4fc3f7" font-weight="bold" font-size="30">inputs x</text>
+  <text x="30" y="118">value: 640.00 €</text><text x="30" y="160">new customer: yes</text><text x="30" y="202">failed payments: 2</text><text x="30" y="244">device: Tor browser</text><text x="30" y="286">hour: 03:14</text>
+  <path d="M290,165 H340" stroke="#9e9e9e" stroke-width="5"/><polygon points="340,152 364,165 340,178" fill="#9e9e9e"/>
+  <rect x="372" y="105" width="170" height="120" rx="14" fill="rgba(206,147,216,0.18)" stroke="#ce93d8"/>
+  <text x="457" y="158" text-anchor="middle" fill="#ce93d8" font-weight="bold" font-size="30">model</text>
+  <text x="457" y="196" text-anchor="middle" fill="#bbb" font-size="22">many w's, trained</text>
+  <path d="M552,165 H602" stroke="#9e9e9e" stroke-width="5"/><polygon points="602,152 626,165 602,178" fill="#9e9e9e"/>
+  <rect x="634" y="30" width="256" height="270" rx="14" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.2)"/>
+  <text x="762" y="72" text-anchor="middle" fill="#ffa726" font-weight="bold" font-size="30">output</text>
+  <text x="762" y="140" text-anchor="middle" font-size="40" fill="#ef5350" font-weight="bold">P(fraud) = 0.87</text>
+  <text x="762" y="200" text-anchor="middle">label: <tspan fill="#ef5350" font-weight="bold">fraud</tspan></text>
+  <text x="762" y="256" text-anchor="middle" fill="#bbb" font-size="24">decision: manual review</text>
+</svg>
+              <div style="flex: 1; text-align: left; font-size: 0.5em">
+                <p><b class="accent">Regression</b> outputs a number. <b class="accent">Classification</b> outputs a category, usually via a probability.</p>
+                <p>Training is the same loop: predict, loss, update, repeat. Only the loss changes (not MSE, but "how surprised was the model by the true label").</p>
+                <p>The label comes from the past: an order is "fraud" if a chargeback arrived within 90 days. No chargeback history, no model.</p>
+                <p class="muted">Homework Part B was exactly this on ShopNow data. At 11:30 your groups compete on it: the leaderboard.</p>
+              </div>
+            </div>
+            <aside class="notes">
+              Two minutes. Exam: regression outputs a number, classification outputs a category label. The picture is the
+              fraud example from the game, now as a trained model. Point at the label definition: this is where business
+              knowledge enters, a data scientist cannot define "fraud" alone. Bridge to the leaderboard at 11:30.
+            </aside>
+          </section>
+        </section>
+
+        <!-- ======================= 5. UNSUPERVISED, LIVE ======================= -->
+        <section>
+          <section>
+            <h3>5. Unsupervised: find the groups (live)</h3>
+            <p class="lead muted" style="margin: 0 0 0.2em 0">ShopNow customers: average basket (x) and orders per month (y). No label anywhere. How many groups do you see?</p>
+            <div class="ctrl">
+              <label>k (number of groups) <input type="range" id="km-k" min="2" max="5" step="1" value="3" /><span class="val" id="km-k-v"></span></label>
+              <button class="btn" id="km-init">1. place k centroids</button>
+              <button class="btn" id="km-assign">2. assign points</button>
+              <button class="btn" id="km-update">3. move centroids</button>
+              <button class="btn primary" id="km-run">run to the end</button>
+              <button class="btn" id="km-name">name the groups</button>
+              <button class="btn" id="km-reset">reset</button>
+            </div>
+            <canvas id="km-canvas" class="sim" width="1800" height="620"></canvas>
+            <div class="simout" id="km-out"></div>
+            <aside class="notes">
+              Six minutes. Phase 1 (1 min): nothing is coloured. "How many groups? Point at them." Most say three. Phase 2:
+              press the three buttons in order, twice, narrating: centroids are dropped at random, every point joins the
+              nearest centroid, each centroid moves to the middle of its points. Repeat until nothing moves. Then "run to
+              the end". Phase 3: set k = 2 and k = 5 and run again: the algorithm always delivers k groups, it never says
+              "there are three". Choosing k is your job. Phase 4: "name the groups": the algorithm only gives numbers 0, 1,
+              2. Value seekers, loyalists, premium are names humans add afterwards. Exam: initialise, assign, update,
+              repeat; output is a cluster number per point.
+            </aside>
+          </section>
+
+          <section>
+            <h3>k-means in four moves</h3>
+            <div class="cards">
+              <div class="card"><h4>1. Initialise</h4><ul><li>you choose k</li><li>drop k centroids at random</li></ul></div>
+              <div class="card"><h4>2. Assign</h4><ul><li>every point joins its nearest centroid</li><li>that is the only "decision"</li></ul></div>
+              <div class="card"><h4>3. Update</h4><ul><li>move each centroid to the mean of its points</li><li>hence the name</li></ul></div>
+              <div class="card"><h4>4. Repeat</h4><ul><li>until the centroids stop moving</li><li>usually under 20 rounds</li></ul></div>
+            </div>
+            <div class="takeaway">
+              Output: a <b class="accent">cluster number for every customer</b>, nothing else. The algorithm does not know what
+              "premium" means. It also does not know k. Both come from you, and both go into a BI dashboard afterwards.
+            </div>
+            <aside class="notes">
+              One minute, the four moves are an exam question. Then the honest limitations: k is a human choice, names are
+              a human choice, and the result depends on the random start (run it twice, sometimes it differs). Bridge to
+              BI: segments end up as a column in the warehouse and a filter in the dashboard.
+            </aside>
+          </section>
+        </section>
+
+        <!-- ======================= 6. REINFORCEMENT ======================= -->
+        <section>
+          <h3>6. Reinforcement: learning by doing</h3>
+          <div style="display: flex; align-items: center; gap: 1em">
+            <img src="../assets/introduction_to_ai/imgs/imgs.009.png" alt="Reinforcement learning loop" style="flex: 0 0 52%; width: 52%; max-height: 420px; object-fit: contain; background: transparent" />
+            <div style="flex: 1; text-align: left; font-size: 0.5em">
+              <p>No answer key, no fixed dataset. An <b class="accent">agent</b> acts, the <b class="accent">environment</b> answers with a new state and a <b class="accent">reward</b>. The agent updates its <b class="accent">policy</b>: what to do in which state.</p>
+              <p><b>ShopNow:</b> which discount to show this visitor? Reward: margin of the order. After a million visitors the policy knows more than any marketing rule.</p>
+              <p><b>Famous:</b> AlphaGo (2016) learned Go by playing itself. Boston Dynamics robots learn to walk in simulation first.</p>
+              <p><b>This afternoon:</b> ChatGPT's last training step is reinforcement from human feedback: people rate answers, the rating is the reward.</p>
+              <p class="muted">Costly to run on real customers: every bad action costs money. Hence simulators, and small traffic first, like Saturday's test phase.</p>
+            </div>
+          </div>
+          <aside class="notes">
+            Two minutes, one slide. Exam: reinforcement learning learns by rewards and feedback. The ShopNow example links
+            to the A/B test: an A/B test is a one-shot version of the same question, "which variant earns more", a
+            reinforcement agent asks it continuously and shifts traffic as it learns (bandits). Then the last two slides.
+          </aside>
+        </section>
+
+        <!-- ======================= 7. BEFORE YOU BELIEVE A MODEL ======================= -->
+        <section>
+          <h3>7. Before you believe a model: three questions</h3>
+          <div class="cards">
+            <div class="card blue">
+              <h4>Where did the data come from?</h4>
+              <ul>
+                <li>garbage in, garbage out: a model is only as good as Saturday's staging tables</li>
+                <li>fraud model trained on 2019 orders, deployed in 2026: fraud has moved</li>
+                <li>biased past, biased model: hiring data from a company that never hired women</li>
+              </ul>
+            </div>
+            <div class="card green">
+              <h4>What exactly is the label?</h4>
+              <ul>
+                <li>"churn" = no order in 90 days? 180? Cancelled account?</li>
+                <li>leakage: a column that only exists <em>after</em> the answer is known (refund amount for a return model)</li>
+                <li>the label is a business decision, not a data science one</li>
+              </ul>
+            </div>
+            <div class="card red">
+              <h4>How was it tested?</h4>
+              <ul>
+                <li>never on the data it learned from: hold out a test set (11:30: the leaderboard uses one)</li>
+                <li>offline accuracy is a promise, Saturday's A/B test is the proof</li>
+                <li>monitor it: models rot while the world moves on</li>
+              </ul>
+            </div>
+          </div>
+          <div class="takeaway">
+            Day 1, your lecturer's own line: "the AI model is the easy part. The hard part is the data it can reach."
+            Everything you learned on Saturday is the hard part.
+          </div>
+          <aside class="notes">
+            Two minutes. This is where the business student earns their money: the questions a non-programmer must ask.
+            Data origin, label definition, test procedure. The quote is from the introduction deck on day 1, students
+            have heard it. Leakage example: a return model that uses "refund amount" is cheating, the refund exists only
+            after the return.
+          </aside>
+        </section>
+
+        <!-- ======================= TAKEAWAYS ======================= -->
+        <section>
+          <section>
+            <h3>Takeaways</h3>
+            <ul style="font-size: 0.6em; text-align: left">
+              <li><b class="accent">AI</b> is the simulation of intelligence, especially learning. Symbolic AI: humans write the rules. Machine learning: the rules are learned from examples. Deep learning: with neural networks. Generative AI: the output is new content. Generative is not general.</li>
+              <li><b class="accent">Three acts:</b> rules (1956–1990s, two winters), learning from data (1990s–2012), deep and generative (2012–). The ideas are old, data and compute made them work.</li>
+              <li><b class="accent">The money:</b> private AI investment ×60 since 2013, 345 bn in 2025, half of it generative. Big Tech spends more on data centres in 2026 than the moon landing cost. Adoption faster than the PC or the internet.</li>
+              <li><b class="accent">Three ways to learn:</b> supervised (labels: regression gives a number, classification a label), unsupervised (no labels: k-means gives a cluster number), reinforcement (rewards). First question of every project: is there a label?</li>
+              <li><b class="accent">Training</b> = predict, loss (MSE), update opposite the gradient by the learning rate, repeat until the loss stops improving. Same loop from a line to ChatGPT.</li>
+              <li><b class="accent">Before you believe a model:</b> where is the data from, what is the label, how was it tested.</li>
+            </ul>
+            <aside class="notes">
+              One minute, read the bold words only. Then the break and the pointer to the NN deck.
+            </aside>
+          </section>
+
+          <section>
+            <h3>Next</h3>
+            <div class="cards">
+              <div class="card active">
+                <h4>10:40 Neural networks</h4>
+                <ul>
+                  <li>the line from slide 4 becomes a neuron</li>
+                  <li>stack neurons: a network. Why depth helps</li>
+                  <li>mini-talk 1: backpropagation, how the network learns from errors</li>
+                </ul>
+              </div>
+              <div class="card blue">
+                <h4>11:30 Leaderboard</h4>
+                <ul>
+                  <li>classification on ShopNow data (homework Part B)</li>
+                  <li>your group tunes a small network, accuracy on the test set goes on the board</li>
+                </ul>
+              </div>
+              <div class="card purple">
+                <h4>Afternoon: generative AI &amp; agents</h4>
+                <ul>
+                  <li>the orange core of the map: models that create</li>
+                  <li>tokens, hallucination, embeddings, RAG, agents: your mini-talks</li>
+                  <li>debate at 16:39: should ShopNow's assistant see real customer data?</li>
+                </ul>
+              </div>
+            </div>
+            <p class="cite">Self-study for the exam: the timeline milestones (slide 2), Moore's law (asset folder: imgs.005.png), the Dartmouth proposal (link on slide 1).</p>
+          </section>
+        </section>
       </div>
     </div>
 
@@ -40,20 +988,15 @@
     <script src="../reveal.js/plugin/highlight/highlight.js"></script>
     <script src="../reveal.js/plugin/math/math.js"></script>
     <script src="../utils.js"></script>
+    <script src="ai.js"></script>
 
     <script>
       Reveal.initialize({
         hash: true,
-        plugins: [
-          RevealMarkdown,
-          RevealHighlight,
-          RevealNotes,
-          RevealMath.KaTeX,
-        ],
-        showNotes: false, // use 'Note:' keyword to define notes at the end of a slide'; press s to see those notes during presentation
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX],
+        showNotes: false, // press s for speaker notes
       });
 
-      // Call the includeHTML function to insert the content from 'cover.html'
       document.addEventListener("DOMContentLoaded", () => {
         includeHTML("../templates/cover.html", "cover-placeholder", {
           title: "An Introduction to AI",

@@ -51,7 +51,7 @@ Intro to AI Teil 1 (Timeline, Eras, Symbolic AI, 35 min) passt vor das Streitges
 | 15:00 | 15 | Pause | | |
 | 15:15 | 30 | **Streitgespräch 1** | "In fünf Jahren braucht ShopNow keine BI-Analysten mehr, nur noch KI." Zwei Gruppen mit zugeloster Position (pro / contra), Rest ist Jury. 6 min Vorbereitung, je 2 min Eröffnung, 6 min Schlagabtausch, je 1 min Schlusswort, Jury stimmt vorher und nachher ab. Dozent moderiert nur, 3 Sätze Fazit. Munition: "AI at every layer" vom Vormittag und das Review Board | Leitfragen in den Sprechernotizen (zu ergänzen) |
 | 15:45 | 20 | **Prüfungs-Quiz Teil 1 (Teams)** | 15 Fragen aus den Abschnitten BI, Datenbanken, Data Management und A/B-Testing des Mock Exam, Punktestand an der Tafel, bei strittigen Fragen kurze Erklärung. Teil 2 (AI-Module) am Tag 4 | `exam/mock_exam.md` |
-| 16:05 | 15 | Abschluss | Ausblick Tag 4 (Intro AI kompakt, Mini-Vorträge, Leaderboard), Reihenfolge der Mini-Vorträge bestätigen, Hausaufgabe nennen | |
+| 16:05 | 15 | Abschluss | Ausblick Tag 4 (Intro AI mit Pitch und Live-Demos, Mini-Vorträge, Leaderboard), Reihenfolge der Mini-Vorträge bestätigen, Hausaufgabe nennen | |
 
 Planmäßiges Ende 16:20, Reserve bis 16:45. Wenn der Vormittag überzieht, verschiebt sich alles nach hinten, es muss nichts gestrichen werden.
 
@@ -73,10 +73,14 @@ Dozenten-Vortrag am Tag 3: ca. 2 h 10 min. Studierende aktiv: ca. 4 h 15 min.
 
 ## Tag 4: Mo 2026-11-16 — Introduction to AI (kompakt) + Neural Networks + Generative AI & Agents
 
-Introduction to AI kommt als 65-min-Block an den Anfang, fast nur in Studierendenformaten: Use-Case-Pitch
-und k-means-Übung. Timeline, Eras, Moore's Law und Symbolic AI sind Selbststudium (Mock Exam enthält Fragen dazu,
-beim Abschluss ansagen). Die 65 min kommen aus allen Vortragsblöcken (je 5-7 min kürzer), dem Prüfungs-Quiz
-(Teil 1 ist am Tag 3) und dem Streitgespräch 2 (25 statt 30 min).
+Introduction to AI kommt als 75-min-Block an den Anfang (Deck am 2026-11-10 komplett neu gebaut, 27 Slides,
+`slides/introduction_to_ai/index.html` + `ai.js`): Spiel "Is this AI?", Definition, Karte (AI > ML > DL > GenAI,
+Symbolic daneben), "Generative or general?", drei Akte, Investitionen 2013-2025 live (AI Index 2026), Big-Tech-Capex
+2026 vs. Apollo, EU AI Act, Use-Case-Pitch, Regression live (Linie per Slider, dann Gradient Descent), k-means live
+(Schritt für Schritt, dann "name the groups"), Reinforcement, "Before you believe a model". Sprechernotizen (Taste `s`)
+sind ein Erzählskript pro Slide. Moore's Law und die einzelnen Timeline-Meilensteine bleiben Selbststudium (Mock
+Exam enthält Fragen dazu, beim Abschluss ansagen). Die 10 min mehr gegenüber dem 65-min-Plan kommen aus
+NN Teil 1 (-3), Leaderboard (-5) und NN Teil 2 (-2); Mittag bleibt 12:30.
 
 Die **Mini-Vorträge der Studierenden (5 min + 3 min Fragen)** sitzen jeweils an der Stelle im
 Deck, an der das Thema dran ist. Danach zeigt der Dozent höchstens 2-3 eigene Slides als
@@ -85,15 +89,17 @@ Zusammenfassung oder Korrektur, kein zweiter Vortrag zum selben Thema.
 | Zeit | Dauer | Format | Inhalt | Material |
 |---|---|---|---|---|
 | 09:00 | 10 | Team-Quiz | Rückblick Tag 3: 8 Fragen aus den Abschnitten Data Management und A/B-Testing des Mock Exam | `exam/mock_exam.md` |
-| 09:10 | 5 | Einstieg | Intro to AI: Why does AI matter for BI? (eine Slide, Anschluss an "AI at every layer"), ML Family: supervised, unsupervised, reinforcement in je einem Satz | `slides/introduction_to_ai` |
-| 09:15 | 40 | **Use-Case-Pitch (Gruppen)** (ersetzt den 60-min-Mini-Talk) | Jede Gruppe bekommt ein Paradigma (2x supervised, 2x unsupervised, 2x reinforcement) und pitcht einen Use Case für ShopNow im Template Problem / Data / Algorithm / Prediction. 15 min Vorbereitung (LLM erlaubt), je 2 min Pitch, dann stimmt das "Management" ab, welche zwei Projekte finanziert werden (5 min). Dozent: Quick reference cards als Zusammenfassung (3 min) | Slides "Mini-talk", "Your example template", "Quick reference cards" |
-| 09:55 | 20 | Vortrag + Übung | Supervised kompakt: Regression als Vorgriff auf das Neuron (Loss, Gradient, Iteration nur als Intuition), Klassifikation (Brücke zur Hausaufgabe Part B). Unsupervised: k-means, Übung "Assign customer groups" am Platz (5 min), k-means in motion. Reinforcement nur eine Slide | `slides/introduction_to_ai` |
-| 10:15 | 15 | Pause | | |
-| 10:30 | 40 | Vortrag | Neural Networks Teil 1: Lineare Regression als Neuron (knüpft an 09:55 an), Aktivierung, Layer, Universal Approximation (Intuition) | `slides/neural_networks` |
-| 11:10 | 8 | **Mini-Vortrag 1** | Backpropagation: wie lernt ein Netz? (nur Intuition, ein Bild) | Gruppe A |
-| 11:18 | 5 | Vortrag | Dozent: Zusammenfassung, Brücke zu Training in der Praxis | |
-| 11:23 | 45 | **Leaderboard-Wettbewerb (Gruppen)** | Klassifikation auf den ShopNow-Daten (Part B der Hausaufgabe): jede Gruppe trainiert ein kleines Netz (sklearn `MLPClassifier`), dreht an Layern, Lernrate, Epochen. Accuracy auf dem Testset kommt auf das Leaderboard an der Tafel. Beste Gruppe erklärt in 3 min, was sie geändert hat | Notebook-Zelle ergänzen (siehe unten) |
-| 12:08 | 22 | Vortrag | Neural Networks Teil 2: Overfitting (direkt am Leaderboard-Ergebnis), warum Deep Learning erst ab 2010 (Daten, GPUs), Anwendungen im Business, Brücke zu GenAI | `slides/neural_networks` |
+| 09:10 | 12 | Einstieg + **Spiel "Is this AI?"** | "Where are we?" (AI-Balken orange, Anschluss an "AI at every layer"), Tagesstruktur: vormittags AI, die vorhersagt, nachmittags AI, die erzeugt. Dann zehn Karten (Excel-SUM, Thermostat, Deep Blue, Google Maps, Fraud-Regeln, Spamfilter, Netflix, Face Unlock, ChatGPT, der A/B-Test vom Samstag): Handzeichen, Klick, Antwort. Danach Dartmouth-Definition, Karte (Symbolic / ML / DL / GenAI, die Karten landen in den Kreisen), "Generative or general?" | `slides/introduction_to_ai`, Abschnitt 1 |
+| 09:22 | 11 | Vortrag + Live-Chart | Drei Akte (Timeline-Bild als Karte), "Why 2012?" (Daten, Compute, Algorithmen), **Follow the money (live)**: erst Schätzungen aus dem Raum, dann Balken Jahr für Jahr 2013-2025, GenAI-Anteil einblenden; Big Tech 2026 (~730 Mrd.) vs. Manhattan/ISS/Apollo/Interstate; drei Zahlen (53 % / 88 % / x60); EU AI Act mit Zuruf (überspringen, wenn spät) | Abschnitt 2 |
+| 09:33 | 5 | Vortrag | "Rules or examples?" (Fraud-Regeln als Code vs. Tabelle mit Label), "Three ways to learn" mit der Frage "is there a label?" | Abschnitt 3 |
+| 09:38 | 27 | **Use-Case-Pitch (Gruppen)** | Gruppen 1+2 supervised, 3+4 unsupervised, 5+6 reinforcement. Template Problem / Data / Algorithm / Output / Decision (Slide bleibt stehen, dazu die Quick reference cards). 10 min Vorbereitung (LLM erlaubt), je 2 min Pitch (12 min), dann ist der Raum das Management: zwei Stimmen pro Person, zwei Projekte werden finanziert (3 min). Dozent korrigiert mit den Reference Cards (2 min) | Slides "Your turn", "The template", "Quick reference cards" |
+| 10:05 | 20 | **Live-Demos** | Supervised: **Regression live** (Studierende rufen w und b zu, Loss sinkt; "1 step", "let the machine learn", Lernrate zu groß: explodiert; "show best line"), dann "What the machine just did" (MSE, Gradient, Lernrate, Stop: Prüfungsstoff), Klassifikation (Brücke zu Hausaufgabe Part B und Leaderboard). Unsupervised: **k-means live** (erst Gruppen raten, dann 1-2-3 per Knopf, "run to the end", k = 2 und 5, "name the groups"), "k-means in four moves". Reinforcement eine Slide (RLHF als Brücke zum Nachmittag), "Before you believe a model", Takeaways | Abschnitte 4-7 |
+| 10:25 | 15 | Pause | | |
+| 10:40 | 37 | Vortrag | Neural Networks Teil 1: Lineare Regression als Neuron (knüpft an die Regression-Demo an), Aktivierung, Layer, Universal Approximation (Intuition) | `slides/neural_networks` |
+| 11:17 | 8 | **Mini-Vortrag 1** | Backpropagation: wie lernt ein Netz? (nur Intuition, ein Bild) | Gruppe A |
+| 11:25 | 5 | Vortrag | Dozent: Zusammenfassung, Brücke zu Training in der Praxis | |
+| 11:30 | 40 | **Leaderboard-Wettbewerb (Gruppen)** | Klassifikation auf den ShopNow-Daten (Part B der Hausaufgabe): jede Gruppe trainiert ein kleines Netz (sklearn `MLPClassifier`), dreht an Layern, Lernrate, Epochen. Accuracy auf dem Testset kommt auf das Leaderboard an der Tafel. Beste Gruppe erklärt in 3 min, was sie geändert hat | Notebook-Zelle ergänzen (siehe unten) |
+| 12:10 | 20 | Vortrag | Neural Networks Teil 2: Overfitting (direkt am Leaderboard-Ergebnis), warum Deep Learning erst ab 2010 (Daten, GPUs), Anwendungen im Business, Brücke zu GenAI | `slides/neural_networks` |
 | 12:30 | 60 | Mittag | | |
 | 13:30 | 8 | **Mini-Vortrag 2** | GANs: wie kann ein Netz Bilder erzeugen? | Gruppe B |
 | 13:38 | 30 | Vortrag | GenAI Teil 1: What is generative AI, Encoder-Decoder, Transformer vs. frühere Architekturen, Inference | `slides/generative_ai_and_agents` |
@@ -173,7 +179,7 @@ per Mail melden.
 - [ ] Deck und beide Notebooks einmal in Colab/Browser durchklicken, dann committen
 - [ ] Tafelvorlage für den Architektur-Wettbewerb: Tabelle Architekturen x fünf Kostenkomponenten + Summe, während der Expertenrunde anzeichnen. Referenzwerte (Solution, mit gekauftem Finanzdaten-Feed 20 $/GB als Quelle C): Lakehouse 16.723, Lake 17.077, Warehouse 17.990, Hybrid 18.770 $; Zusatzfrage "wer zahlt den Feed zweimal": nur das Warehouse (Bonus: ca. 30.100 $)
 - [ ] A/B-Deck: "Your turn"-Slide auf Lab-Aufgabe 1 umlenken (Warm-up-Notebook entfällt am Tag 3, bleibt als Übung auf der Kursseite)
-- [ ] Mini-Talk-Slide im Intro-AI-Deck auf das Pitch-Format umschreiben (15 min Vorbereitung statt 60-min-Talk, Abstimmung)
+- [x] Mini-Talk-Slide im Intro-AI-Deck auf das Pitch-Format umschreiben (erledigt 2026-11-10 mit dem Neubau des Decks: 10 min Vorbereitung, 2 min Pitch, Abstimmung)
 - [ ] Leitfragen für beide Streitgespräche als Sprechernotizen in die Decks (Taste `s`)
 - [ ] **Leaderboard-Zelle** für den NN-Wettbewerb in `colab/introduction_ai.ipynb` Part B oder in einem neuen kurzen
   Notebook `colab/nn_competition.ipynb`: Train/Test-Split fest vorgeben, `MLPClassifier` mit 3-4 Parametern
