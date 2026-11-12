@@ -128,7 +128,7 @@ Note:
 
 ---
 
-### 1. You are the ETL process <span class="badge">12 MIN</span>
+### 1. You are the ETL process <span class="badge">15 MIN</span>
 
 <div class="task">
 
@@ -137,8 +137,8 @@ ShopNow wants a daily funnel dashboard: sessions → add to cart → orders, per
 <ul>
   <li>in pairs, open the Colab notebook <a href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/data_management_etl.ipynb">ETL by hand</a></li>
   <li>Task 1: find three things that are messy (2 min)</li>
-  <li>Task 2: build the clean staging tables (6 min)</li>
-  <li>Task 3: build the one table the dashboard needs (4 min)</li>
+  <li>Task 2: build the clean staging tables (7 min)</li>
+  <li>Task 3: build the one table the dashboard needs (6 min)</li>
   <li>get as far as you can, stop when the timer rings</li>
   <li>stuck on the how? every step shows the same pattern on a support-ticket table, translate it. Still stuck? Ask an AI, then check the result</li>
 </ul>
@@ -522,7 +522,7 @@ Note:
       <tr><td>orange arrows <b>E</b>, <b>L</b></td><td>Extract and Load: data is copied</td><td>how often, and where to?</td></tr>
       <tr><td>right column</td><td>who uses the data: reporting, data science</td><td>fast queries, or raw material?</td></tr>
     </table>
-    <p class="steps" style="margin: 0.4em 0 0 0;">Warehouse answered: <b>one</b> long-term storage, cleaned marts only, transform <b>before</b> storing, reporting on the right.</p>
+    <p class="steps" style="margin: 0.4em 0 0 0;">Warehouse answered: <b>one</b> long-term storage, cleaned marts only, transform <b>before</b> storing, reporting on the right. And: <b>no raw data kept</b>. Remember that.</p>
   </div>
 </div>
 
@@ -530,6 +530,7 @@ Note:
 
 - 3 minutes, lecturer. Point at the warehouse picture while reading the four rows: sources on the left are short-term persistence, the gear in the middle is their notebook, the warehouse is the one long-term storage, reporting on the right.
 - Then the hook: the next pictures move the gear, add a storage, or merge two. When a group presents, make them say where the gear is and how many storages they count. If they can answer the "ask yourself" column, they understand their architecture.
+- The warehouse is the reference, not a group. Say its one weakness yourself: no raw data, so when the definition of "bounce" changes after a year, the history cannot be recomputed (the tracking tool keeps 7 days). The lakehouse group picks this up. The warehouse briefing and its ANSWER slide stay in the deck for the record, skip them in class.
 - Hand out the groups on the next slide right after this one, do not let the legend stand alone.
 
 ---
@@ -538,14 +539,13 @@ Note:
 
 <div class="task">
 
-<p style="font-size: 0.85em; margin: 0;">Form <b>four new groups</b>, one architecture each: a <b>briefing</b> (picture plus facts, down arrow under your architecture) and <b>one question</b> the briefing does not answer. 15 min preparation, then 5 min per group at the screen.</p>
+<p style="font-size: 0.85em; margin: 0;">Form <b>three new groups</b>, one architecture each. The warehouse is the reference, you built it this morning. Each group gets a <b>briefing</b> (picture plus facts, down arrow under your architecture) and <b>one question</b> the briefing does not answer. 15 min preparation, then 5 min per group at the screen.</p>
 
 <table class="small-list" style="margin: 0.3em auto; font-size: 0.55em;">
   <tr><th>Group</th><th>Architecture</th><th>Your question</th></tr>
-  <tr><td>1</td><td>Data Warehouse</td><td>After a year ShopNow changes the definition of "bounce". What has to happen in your architecture, and what does it cost?</td></tr>
-  <tr><td>2</td><td>Data Lake</td><td>Three years in, nobody knows what the 400 folders contain. What went wrong, and why is every query more expensive than in the warehouse?</td></tr>
-  <tr><td>3</td><td>Hybrid Data Lake</td><td>You store everything twice. Name one company where that is still right and one where it is waste. What decides?</td></tr>
-  <tr><td>4</td><td>Lakehouse</td><td>What does the lakehouse need that the warehouse already includes, and which skill does your team need for it?</td></tr>
+  <tr><td>1</td><td>Data Lake</td><td>Three years in, nobody knows what the 400 folders contain. What went wrong, and why is every query more expensive than in the warehouse?</td></tr>
+  <tr><td>2</td><td>Hybrid Data Lake</td><td>You store everything twice. Name one use case where that is still right and one where it is waste. What decides?</td></tr>
+  <tr><td>3</td><td>Lakehouse</td><td>After a year ShopNow changes the definition of "bounce". Why is that a problem in the warehouse you built this morning, and why not here? And what does the lakehouse need that the warehouse already includes?</td></tr>
 </table>
 
 <div class="two-col" style="font-size: 0.55em; gap: 1.5rem; margin-top: 0.3em;">
@@ -555,7 +555,7 @@ Note:
       <li><b>Read the picture</b> with the legend: how many storages, raw or cleaned, where is the gear?</li>
       <li><b>Answer your question.</b></li>
       <li><b>From that answer:</b> one strength and one weakness of your architecture.</li>
-      <li><b>One company</b> where you would pick it.</li>
+      <li><b>One use case</b> where you would pick it.</li>
     </ol>
   </div>
   <div>
@@ -569,13 +569,13 @@ Note:
 Note:
 
 - How a talk runs: step 1 is the legend applied to their picture, that is where you see whether they understood it. Step 2 is the transfer question. Step 3 forces them to derive pro and con from their own answer instead of reading the briefing. Step 4 anchors it. Interrupt only if step 1 is wrong (wrong number of storages, gear in the wrong place), everything else you correct at the end.
-- Four new groups for this block, numbered 1 to 4 (with 16 to 20 people that is 4 to 5 per group, count off 1-2-3-4 around the room). Presentation order: warehouse (1), lake (2), hybrid (3), lakehouse (4). The later groups may build on the earlier ones ("hybrid is both of those"). 4 x 5 min = 20 min.
-- Group 1 has the easiest picture, they built the warehouse themselves this morning. During the 15 minutes go to groups 3 and 4 first, they have the hardest pictures.
-- The answers are on hidden slides (ANSWER badge) under each briefing. They are hidden while `SHOW_SOLUTIONS` at the top of index.html is false; set it to true and commit after the lecture. After all four talks: correct only what was wrong, max 4 minutes, then the summary slide.
+- Three new groups for this block (with 15 to 20 people that is 5 to 7 per group, count off 1-2-3 around the room). Presentation order: lake (1), hybrid (2), lakehouse (3), each one against the warehouse from this morning. The later groups may build on the earlier ones ("hybrid is the warehouse plus a lake"). 3 x 5 min = 15 min.
+- During the 15 minutes go to groups 2 and 3 first, they have the hardest pictures. Group 3 has two questions, the bounce one is the bridge to the competition's extra question (who pays the data feed twice).
+- The answers are on hidden slides (ANSWER badge) under each briefing. They are hidden while `SHOW_SOLUTIONS` at the top of index.html is false; set it to true and commit after the lecture. After the three talks: correct only what was wrong, max 4 minutes, then the summary slide.
 
 --
 
-#### Briefing: <span style="color: orange;">Data Warehouse</span> (group 1)
+#### Briefing: <span style="color: orange;">Data Warehouse</span> (reference, built this morning)
 
 <img
   src="../assets/data_management/imgs/imgs.002.png"
@@ -600,6 +600,26 @@ Note:
 - Question: changing the definition of "bounce". Expected: the staging table stg_sessions and every mart built on it must be recomputed for the whole history (backfill). That needs the raw events of a year, which the warehouse does not keep; if the tracking tool keeps only 7 days, the old numbers can never be corrected. Cost drivers: schema changes, backfills, complex ETL, many marts.
 - Bonus they may find: the new and the old definition cannot be compared unless both are kept, so versioned marts.
 
+
+--
+
+#### <span style="color: orange;">Data Warehouse</span>
+
+<img
+  src="../assets/data_management/imgs/imgs.002.png"
+  alt="Data Warehouse"
+  style="
+    max-height: 560px;
+    width: auto;
+    margin: 0 auto;
+    background: transparent;
+  "
+/>
+
+Note:
+
+- Picture only, for the talk at the screen: the group explains, nobody reads. Legend terms: storages, gear, arrows.
+
 --
 
 <!-- .slide: data-visibility="hidden" -->
@@ -615,7 +635,7 @@ Note:
 
 --
 
-#### Briefing: <span style="color: orange;">Data Lake</span> (group 2)
+#### Briefing: <span style="color: orange;">Data Lake</span> (group 1)
 
 <img
   src="../assets/data_management/imgs/imgs.003.png"
@@ -640,6 +660,26 @@ Note:
 - Question: 400 folders, nobody knows the content. Expected: a data swamp, no structure or documentation was enforced, nobody owned the lake. Prevention: naming conventions, a catalog, ownership. Why every query is more expensive: the cleaning from Task 2 runs again on every read, on raw data, instead of once in ETL; plus no index, no curated marts.
 - Security point if they find it: hard to see what is sensitive in thousands of files of unknown format.
 
+
+--
+
+#### <span style="color: orange;">Data Lake</span>
+
+<img
+  src="../assets/data_management/imgs/imgs.003.png"
+  alt="Data Lake"
+  style="
+    max-height: 560px;
+    width: auto;
+    margin: 0 auto;
+    background: transparent;
+  "
+/>
+
+Note:
+
+- Picture only, for the talk at the screen: the group explains, nobody reads. Legend terms: storages, gear, arrows.
+
 --
 
 <!-- .slide: data-visibility="hidden" -->
@@ -654,7 +694,7 @@ Note:
 
 --
 
-#### Briefing: <span style="color: orange;">Hybrid Data Lake</span> (group 3)
+#### Briefing: <span style="color: orange;">Hybrid Data Lake</span> (group 2)
 
 <img
   src="../assets/data_management/imgs/imgs.004.png"
@@ -678,6 +718,26 @@ Note:
 
 - Question: where is storing twice still right? Expected: large companies where both are hard requirements: operational BI with many concurrent users needing sub-second answers (the warehouse), and ML or audit needs on raw history (the lake), and a team that can run two systems. Waste: a 30-person company with three dashboards and no data science; or any company that only wants one of the two uses. What decides: concurrent dashboard users, latency requirements, share of raw and unstructured data, team size.
 
+
+--
+
+#### <span style="color: orange;">Hybrid Data Lake</span>
+
+<img
+  src="../assets/data_management/imgs/imgs.004.png"
+  alt="Hybrid Data Lake"
+  style="
+    max-height: 560px;
+    width: auto;
+    margin: 0 auto;
+    background: transparent;
+  "
+/>
+
+Note:
+
+- Picture only, for the talk at the screen: the group explains, nobody reads. Legend terms: storages, gear, arrows.
+
 --
 
 <!-- .slide: data-visibility="hidden" -->
@@ -692,7 +752,7 @@ Note:
 
 --
 
-#### Briefing: <span style="color: orange;">Data Lakehouse</span> (group 4)
+#### Briefing: <span style="color: orange;">Data Lakehouse</span> (group 3)
 
 <img
   src="../assets/data_management/imgs/imgs.005.png"
@@ -714,7 +774,27 @@ Note:
 
 Note:
 
-- Question: what does it need that the warehouse includes? Expected: a query engine. A warehouse is storage and query engine in one product; a lakehouse is files on object storage, so a separate engine (Dremio, Trino, Spark, Databricks) must be run and tuned, and the table format must be managed. Skills: running that engine, the table format, and discipline to keep raw and cleaned areas apart, otherwise it is a lake with extra steps. Performance for many concurrent dashboard users is below a tuned warehouse.
+- Question, part 1: the changed definition of "bounce". Expected: in the warehouse the raw events are gone, so stg_sessions and the marts cannot be recomputed for the history; the lakehouse keeps raw and cleaned side by side, the transformation simply runs again (a backfill is a re-run, not a re-download). Part 2: what does it need that the warehouse includes? Expected: a query engine. A warehouse is storage and query engine in one product; a lakehouse is files on object storage, so a separate engine (Dremio, Trino, Spark, Databricks) must be run and tuned, and the table format must be managed. Skills: running that engine, the table format, and discipline to keep raw and cleaned areas apart, otherwise it is a lake with extra steps. Performance for many concurrent dashboard users is below a tuned warehouse.
+
+
+--
+
+#### <span style="color: orange;">Data Lakehouse</span>
+
+<img
+  src="../assets/data_management/imgs/imgs.005.png"
+  alt="Data Lakehouse"
+  style="
+    max-height: 560px;
+    width: auto;
+    margin: 0 auto;
+    background: transparent;
+  "
+/>
+
+Note:
+
+- Picture only, for the talk at the screen: the group explains, nobody reads. Legend terms: storages, gear, arrows.
 
 --
 
@@ -723,6 +803,7 @@ Note:
 #### Lakehouse: what does it need? <span class="badge">ANSWER</span>
 
 <ul class="small-list" style="text-align: left;">
+  <li><b>Bounce redefined:</b> the warehouse threw the raw events away, so the history cannot be recomputed. The lakehouse keeps raw and cleaned side by side: the transformation runs again, nothing is re-downloaded.</li>
   <li>A <b>query engine</b>. A warehouse is storage and engine in one product; a lakehouse is files on object storage, so a separate engine (Dremio, Trino, Spark, Databricks) must be run and tuned, and the table format (Iceberg, Delta) must be managed.</li>
   <li><b>Skills:</b> running that engine, the table format, and the discipline to keep raw and cleaned areas apart. Otherwise it is a lake with extra steps.</li>
   <li>Performance for many concurrent dashboard users is below a tuned warehouse.</li>
@@ -744,7 +825,7 @@ Note:
 
 Note:
 
-- Show after all four talks. One minute. This is the exam-relevant summary.
+- Show after the three talks. One minute. This is the exam-relevant summary.
 
 ---
 
@@ -752,22 +833,20 @@ Note:
 
 <div class="task">
 
-A company has to choose one of the four architectures. Cost table and usage are in the notebook <a href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/data_management_architecture.ipynb">Data management: cost estimation</a>.
+ShopNow runs the warehouse you built this morning. It costs <b>17,990 $</b> over 2 years. Does one of the three alternatives beat it? Prices and usage are in the notebook <a href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/data_management_architecture.ipynb">Data management: cost estimation</a>.
 
 <ul>
-  <li>each group calculates the <b>2-year cost of its own architecture</b> (the one you just explained), 10 min</li>
+  <li>each group calculates the <b>2-year cost of its own alternative</b> (the one you just explained), 10 min</li>
   <li>write your total and the five components on the whiteboard <span class="badge">WHITEBOARD</span></li>
-  <li>then 2 min per group: <b>recommend one architecture to the company, not your own</b>. One cost argument, one non-cost argument.</li>
+  <li>then 2 min per group: <b>recommend one architecture to ShopNow, not your own</b> (staying with the warehouse is allowed). One cost argument, one non-cost argument.</li>
   <li>extra question: after a year the schema changes and all history is rebuilt from raw data. <b>Which architecture pays the financial data feed a second time?</b></li>
 </ul>
-
-<p class="smaller-text">Optional, for the curious: calculate all four and check the whiteboard. Plus: what changes after an incident and a schema update (bonus task in the notebook).</p>
 
 </div>
 
 Note:
 
-- Whiteboard table: rows = architectures, columns = acquisition, storage, transfer, queries, maintenance, total. Prepare it during the expert round.
+- Whiteboard table: rows = architectures, columns = acquisition, storage, transfer, queries, maintenance, total. Prepare it during the expert round with the warehouse row already filled in (12,103 / 1,800 / 1,821 / 1,066 / 1,200 / 17,990), the notebook shows the same numbers.
 - Reference numbers (solution notebook: 730 days, 104.3 weeks, 24 months): Lakehouse 16,723, Data Lake 17,077, Data Warehouse 17,990, Hybrid 18,770 dollars in 2 years. Acquisition (12,103, of which 9,600 is the purchased financial feed) and transfer (1,821) are identical for all, so the ranking comes from storage, queries and maintenance. The extra question is where the feed starts to matter: only the warehouse has to buy it again.
 - The notebook is a fill-in template: six steps, each line says what to compute. Acquisition and transfer must be identical across groups, so a group that deviates there made an assumption error. When a number is far off: that is the discussion. Typical causes: source B counted per day instead of per week, storage billed once instead of every month on the growing volume.
 - Recommendation round: the "not your own" rule forces them to use the other groups' arguments. Push for non-cost arguments: team skills, share of unstructured data, how often schemas change, how many dashboard users.
