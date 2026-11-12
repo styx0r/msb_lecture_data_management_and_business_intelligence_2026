@@ -140,14 +140,14 @@ ShopNow wants a daily funnel dashboard: sessions → add to cart → orders, per
   <li>Task 2: build the clean staging tables (6 min)</li>
   <li>Task 3: build the one table the dashboard needs (4 min)</li>
   <li>get as far as you can, stop when the timer rings</li>
-  <li>stuck on the how? the hints name the function. Still stuck? Ask an AI, then check the result</li>
+  <li>stuck on the how? every step shows the same pattern on a support-ticket table, translate it. Still stuck? Ask an AI, then check the result</li>
 </ul>
 
 </div>
 
 Note:
 
-- Start the timer visibly. Walk around. Typical sticking points: date parsing format string, the groupby/agg syntax (hints are in the notebook), merge with how="left".
+- Start the timer visibly. Walk around. Typical sticking points: date parsing format string, the groupby/agg syntax (each step has an example on a different table in the notebook), merge with how="left".
 - Using an LLM is explicitly allowed (it says so on the slide and in the notebook). The check afterwards matters more than the typing: ask pairs who used one whether the row count is right.
 - Do not help with the concepts, only with syntax. The goal is that they feel the three steps, not that everybody finishes.
 - Guiding question while walking: "Which of these steps would you want to run every night automatically?" (all of them, that is the pipeline).
