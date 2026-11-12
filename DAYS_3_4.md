@@ -1,4 +1,4 @@
-# Ablaufplan Blocktag 3 und 4 (Entwurf 2026-10-28, Stand 2026-11-06)
+# Ablaufplan Blocktag 3 und 4 (Entwurf 2026-10-28, Stand 2026-11-12)
 
 Stand: Tag 1 (Do 2026-10-15) und Tag 2 (Mo 2026-10-19) sind gelaufen. Es bleiben
 **Sa 2026-11-14** und **Mo 2026-11-16**, jeweils 9:00-17:45.
@@ -15,11 +15,11 @@ Annahmen (bitte prüfen):
 - ca. 15-20 Teilnehmende, **6 Gruppen à 2-3 Personen**. Gruppen vom Tag 1 wiederverwenden,
   falls die Einteilung noch existiert, sonst am 14.11. um 9:00 neu losen. Ausnahme: der Data-Management-Block
   (Expertengruppen und Kosten-Wettbewerb) läuft mit **vier neuen Gruppen**, eine pro Architektur.
-- Mini-Vorträge und Streitgespräche zählen als Teilnahme, nicht als Note (Klausur ist MC).
-- Vergabe der Mini-Vortragsthemen **per Mail bis spätestens Fr 2026-10-30**, damit zwei
-  Wochen Vorbereitung bleiben.
+- Gruppenaufgaben und Streitgespräche zählen als Teilnahme, nicht als Note (Klausur ist MC).
+- Die ursprünglich geplanten Mini-Vorträge der Studierenden sind gestrichen (2026-11-12, keine Vorbereitungszeit).
+  Nichts muss vorbereitet werden, und es gibt keine Hausaufgabe zwischen den beiden Tagen (Entscheidung 2026-11-12).
 
-Pausenraster: Vormittagspause 15 min (Tag 3: 10:49, Tag 4: 10:33), Mittag 60 min (Tag 3: 12:30, Tag 4: 12:00), Nachmittagspause 15 min (Tag 3 ca. 15:00, Tag 4: 14:31).
+Pausenraster: Vormittagspause 15 min (Tag 3: 10:49, Tag 4: 10:33), Mittag 60 min (Tag 3: 12:30, Tag 4: 12:00), Nachmittagspause 15 min (Tag 3 ca. 15:00, Tag 4: 14:25).
 
 ---
 
@@ -51,7 +51,7 @@ Intro to AI Teil 1 (Timeline, Eras, Symbolic AI, 35 min) passt vor das Streitges
 | 15:00 | 15 | Pause | | |
 | 15:15 | 30 | **Streitgespräch 1** | "In fünf Jahren braucht ShopNow keine BI-Analysten mehr, nur noch KI." Zwei Gruppen mit zugeloster Position (pro / contra), Rest ist Jury. 6 min Vorbereitung, je 2 min Eröffnung, 6 min Schlagabtausch, je 1 min Schlusswort, Jury stimmt vorher und nachher ab. Dozent moderiert nur, 3 Sätze Fazit. Munition: "AI at every layer" vom Vormittag und das Review Board | Leitfragen in den Sprechernotizen (zu ergänzen) |
 | 15:45 | 20 | **Prüfungs-Quiz Teil 1 (Teams)** | 15 Fragen aus den Abschnitten BI, Datenbanken, Data Management und A/B-Testing des Mock Exam, Punktestand an der Tafel, bei strittigen Fragen kurze Erklärung. Teil 2 (AI-Module) am Tag 4 | `exam/mock_exam.md` |
-| 16:05 | 15 | Abschluss | Ausblick Tag 4 (Intro AI mit Pitch und Live-Demos, Mini-Vorträge, Leaderboard), Reihenfolge der Mini-Vorträge bestätigen, Hausaufgabe nennen | |
+| 16:05 | 15 | Abschluss | Ausblick Tag 4 (Intro AI mit Pitch und Live-Demos, Leaderboard, GenAI mit Lab), keine Hausaufgabe | |
 
 Planmäßiges Ende 16:20, Reserve bis 16:45. Wenn der Vormittag überzieht, verschiebt sich alles nach hinten, es muss nichts gestrichen werden.
 
@@ -62,11 +62,9 @@ und committen (38 Slides). **Zum Präsentieren lokal auf `true` stellen**, nicht
 nach dem Timer Schritt für Schritt zeigen und die ANSWER-Slides der Expertengruppen einfach überspringen, bis sie dran
 sind. Die Sprechernotizen (Taste `s`) enthalten nur noch Regie-Hinweise.
 
-**Hausaufgabe bis Mo 16.11.:** `colab/introduction_ai.ipynb` Part A (A/B nach Kohorten, passt zu heute) und Part B
-(Klassifikation) durcharbeiten. Part B ist die Grundlage für den Leaderboard-Wettbewerb am Tag 4; Klassifikation kommt
-am Montagvormittag im Intro-AI-Deck dran (eine eigene Neural-Networks-Vorlesung gibt es nicht mehr), das Notebook
-erklärt genug, um es vorher durchzuarbeiten.
-Optional: Bonus-Aufgabe des Data-Management-Notebooks (Backup, Schema-Update).
+**Keine Hausaufgabe zwischen den Tagen (Entscheidung 2026-11-12, zu wenig Zeit).** Das Leaderboard am Tag 4 setzt
+nichts voraus, Daten und Pipeline sind im Notebook vorgegeben. Die "Optional"-Teile der Notebooks (Kosten: alle vier
+Architekturen, Incident und Schema-Update) bleiben für Interessierte stehen, werden aber nur erwähnt.
 
 Dozenten-Vortrag am Tag 3: ca. 2 h 10 min. Studierende aktiv: ca. 4 h 15 min.
 
@@ -84,13 +82,13 @@ Exam enthält Fragen dazu, beim Abschluss ansagen).
 
 **Neural Networks entfällt als Vorlesung (Entscheidung 2026-11-11, Zeitgründe).** `slides/neural_networks` bleibt auf der
 Kursseite als "(VI-bonus)" zum Selbststudium verlinkt, nicht prüfungsrelevant (das Mock Exam enthält keine NN-Fragen).
-Mini-Vortrag A (Backpropagation) bleibt und eröffnet den Leaderboard-Block nach der Pause. Die frei gewordenen 70 min:
-Pitch und Live-Demos bekommen Luft (+8), Leaderboard +5 plus 15 min Auswertung, Mittag ab 12:00, der Nachmittag rückt
-30 min nach vorn und hat damit erstmals 30 min Reserve am Ende.
+Die frei gewordene Zeit: Pitch und Live-Demos bekommen Luft (+8), Leaderboard 50 min plus 17 min Auswertung,
+Mittag ab 12:00.
 
-Die **Mini-Vorträge der Studierenden (5 min + 3 min Fragen)** sitzen jeweils an der Stelle im
-Deck, an der das Thema dran ist. Danach zeigt der Dozent höchstens 2-3 eigene Slides als
-Zusammenfassung oder Korrektur, kein zweiter Vortrag zum selben Thema.
+**Mini-Vorträge der Studierenden gestrichen (Entscheidung 2026-11-12, die Studierenden haben keine Zeit zur
+Vorbereitung).** Die sechs Themen (Backpropagation, GANs, Token, Halluzination, Embeddings, RAG/Agents) übernimmt
+der Dozent im GenAI-Deck selbst, der GenAI-Vortrag bekommt dafür die Zeit zurück (115 statt 89 min, siehe Tabelle).
+Backpropagation nur noch als Brücke in zwei Sätzen vor dem Leaderboard. Planmäßiges Ende 17:00, Reserve 45 min.
 
 | Zeit | Dauer | Format | Inhalt | Material |
 |---|---|---|---|---|
@@ -99,62 +97,25 @@ Zusammenfassung oder Korrektur, kein zweiter Vortrag zum selben Thema.
 | 09:22 | 11 | Vortrag + Live-Chart | Drei Akte (Timeline-Bild als Karte), "Why 2012?" (Daten, Compute, Algorithmen), **Follow the money (live)**: erst Schätzungen aus dem Raum, dann Balken Jahr für Jahr 2013-2025, GenAI-Anteil einblenden; Big Tech 2026 (~730 Mrd.) vs. Manhattan/ISS/Apollo/Interstate; drei Zahlen (53 % / 88 % / x60); EU AI Act mit Zuruf (überspringen, wenn spät) | Abschnitt 2 |
 | 09:33 | 5 | Vortrag | "Rules or examples?" (Fraud-Regeln als Code vs. Tabelle mit Label), "Three ways to learn" mit der Frage "is there a label?" | Abschnitt 3 |
 | 09:38 | 30 | **Use-Case-Pitch (Gruppen)** | Gruppen 1+2 supervised, 3+4 unsupervised, 5+6 reinforcement. Template Problem / Data / Algorithm / Output / Decision (Slide bleibt stehen, dazu die Quick reference cards). 12 min Vorbereitung (LLM erlaubt), je 2 min Pitch (12 min), dann ist der Raum das Management: zwei Stimmen pro Person, zwei Projekte werden finanziert (3 min). Dozent korrigiert mit den Reference Cards (3 min) | Slides "Your turn", "The template", "Quick reference cards" |
-| 10:08 | 25 | **Live-Demos** | Supervised: **Regression live** (Studierende rufen w und b zu, Loss sinkt; "1 step", "let the machine learn", Lernrate zu groß: explodiert; "show best line"), dann "What the machine just did" (MSE, Gradient, Lernrate, Stop: Prüfungsstoff), Klassifikation (Brücke zu Hausaufgabe Part B und Leaderboard). Unsupervised: **k-means live** (erst Gruppen raten, dann 1-2-3 per Knopf, "run to the end", k = 2 und 5, "name the groups"), "k-means in four moves". Reinforcement eine Slide (RLHF als Brücke zum Nachmittag), "Before you believe a model", Takeaways, "Next" (NN-Deck als Bonus ansagen) | Abschnitte 4-7 |
+| 10:08 | 25 | **Live-Demos** | Supervised: **Regression live** (Studierende rufen w und b zu, Loss sinkt; "1 step", "let the machine learn", Lernrate zu groß: explodiert; "show best line"), dann "What the machine just did" (MSE, Gradient, Lernrate, Stop: Prüfungsstoff), Klassifikation (Fraud-Beispiel, Brücke zum Leaderboard). Unsupervised: **k-means live** (erst Gruppen raten, dann 1-2-3 per Knopf, "run to the end", k = 2 und 5, "name the groups"), "k-means in four moves". Reinforcement eine Slide (RLHF als Brücke zum Nachmittag), "Before you believe a model", Takeaways, "Next" (NN-Deck als Bonus ansagen) | Abschnitte 4-7 |
 | 10:33 | 15 | Pause | | |
-| 10:48 | 8 | **Mini-Vortrag 1** | Backpropagation: wie lernt ein Netz aus seinen Fehlern? (nur Intuition, ein Bild). Knüpft an "What the machine just did" an: die Linie wird zum Netz, der Trainings-Loop bleibt | Gruppe A |
-| 10:56 | 4 | Vortrag | Dozent: Einordnung in zwei Sätzen (ein Netz = viele Linien gestapelt, Training = derselbe Loop mit Millionen Parametern), NN-Deck als Selbststudium ansagen, Leaderboard-Regeln | |
-| 11:00 | 45 | **Leaderboard-Wettbewerb (Gruppen)** | Klassifikation auf den ShopNow-Daten (Part B der Hausaufgabe): jede Gruppe trainiert einen Klassifikator (sklearn `MLPClassifier`), dreht an Layern, Lernrate (kennen sie aus der Regression-Demo), Epochen. Accuracy auf dem Testset kommt auf das Leaderboard an der Tafel | Notebook-Zelle ergänzen (siehe unten) |
-| 11:45 | 15 | Auswertung | Beste Gruppe erklärt in 3 min, was sie geändert hat. Dozent: Overfitting direkt am Ergebnis (Train- vs. Test-Accuracy, max. 2 Slides, Rückgriff auf "How was it tested?" aus Abschnitt 7), warum ein Testset Pflicht ist | |
+| 10:48 | 5 | Vortrag | Dozent: Brücke von "What the machine just did" zum Netz in zwei Sätzen (ein Netz = viele Linien gestapelt, Training = derselbe Loop mit Millionen Parametern), NN-Deck als Selbststudium ansagen, Leaderboard-Regeln | |
+| 10:53 | 50 | **Leaderboard-Wettbewerb (Gruppen)** | Fraud-Klassifikation auf synthetischen ShopNow-Bestellungen (dasselbe Beispiel wie auf der Classification-Slide). Daten, Split, Pipeline und Baseline sind vorgegeben (Zellen 1-3 nur ausführen), jede Gruppe dreht in Zelle 4 an vier Parametern des `MLPClassifier`: Schichten, Lernrate (kennen sie aus der Regression-Demo), Epochen, alpha. Startwerte liegen auf Baseline-Niveau (79 %), gute Einstellungen erreichen ca. 90 %, große Netze fallen durch Overfitting zurück. Test-Accuracy mit Parametern an die Tafel, Regel "nur der Testwert zählt, bei Gleichstand das kleinere Netz" | `colab/classification_leaderboard.ipynb` |
+| 11:43 | 17 | Auswertung | Beste Gruppe erklärt in 3 min, was sie geändert hat. Dozent: Overfitting direkt am Ergebnis (Zelle "After the competition" im Notebook: Train- vs. Test-Accuracy für wachsende Netze, Rückgriff auf "How was it tested?" aus Abschnitt 7), warum ein Testset Pflicht ist | `colab/classification_leaderboard.ipynb` |
 | 12:00 | 60 | Mittag | | |
-| 13:00 | 8 | **Mini-Vortrag 2** | GANs: wie kann ein Netz Bilder erzeugen? | Gruppe B |
-| 13:08 | 30 | Vortrag | GenAI Teil 1: What is generative AI, Encoder-Decoder, Transformer vs. frühere Architekturen, Inference | `slides/generative_ai_and_agents` |
-| 13:38 | 8 | **Mini-Vortrag 3** | Was ist ein Token und was sagt ein LLM eigentlich voraus? | Gruppe C |
-| 13:46 | 25 | Vortrag | GenAI Teil 2: Training, Parameter-Skalierung, MoE, ChatGPT als Produkt, API, Prompt-Rollen, stateless Context | `slides/generative_ai_and_agents` |
-| 14:11 | 8 | **Mini-Vortrag 4** | Halluzination: warum passiert sie und wie erkennt man sie? | Gruppe D |
-| 14:19 | 12 | Vortrag | GenAI Teil 3: Context vs. World knowledge, was passiert ohne Context, manuelle vs. automatische Context-Bereitstellung | |
-| 14:31 | 15 | Pause | | |
-| 14:46 | 8 | **Mini-Vortrag 5** | Vector Embeddings und Vektordatenbanken: warum "Kaffeemühle" nahe bei "Espressomaschine" liegt | Gruppe E |
-| 14:54 | 8 | **Mini-Vortrag 6** | RAG und Agents (inkl. MCP): wie ein Assistent an Firmendaten kommt und Werkzeuge nutzt | Gruppe F |
-| 15:02 | 22 | Vortrag | GenAI Teil 4: RAG-Architektur, Agents, MCP, Tool-Landschaft 2026 (Slides aktualisieren, siehe PLAN Punkt 3) | |
-| 15:24 | 45 | **Lab + Red Teaming (Paare)** | Agents & Vector Databases Notebook: Produktdatenbank, Embeddings, Agent. Letzte 15 min: jedes Paar versucht, den Shop-Assistenten zum Halluzinieren, zu falschen Preisen oder zum Preisgeben fremder Kundendaten zu bringen. Jedes Paar nennt einen gefundenen Fehler (1 min) | `colab/agents_and_vector_databases.ipynb` (Aufgaben-Version fehlt im Repo, nur Solution vorhanden) |
-| 16:09 | 25 | **Streitgespräch 2** | "ShopNow setzt einen LLM-Kundenassistenten mit Zugriff auf echte Kundendaten (Bestellungen, Tickets, Retouren) ein." Zwei Gruppen mit zugeloster Position, Rest Jury, Ablauf wie Tag 3 (6 min Vorbereitung, je 2 min Eröffnung, 6 min Schlagabtausch, je 1 min Schlusswort). Die Red-Teaming-Funde sind Munition | Leitfragen: Datenschutz, Halluzination, Haftung, Nutzen |
-| 16:34 | 20 | **Prüfungs-Quiz Teil 2 (Teams)** | 15 Fragen aus den Abschnitten Intro AI und GenAI des Mock Exam, Punktestand an der Tafel, bei strittigen Fragen kurze Erklärung | `exam/mock_exam.md` |
-| 16:54 | 20 | Abschluss | Prüfungsformat, Termin, Materialzugang, Selbststudium ansagen (AI-Timeline, Realtime, Cloud; NN-Deck als Bonus ohne Prüfungsrelevanz), Feedbackrunde (3 Zettel: behalten / ändern / weglassen) | |
-| 17:14 | 30 | Reserve | Puffer bis 17:45, falls der Vormittag oder das Lab überzieht | |
+| 13:00 | 35 | Vortrag | GenAI Teil 1: What is generative AI, GANs in zwei Slides (zwei Netze erzeugen Bilder), Encoder-Decoder, Transformer vs. frühere Architekturen, Inference | `slides/generative_ai_and_agents` |
+| 13:35 | 30 | Vortrag | GenAI Teil 2: Token und Next-Token-Prediction (Tokenizer live zeigen: warum zählt ein LLM keine Buchstaben?), Training, Parameter-Skalierung, MoE, ChatGPT als Produkt, API, Prompt-Rollen, stateless Context | `slides/generative_ai_and_agents` |
+| 14:05 | 20 | Vortrag | GenAI Teil 3: Context vs. World knowledge, Halluzination (warum sie passiert, wie man sie erkennt, ein Live-Beispiel), was passiert ohne Context, manuelle vs. automatische Context-Bereitstellung | |
+| 14:25 | 15 | Pause | | |
+| 14:40 | 30 | Vortrag | GenAI Teil 4: Vector Embeddings (warum "Kaffeemühle" nahe bei "Espressomaschine" liegt), Vektordatenbanken, RAG-Architektur, Agents, MCP, Tool-Landschaft 2026 (Slides aktualisieren, siehe PLAN Punkt 3) | |
+| 15:10 | 45 | **Lab + Red Teaming (Paare)** | Agents & Vector Databases Notebook: Produktdatenbank, Embeddings, Agent. Letzte 15 min: jedes Paar versucht, den Shop-Assistenten zum Halluzinieren, zu falschen Preisen oder zum Preisgeben fremder Kundendaten zu bringen. Jedes Paar nennt einen gefundenen Fehler (1 min) | `colab/agents_and_vector_databases.ipynb` (Aufgaben-Version fehlt im Repo, nur Solution vorhanden) |
+| 15:55 | 25 | **Streitgespräch 2** | "ShopNow setzt einen LLM-Kundenassistenten mit Zugriff auf echte Kundendaten (Bestellungen, Tickets, Retouren) ein." Zwei Gruppen mit zugeloster Position, Rest Jury, Ablauf wie Tag 3 (6 min Vorbereitung, je 2 min Eröffnung, 6 min Schlagabtausch, je 1 min Schlusswort). Die Red-Teaming-Funde sind Munition | Leitfragen: Datenschutz, Halluzination, Haftung, Nutzen |
+| 16:20 | 20 | **Prüfungs-Quiz Teil 2 (Teams)** | 15 Fragen aus den Abschnitten Intro AI und GenAI des Mock Exam, Punktestand an der Tafel, bei strittigen Fragen kurze Erklärung | `exam/mock_exam.md` |
+| 16:40 | 20 | Abschluss | Prüfungsformat, Termin, Materialzugang, Selbststudium ansagen (AI-Timeline, Realtime, Cloud; NN-Deck als Bonus ohne Prüfungsrelevanz), Feedbackrunde (3 Zettel: behalten / ändern / weglassen) | |
+| 17:00 | 45 | Reserve | Puffer bis 17:45, falls der Vormittag oder das Lab überzieht | |
 
-Dozenten-Vortrag am Tag 4: ca. 2 h 50 min. Studierende aktiv: ca. 3 h 15 min. Planmäßiges Ende 17:14, Reserve 30 min.
+Dozenten-Vortrag am Tag 4: ca. 2 h 55 min. Studierende aktiv: ca. 3 h 20 min. Planmäßiges Ende 17:00, Reserve 45 min.
 Wenn trotzdem etwas kippt: Streitgespräch 2 streichen (25 min), das Red Teaming übernimmt dann die Diskussion.
-
----
-
-## Mini-Vorträge: Themen, Anforderungen, Zuteilung
-
-**Format**
-- Gruppe von 2-3 Personen, **5 min Vortrag + 3 min Fragen**, hartes Zeitlimit (Timer sichtbar).
-- 3-5 Slides oder ein Whiteboard-Bild, kein Notebook nötig.
-- Pflicht: (1) Erklärung mit einem eigenen Beispiel, (2) warum ist das für ein Unternehmen relevant,
-  (3) eine Frage ans Plenum.
-- Zählt als Teilnahme, nicht als Note. Die Themen sind prüfungsrelevant (Ausnahme seit 2026-11-11: Backpropagation, Thema A,
-  nur noch Intuition, weil die Neural-Networks-Vorlesung entfällt).
-- Abgabe der Slides (PDF) bis So 15.11. 20:00 per Mail, damit sie am Montag auf dem Dozentenrechner liegen.
-
-**Themenpool (6 Gruppen, Reihenfolge = Reihenfolge am Tag 4)**
-
-| # | Thema | Leitfrage | Einstiegsquellen |
-|---|---|---|---|
-| A | Backpropagation | Wie lernt ein neuronales Netz aus seinen Fehlern? | 3Blue1Brown "What is backpropagation really doing?" (YouTube); Rumelhart, Hinton, Williams 1986, *Learning representations by back-propagating errors*, Nature |
-| B | GANs | Wie bringt man zwei Netze dazu, Bilder zu erzeugen? | Goodfellow et al. 2014, *Generative Adversarial Nets*; Google ML Crash Course, Abschnitt "GAN" |
-| C | Token und Next-Token-Prediction | Was sagt ein LLM wirklich voraus, und warum zählt es keine Buchstaben? | OpenAI Tokenizer (platform.openai.com/tokenizer); Andrej Karpathy "Intro to Large Language Models" (YouTube, erste 20 min) |
-| D | Halluzination | Warum erfinden LLMs Fakten und wie prüft man Antworten? | Ji et al. 2023, *Survey of Hallucination in Natural Language Generation*, ACM Computing Surveys; ein eigenes Beispiel mit ChatGPT/Claude/Gemini mitbringen |
-| E | Vector Embeddings und Vektordatenbanken | Warum liegt "Kaffeemühle" nahe bei "Espressomaschine", und wozu braucht man dafür eine Datenbank? | Mikolov et al. 2013, *Efficient Estimation of Word Representations in Vector Space*; Pinecone "What is a Vector Database?" (Blog) |
-| F | RAG, Agents und MCP | Wie kommt ein Assistent an Firmendaten und wie nutzt er Werkzeuge? | Lewis et al. 2020, *Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks*; Anthropic, "Introducing the Model Context Protocol" (Blog, 2024) |
-
-Reserve bei mehr als 6 Gruppen: Transformer vs. RNN (Vaswani et al. 2017), Mixture of Experts,
-Simpson's Paradox in A/B-Tests (Kohavi/Tang/Xu, Kap. 3), Peeking und Sequential Testing (Evan Miller,
-"How Not To Run an A/B Test").
-
-**Zuteilung:** per Los in der Mail (Gruppe 1 = A usw.), Tausch untereinander erlaubt, bis Mo 2.11.
-per Mail melden.
 
 ---
 
@@ -170,7 +131,6 @@ per Mail melden.
 
 ## Vorbereitung durch den Dozenten (Checkliste)
 
-- [ ] Mail mit Themenzuteilung bis Fr 2026-10-30 (Entwurf unten)
 - [ ] Gruppenliste vom Tag 1 heraussuchen oder Losverfahren für 9:00 am 14.11. vorbereiten
 - [ ] **Ergebniskarten Experiment Review Board** (6 Karten, je eine halbe Seite, z.B. als Slide-Block im A/B-Deck):
   1. sauberes Ergebnis, signifikant, ausreichend Power -> ship
@@ -182,57 +142,17 @@ per Mail melden.
 - [x] Data-Management-Deck umgebaut (2026-11-01): Where-are-we als SVG, Doing 1 ETL, Doing 2 Expertengruppen (Pro/Contra als versteckte vertikale Slides), Doing 3 Wettbewerb, lyvy "Spot the pattern", "AI at every layer", Takeaways; Realtime + Cloud als Anhang "self-study". Alte Fassung in Git-History
 - [x] Neues Notebook `colab/data_management_etl.ipynb` + Solution (raw -> staging -> mart in pandas, 4 Aufgaben, Lösung läuft durch), in `index.html` verlinkt
 - [x] Kosten-Notebook (2026-11-01): Quelle C ist jetzt ein gekaufter Finanzdaten-Feed (20 GB/Monat, 20 $/GB, jeder erneute Download kostet voll), Zusatzfrage in der Empfehlungsrunde, Bonus-Aufgabe (Incident + Schema-Update) sauber formuliert und mit Lösung
-- [x] Kosten-Notebook auf Gruppenformat umgebaut (`MY_ARCHITECTURE`, nur eigene Architektur, "nicht die eigene empfehlen", alle vier als Hausaufgabe); Lösung neu, alter Fehler in der Gesamtsumme (Query-Kosten der letzten Architektur für alle Zeilen) behoben; Speicherangabe vereinheitlicht (20 GB/Monat Wachstum, die widersprüchlichen "Year 1: 100 TB / Year 2: 150 TB" entfernt)
+- [x] Kosten-Notebook auf Gruppenformat umgebaut (`MY_ARCHITECTURE`, nur eigene Architektur, "nicht die eigene empfehlen", alle vier optional zu Hause); Lösung neu, alter Fehler in der Gesamtsumme (Query-Kosten der letzten Architektur für alle Zeilen) behoben; Speicherangabe vereinheitlicht (20 GB/Monat Wachstum, die widersprüchlichen "Year 1: 100 TB / Year 2: 150 TB" entfernt)
 - [ ] Deck und beide Notebooks einmal in Colab/Browser durchklicken, dann committen
 - [ ] Tafelvorlage für den Architektur-Wettbewerb: Tabelle Architekturen x fünf Kostenkomponenten + Summe, während der Expertenrunde anzeichnen. Referenzwerte (Solution, mit gekauftem Finanzdaten-Feed 20 $/GB als Quelle C): Lakehouse 16.723, Lake 17.077, Warehouse 17.990, Hybrid 18.770 $; Zusatzfrage "wer zahlt den Feed zweimal": nur das Warehouse (Bonus: ca. 30.100 $)
 - [ ] A/B-Deck: "Your turn"-Slide auf Lab-Aufgabe 1 umlenken (Warm-up-Notebook entfällt am Tag 3, bleibt als Übung auf der Kursseite)
-- [x] Mini-Talk-Slide im Intro-AI-Deck auf das Pitch-Format umschreiben (erledigt 2026-11-10 mit dem Neubau des Decks: 10 min Vorbereitung, 2 min Pitch, Abstimmung)
+- [x] Intro-AI-Deck: Gruppenaufgabe als Use-Case-Pitch (erledigt 2026-11-10 mit dem Neubau des Decks: 12 min Vorbereitung, 2 min Pitch, Abstimmung)
 - [ ] Leitfragen für beide Streitgespräche als Sprechernotizen in die Decks (Taste `s`)
-- [ ] **Leaderboard-Zelle** für den NN-Wettbewerb in `colab/introduction_ai.ipynb` Part B oder in einem neuen kurzen
-  Notebook `colab/nn_competition.ipynb`: Train/Test-Split fest vorgeben, `MLPClassifier` mit 3-4 Parametern
-  zum Drehen, Accuracy ausgeben
+- [x] **Leaderboard-Notebook** `colab/classification_leaderboard.ipynb` (2026-11-12): synthetische ShopNow-Bestellungen mit
+  Fraud-Label, fester Split, Pipeline, Baseline, eine Zelle mit vier Parametern, Overfitting-Tabelle für die Auswertung;
+  auf der Kursseite verlinkt. `colab/introduction_ai.ipynb` bleibt als Übung stehen, wird nicht mehr vorausgesetzt
 - [ ] `colab/agents_and_vector_databases.ipynb` (Aufgaben-Version ohne Lösung) anlegen, im Repo liegt nur die Solution
 - [ ] Quiz-Fragen aus `exam/mock_exam.md` auswählen: 8 (Tag 3 Start), 15 (Tag 3 Ende: BI, DB, DM, A/B), 8 (Tag 4 Start), 15 (Tag 4 Ende: AI, GenAI)
 - [ ] GenAI-Deck: Modellnamen und Tool-Landschaft auf Stand 2026 bringen, MCP/Agents-Slides prüfen (PLAN Punkt 3)
-- [ ] Planungstabelle in `index.html`: 2027-11-16 auf 2026-11-16 korrigieren, Data Management aus der Zeile vom 2026-10-19 nach Tag 3 verschieben, Inhalte für Tag 3 und 4 eintragen,
-  Abschnitt "Presentations" mit Format und Themenliste anlegen
-- [ ] Timer-Slide oder Handy-Timer für die 5-min-Vorträge
-
----
-
-## Mail-Entwurf an die Studierenden
-
-Betreff: Data Management & BI: Mini-Vorträge am 16.11. (Themenzuteilung)
-
-Hallo zusammen,
-
-an den beiden letzten Blocktagen (Sa 14.11. und Mo 16.11.) übernehmt ihr einen Teil der Vorlesung
-selbst. Am Montag, 16.11., hält jede Gruppe einen Mini-Vortrag von 5 Minuten (plus 3 Minuten
-Fragen) zu einem Thema aus dem Bereich Neural Networks und Generative AI. Die Themen sind
-prüfungsrelevant, der Vortrag selbst wird nicht benotet.
-
-Was wir erwarten:
-- 3-5 Slides oder ein Tafelbild, kein Code nötig
-- eine Erklärung mit einem eigenen Beispiel
-- ein Satz dazu, warum das Thema für ein Unternehmen relevant ist
-- eine Frage an das Plenum
-- 5 Minuten, wir stoppen die Zeit
-
-Zuteilung (Gruppen vom ersten Blocktag):
-- Gruppe 1: Backpropagation. Wie lernt ein neuronales Netz aus seinen Fehlern?
-- Gruppe 2: GANs. Wie bringt man zwei Netze dazu, Bilder zu erzeugen?
-- Gruppe 3: Token und Next-Token-Prediction. Was sagt ein LLM wirklich voraus?
-- Gruppe 4: Halluzination. Warum erfinden LLMs Fakten und wie prüft man Antworten?
-- Gruppe 5: Vector Embeddings und Vektordatenbanken. Warum liegt "Kaffeemühle" nahe bei "Espressomaschine"?
-- Gruppe 6: RAG, Agents und MCP. Wie kommt ein Assistent an Firmendaten und nutzt Werkzeuge?
-
-Zu jedem Thema stehen ein bis zwei Einstiegsquellen auf der Kursseite (Abschnitt "Presentations").
-Tausch von Themen untereinander ist möglich, bitte bis Montag, 2.11., per Mail melden.
-Slides bitte als PDF bis Sonntag, 15.11., 20:00 Uhr an mich.
-
-Außerdem gibt es an beiden Tagen Gruppenaufgaben und zwei kurze Streitgespräche, dafür müsst ihr
-nichts vorbereiten. Als Hausaufgabe zwischen den beiden Tagen bitte das Notebook "Introduction
-to AI" durcharbeiten (Link auf der Kursseite), das brauchen wir am Montag für einen kleinen Wettbewerb.
-
-Viele Grüße
-Christoph
+- [ ] Planungstabelle in `index.html`: 2027-11-16 auf 2026-11-16 korrigieren, Data Management aus der Zeile vom 2026-10-19 nach Tag 3 verschieben, Inhalte für Tag 3 und 4 eintragen
+- [ ] Timer-Slide oder Handy-Timer für Pitches (2 min), Expertenrunde und Streitgespräche

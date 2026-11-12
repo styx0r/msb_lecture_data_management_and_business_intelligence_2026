@@ -761,15 +761,15 @@ A company has to choose one of the four architectures. Cost table and usage are 
   <li>extra question: after a year the schema changes and all history is rebuilt from raw data. <b>Which architecture pays the financial data feed a second time?</b></li>
 </ul>
 
-<p class="smaller-text">Bonus at home: calculate all four and check the whiteboard. Plus: what changes after an incident and a schema update (bonus task in the notebook).</p>
+<p class="smaller-text">Optional, for the curious: calculate all four and check the whiteboard. Plus: what changes after an incident and a schema update (bonus task in the notebook).</p>
 
 </div>
 
 Note:
 
 - Whiteboard table: rows = architectures, columns = acquisition, storage, transfer, queries, maintenance, total. Prepare it during the expert round.
-- Reference numbers (solution notebook, month = 365/12 days): Lakehouse 16,723, Data Lake 17,077, Data Warehouse 17,990, Hybrid 18,770 dollars in 2 years. Acquisition (12,103, of which 9,600 is the purchased financial feed) and transfer (1,821) are identical for all, so the ranking comes from storage, queries and maintenance. The extra question is where the feed starts to matter: only the warehouse has to buy it again.
-- When a number is far off the reference: that is the discussion. Typical causes: month = 30 vs 365/12 days, TB vs GB, forgetting that storage is billed every month on the growing volume.
+- Reference numbers (solution notebook: 730 days, 104.3 weeks, 24 months): Lakehouse 16,723, Data Lake 17,077, Data Warehouse 17,990, Hybrid 18,770 dollars in 2 years. Acquisition (12,103, of which 9,600 is the purchased financial feed) and transfer (1,821) are identical for all, so the ranking comes from storage, queries and maintenance. The extra question is where the feed starts to matter: only the warehouse has to buy it again.
+- The notebook is a fill-in template: six steps, each line says what to compute, and the architecture-independent parts (volume, acquisition, transfer, query count, GB-months) have check values. Groups should only differ in storage, queries and maintenance. When a number is still far off: that is the discussion. Typical causes: source B counted per day instead of per week, storage billed once instead of every month on the growing volume.
 - Recommendation round: the "not your own" rule forces them to use the other groups' arguments. Push for non-cost arguments: team skills, share of unstructured data, how often schemas change, how many dashboard users.
 - Wrap up in 3 sentences: cheapest on paper is the lakehouse, the warehouse buys speed and governance, hybrid only when both are hard requirements. Expensive purchased data is the strongest argument for keeping raw data somewhere. And: cost is never the only factor.
 
@@ -787,7 +787,7 @@ Note:
   <tr><td>Hybrid Data Lake</td><td>12,103</td><td>2,100</td><td>1,821</td><td>1,066</td><td>1,680</td><td><b>18,770</b></td></tr>
 </table>
 
-<p class="smaller-text">Month = 365/12 days. Acquisition (9,600 of it is the purchased feed) and transfer are identical for all, the ranking comes from storage, queries and maintenance. Typical deviations: month = 30 days, TB vs GB, storage billed once instead of every month.</p>
+<p class="smaller-text">2 years = 730 days = 104.3 weeks = 24 months. Acquisition (9,600 of it is the purchased feed) and transfer are identical for all, the ranking comes from storage, queries and maintenance. Typical deviations: source B per day instead of per week, storage billed once instead of every month.</p>
 
 <p class="smaller-text"><b>Extra question:</b> only the warehouse keeps no raw data. Rebuilding 12 months means buying source C again: 240 GB at $20 = 4,800, about 7,000 with A, B and transfer. The others re-run the transformation on data they already have. Full bonus (incident + schema change): warehouse ends at about 30,100, see solution notebook.</p>
 
