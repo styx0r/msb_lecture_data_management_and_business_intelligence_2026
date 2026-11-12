@@ -589,10 +589,10 @@ Note:
 />
 
 <ul style="text-align: left; margin: 0 auto; width: 92%; font-size: 0.55em; list-style: none;">
-  <li><b>Stored:</b> only the cleaned, structured tables (staging, marts). Raw data is not kept, the sources keep it for a while.</li>
+  <li><b>Stored:</b> only the cleaned, structured tables (staging, marts), as <b>SQL tables inside a database product</b>: storage and query engine are one piece of software. Raw data is not kept, the sources keep it for a while.</li>
   <li><b>Transformed:</b> before loading, in a nightly ETL job. Every mart has a fixed schema (columns and types).</li>
   <li><b>Used by:</b> dashboards and reports, many users, queries take seconds.</li>
-  <li><b>Costs:</b> expensive storage per GB, cheap queries, one system to maintain. Tools: Snowflake, BigQuery, Redshift, Postgres.</li>
+  <li><b>Costs:</b> storage per GB at database prices, cheap queries (the engine is included), one system to maintain. Tools: Snowflake, BigQuery, Redshift, Postgres.</li>
 </ul>
 
 Note:
@@ -766,10 +766,10 @@ Note:
 />
 
 <ul style="text-align: left; margin: 0 auto; width: 92%; font-size: 0.55em; list-style: none;">
-  <li><b>Stored:</b> once, on cheap object storage like a lake, but the cleaned tables are written back into the same storage in a table format (Iceberg, Delta) that behaves like database tables.</li>
+  <li><b>Stored:</b> once, and <b>not in a database</b>: files (Parquet) in an object store like S3 or MinIO, same as the lake. The cleaned tables are written back into the same storage as files plus a table format (Iceberg, Delta) that makes them behave like database tables.</li>
   <li><b>Transformed:</b> inside the storage, after loading (ELT). Raw and cleaned live side by side.</li>
   <li><b>Used by:</b> both: dashboards and data science read from the same place.</li>
-  <li><b>Costs:</b> lake-cheap storage, queries in between warehouse and lake, one system. Tools: Databricks, Dremio, Trino, Snowflake on Iceberg.</li>
+  <li><b>Costs:</b> storage at object-store prices like the lake, queries in between warehouse and lake because the engine is a separate tool, one system. Tools: Databricks, Dremio, Trino, Snowflake on Iceberg.</li>
 </ul>
 
 Note:
@@ -816,6 +816,7 @@ Note:
 <table style="margin: 0 auto; font-size: 0.55em;">
   <tr><th></th><th>Warehouse</th><th>Lake</th><th>Hybrid</th><th>Lakehouse</th></tr>
   <tr><td>stored</td><td>cleaned only</td><td>raw only</td><td>raw + cleaned, two systems</td><td>raw + cleaned, one storage</td></tr>
+  <tr><td>stored as</td><td>SQL tables in a database</td><td>files in an object store</td><td>files + SQL tables</td><td>files + table format, engine on top</td></tr>
   <tr><td>transform</td><td>before (ETL)</td><td>on every read</td><td>between the two</td><td>inside (ELT)</td></tr>
   <tr><td>strong</td><td>fast, governed reporting</td><td>cheap, flexible, never loses raw data</td><td>both, at full speed</td><td>both, with one system</td></tr>
   <tr><td>weak</td><td>schema changes, raw data lost</td><td>swamp risk, expensive queries, no engine</td><td>cost and complexity of two systems</td><td>needs own query engine and skills</td></tr>
@@ -826,6 +827,125 @@ Note:
 Note:
 
 - Show after the three talks. One minute. This is the exam-relevant summary.
+
+--
+
+#### Database or files? <span class="badge">EXAMPLE</span>
+
+<p class="smaller-text" style="margin: 0 0 0.3em 0;">Your <code>mart_daily_funnel</code> from this morning, stored two ways.</p>
+
+<div class="two-col" style="gap: 1.2rem; align-items: flex-start; font-size: 0.5em;">
+  <div style="flex: 1; text-align: left;">
+    <p style="margin: 0 0 0.2em 0;"><b style="color: orange;">Warehouse: a SQL table in a database</b></p>
+    <div style="font-family: monospace; white-space: pre; font-size: 0.85em; background: #2b2b2b; padding: 0.5em 0.8em; border-radius: 4px; line-height: 1.35;"><span style="color: #ff7b72;">SELECT</span> * <span style="color: #ff7b72;">FROM</span> mart_daily_funnel;
+<span style="color: #9e9e9e;">date        utm_source  sessions  orders  revenue_eur</span>
+2024-10-01  paid              15       2       231.40
+2024-10-01  organic           18       5       612.05
+2024-10-02  email             11       4       498.90</div>
+    <ul style="margin: 0.3em 0 0 1.2em;">
+      <li>one piece of software (Postgres, Snowflake) owns the data: columns, types, indexes</li>
+      <li>you never see files, the database decides how to store them</li>
+      <li>storage billed at database prices, the query engine is included</li>
+    </ul>
+  </div>
+  <div style="flex: 1; text-align: left;">
+    <p style="margin: 0 0 0.2em 0;"><b style="color: orange;">Lake and lakehouse: files in an object store</b></p>
+    <div style="font-family: monospace; white-space: pre; font-size: 0.85em; background: #2b2b2b; padding: 0.5em 0.8em; border-radius: 4px; line-height: 1.35;">s3://shopnow-lake/
+  raw/web_events/2024-10-01/events.json      18 MB
+  raw/orders/2024-10-01/orders.csv            2 MB
+  marts/daily_funnel/date=2024-10-01/part-0.parquet
+  marts/daily_funnel/date=2024-10-02/part-0.parquet
+  marts/daily_funnel/metadata/v3.metadata.json   <span style="color: #9e9e9e;">Iceberg</span></div>
+    <ul style="margin: 0.3em 0 0 1.2em;">
+      <li>folders and files (JSON, CSV, Parquet) on S3, MinIO, Azure Blob: no database running</li>
+      <li>storage billed like a disk, 5 to 10 times cheaper per GB</li>
+      <li>to run <code>SELECT</code> you need a separate engine (Dremio, Spark, DuckDB)</li>
+      <li>lakehouse = these files plus a table format (Iceberg) that tells the engine which files form a table</li>
+    </ul>
+  </div>
+</div>
+
+<p class="smaller-text" style="margin-top: 0.4em;">That is the whole cost story: lake and lakehouse pay disk prices for storage and extra for the engine; the warehouse pays database prices and gets the engine for free.</p>
+
+Note:
+
+- Two minutes, right before the competition. The left side is what they built this morning if they had used a database. The right side is the same mart as Parquet files, one folder per day.
+- Parquet: a column-oriented file format, compressed, with the schema inside the file. That is why a lake can hold "tables" without a database.
+- Iceberg or Delta: a few metadata files that say which Parquet files belong to which table and which version. Add an engine (Dremio, Trino, Spark) and you can run SQL on files: the lakehouse.
+- Bridge to the price table in the notebook: 0.30 $ per GB and month for the warehouse, 0.05 to 0.08 for lake and lakehouse, and the query price goes the other way.
+
+--
+
+#### Inside the files <span class="badge">EXAMPLE</span>
+
+<div class="two-col" style="gap: 1.2rem; align-items: flex-start; font-size: 0.5em;">
+  <div style="flex: 1; min-width: 0; text-align: left;">
+    <p style="margin: 0 0 0.2em 0;"><b style="color: orange;">raw/web_events/2024-10-01/events.json</b><br><span style="color: #9e9e9e;">one JSON object per line, as the tracking tool sent it</span></p>
+    <div style="font-family: monospace; white-space: pre; font-size: 0.75em; background: #2b2b2b; padding: 0.5em 0.8em; border-radius: 4px; line-height: 1.35; text-align: left; overflow: hidden;">{"event_time": "2024/10/01 09:12",
+ "session_id": "s-100", "user_id": "u-17",
+ "event": "page_view", "utm_source": "paid"}
+{"event_time": "2024/10/01 09:14",
+ "session_id": "s-100", "user_id": "u-17",
+ "event": "add_to_cart", "utm_source": "paid"}
+{"event_time": "2024/10/01 09:15",
+ "session_id": "s-101", "user_id": "u-3",
+ "event": "page_view", "utm_source": "organic"}</div>
+    <ul style="margin: 0.3em 0 0 1.2em;">
+      <li>text, readable, every row repeats the column names</li>
+      <li>the date is text, nobody checked the types: your Task 1 from this morning</li>
+      <li>good for landing data as it is, bad for analysis: big and slow to scan</li>
+    </ul>
+  </div>
+  <div style="flex: 1; min-width: 0; text-align: left;">
+    <p style="margin: 0 0 0.2em 0;"><b style="color: orange;">marts/daily_funnel/date=2024-10-01/part-0.parquet</b><br><span style="color: #9e9e9e;">binary, shown decoded</span></p>
+    <div style="font-family: monospace; white-space: pre; font-size: 0.75em; background: #2b2b2b; padding: 0.5em 0.8em; border-radius: 4px; line-height: 1.35; text-align: left; overflow: hidden;">schema   utm_source: string  sessions: int64
+         orders: int64  revenue_eur: double
+columns  utm_source  ["paid", "organic", ...]
+         sessions    [15, 18, 11]
+         orders      [2, 5, 4]
+         revenue_eur [231.40, 612.05, 498.90]
+compressed, column by column; date = folder</div>
+    <p style="margin: 0.4em 0 0.2em 0;"><b style="color: orange;">marts/daily_funnel/metadata/v3.metadata.json</b> <span style="color: #9e9e9e;">Iceberg, simplified</span></p>
+    <div style="font-family: monospace; white-space: pre; font-size: 0.75em; background: #2b2b2b; padding: 0.5em 0.8em; border-radius: 4px; line-height: 1.35; text-align: left; overflow: hidden;">{"table": "daily_funnel",
+ "schema": ["utm_source", "sessions", ...],
+ "snapshot": 3,
+ "files": ["date=2024-10-01/part-0.parquet",
+           "date=2024-10-02/part-0.parquet"]}</div>
+    <ul style="margin: 0.3em 0 0 1.2em;">
+      <li>Parquet: typed columns side by side, compressed. A query that needs two columns reads two columns</li>
+      <li>the metadata file turns a folder of files into a table: that is the lakehouse</li>
+    </ul>
+  </div>
+</div>
+
+Note:
+
+- One minute. Left: what "raw" really looks like, the same messy rows they cleaned in Task 1. Right: the same mart as Parquet, typed and columnar; this is what pandas writes with `to_parquet`. The metadata file is the only thing Iceberg adds: a list of files, the schema, a version number. An engine reads it and treats the folder as a table.
+- If someone asks: JSON and CSV are row formats, Parquet is a column format. Analytics reads few columns over many rows, so Parquet is 5 to 10 times smaller and faster to scan.
+
+--
+
+#### What a GB costs per month <span class="badge">EXAMPLE</span>
+
+<table style="margin: 0 auto; font-size: 0.5em;">
+  <tr><th>kind of storage</th><th>example</th><th>per GB and month</th><th>1 TB per month</th></tr>
+  <tr><td>object store</td><td>Hetzner Object Storage (what lyvy's MinIO replaces)</td><td>about 0.0065 €</td><td>6.49 €</td></tr>
+  <tr><td>object store</td><td>AWS S3 Standard, Frankfurt</td><td>about 0.023 $</td><td>about 23 $</td></tr>
+  <tr><td>block volume, mounted into a Kubernetes pod</td><td>Hetzner Cloud Volume</td><td>0.044 to 0.052 €</td><td>44 to 52 €</td></tr>
+  <tr><td>block volume</td><td>AWS EBS gp3</td><td>about 0.08 $</td><td>about 80 $</td></tr>
+  <tr><td>database on such a volume</td><td>Postgres in the same cluster: volume x 2 to 3 (replica, backups) plus the server that runs the database</td><td>0.1 to 0.3 €</td><td>100 to 300 €</td></tr>
+</table>
+
+<p class="smaller-text" style="margin-top: 0.5em;">Same bytes, three price levels. A database needs a disk that behaves like a disk (block volume), a replica and backups, and a machine that is always on. A lake needs none of that: files in a bucket, paid per GB, and an engine only while a query runs.</p>
+
+<p class="smaller-text" style="color: #9e9e9e;">List prices, net, checked 2026-11-12. Egress, requests and compute not included.</p>
+
+Note:
+
+- Two minutes. Walk down the table: object store, block volume, database. Each step roughly 3 to 7 times the previous one. The notebook's price table (0.05 and 0.08 for lake and lakehouse, 0.30 for the warehouse) is the same ladder, rounded.
+- Hetzner Object Storage: 6.49 € per month includes 1 TB storage and 1 TB egress, extra storage 0.0087 € per TB-hour, so about 6.5 € per TB-month (hetzner.com/storage/object-storage). Cloud Volumes: 0.044 € per GB in the docs price table, 0.052 € on the cloud page; both net. AWS S3 Standard Frankfurt about 0.0245 $ for the first 50 TB, EBS gp3 about 0.08 $ (aws.amazon.com pricing pages, region prices vary).
+- Honest caveat if asked: Snowflake and BigQuery store on object storage themselves and charge about 0.02 $ per GB; their price sits in compute. The "database prices" in the table are a classic database on block storage with replica and backups, which is what a self-hosted warehouse on Kubernetes costs.
+- Then the competition: now they know why the lake and lakehouse rows are cheap on storage and why the warehouse is cheap on queries.
 
 ---
 
