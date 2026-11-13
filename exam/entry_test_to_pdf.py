@@ -4,6 +4,9 @@
 Usage:
   python3 entry_test_to_pdf.py entry_test_day3.md                 # student version
   python3 entry_test_to_pdf.py entry_test_day3.md --solution      # correct boxes ticked, answer key, scoring
+  python3 entry_test_to_pdf.py final_test_day4.md --date "Monday, 16 November 2026" --form
+                                                                  # --form: tick boxes and name are PDF form fields,
+                                                                  # students can fill the PDF on screen (no print needed)
 
 Markdown format: "# Title", one intro paragraph, "## Section" headings, questions as
 "N. text" with options "   A. text" (A to D), then "Answer Key" with "1-B, 2-A, ..." and an
@@ -59,7 +62,7 @@ def inline(s: str) -> str:
     return re.sub(r"`([^`]+)`", r"<code>\1</code>", s)
 
 
-def build(title, intro, sections, answers, scoring, solution: bool) -> str:
+def build(title, intro, sections, answers, scoring, solution: bool, date: str = DATE, form: bool = False) -> str:
     n_total = sum(len(s["questions"]) for s in sections)
     parts = []
     for sec in sections:
@@ -68,8 +71,12 @@ def build(title, intro, sections, answers, scoring, solution: bool) -> str:
             opts = []
             for letter, text in q["options"]:
                 ok = solution and answers.get(q["n"]) == letter
+                if form and not solution:
+                    box = f'<input type="radio" class="box" name="q{q["n"]}" value="{letter}" />'
+                else:
+                    box = f'<span class="box">{"&#10003;" if ok else ""}</span>'
                 opts.append(
-                    f'<div class="opt{" ok" if ok else ""}"><span class="box">{"&#10003;" if ok else ""}</span>'
+                    f'<div class="opt{" ok" if ok else ""}">{box}'
                     f'<span class="letter">{letter}</span><span class="otext">{inline(text)}</span></div>'
                 )
             parts.append(
@@ -84,9 +91,9 @@ def build(title, intro, sections, answers, scoring, solution: bool) -> str:
     <div class="head">
       <div class="course">{COURSE}</div>
       <h1>{html.escape(title)}{" &middot; SOLUTION" if solution else ""}</h1>
-      <div class="meta">{DATE}</div>
+      <div class="meta">{date}</div>
       <div class="fields">
-        <div class="field"><span>Name</span><span class="line"></span></div>
+        <div class="field"><span>Name</span>{'<input type="text" class="line" name="name" />' if form and not solution else '<span class="line"></span>'}</div>
         <div class="field short"><span>Points</span><span class="line"></span><span class="of">/ {n_total}</span></div>
       </div>
       <p class="intro">{inline(intro)}</p>
@@ -119,6 +126,8 @@ def build(title, intro, sections, answers, scoring, solution: bool) -> str:
     .letter { display: inline-block; width: 13pt; color: #444; text-indent: 0; }
     .otext { text-indent: 0; }
     .opt.ok .box { background: #111; color: #fff; }
+    input.box { background: #fff; padding: 0; }
+    input.line { background: #fff; border: 0; border-bottom: 1px solid #111; font-size: 10.5pt; padding: 0 2pt; }
     .opt.ok .otext { font-weight: bold; }
     .key { margin-top: 14pt; padding: 6pt 8pt; border: 1px solid #999; background: #f6f6f6; font-size: 10pt; }
     """
@@ -130,13 +139,15 @@ def main() -> int:
     ap.add_argument("input")
     ap.add_argument("--solution", action="store_true")
     ap.add_argument("--output")
+    ap.add_argument("--date", default=DATE, help="date line under the title")
+    ap.add_argument("--form", action="store_true", help="fillable PDF: radio buttons per question and a name field")
     args = ap.parse_args()
     src = Path(args.input)
     out = Path(args.output) if args.output else src.with_name(src.stem + ("_solution" if args.solution else "") + ".pdf")
     title, intro, sections, answers, scoring = parse(src.read_text(encoding="utf-8"))
-    doc = build(title, intro, sections, answers, scoring, args.solution)
+    doc = build(title, intro, sections, answers, scoring, args.solution, args.date, args.form)
     from weasyprint import HTML
-    HTML(string=doc).write_pdf(str(out))
+    HTML(string=doc).write_pdf(str(out), pdf_forms=args.form and not args.solution)
     print("PDF created:", out)
     return 0
 
