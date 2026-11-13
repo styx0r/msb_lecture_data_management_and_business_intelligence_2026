@@ -1075,6 +1075,57 @@ user: Can I return a laptop after 45 days?</div>
           </section>
 
           <section>
+            <h3>The harness around the model</h3>
+            <div style="display: flex; gap: 1em; align-items: flex-start">
+              <div style="flex: 0 0 54%; min-width: 0">
+<svg viewBox="0 0 640 360" style="width: 100%; max-height: 330px; background: transparent" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#ddd" text-anchor="middle">
+  <rect x="8" y="6" width="624" height="348" rx="24" fill="none" stroke="#9e9e9e" stroke-width="1.5" stroke-dasharray="8 6"/>
+  <line x1="115" y1="74" x2="254" y2="146" stroke="#777" stroke-width="1.5"/>
+  <line x1="525" y1="74" x2="386" y2="146" stroke="#777" stroke-width="1.5"/>
+  <line x1="170" y1="180" x2="246" y2="180" stroke="#777" stroke-width="1.5"/>
+  <line x1="470" y1="180" x2="394" y2="180" stroke="#777" stroke-width="1.5"/>
+  <line x1="115" y1="286" x2="254" y2="214" stroke="#777" stroke-width="1.5"/>
+  <line x1="525" y1="286" x2="386" y2="214" stroke="#777" stroke-width="1.5"/>
+  <circle cx="320" cy="180" r="72" fill="rgba(255,167,38,0.18)" stroke="#ffa726" stroke-width="2.5"/>
+  <text x="320" y="172" font-size="21" fill="#ffa726" font-weight="bold">the model</text>
+  <text x="320" y="196" font-size="14" fill="#bbb">predicts the next token</text>
+  <text x="320" y="214" font-size="14" fill="#bbb">rented, same for everyone</text>
+  <rect x="40" y="20" width="150" height="54" rx="12" fill="rgba(79,195,247,0.16)" stroke="#4fc3f7" stroke-width="2"/><text x="115" y="42" fill="#4fc3f7" font-weight="bold">system prompt</text><text x="115" y="62" font-size="13" fill="#bbb">who it is, the rules</text>
+  <rect x="450" y="20" width="150" height="54" rx="12" fill="rgba(79,195,247,0.16)" stroke="#4fc3f7" stroke-width="2"/><text x="525" y="42" fill="#4fc3f7" font-weight="bold">tools</text><text x="525" y="62" font-size="13" fill="#bbb">what it may call</text>
+  <rect x="20" y="153" width="150" height="54" rx="12" fill="rgba(79,195,247,0.16)" stroke="#4fc3f7" stroke-width="2"/><text x="95" y="175" fill="#4fc3f7" font-weight="bold">memory</text><text x="95" y="195" font-size="13" fill="#bbb">what it keeps</text>
+  <rect x="470" y="153" width="150" height="54" rx="12" fill="rgba(239,83,80,0.16)" stroke="#ef5350" stroke-width="2"/><text x="545" y="175" fill="#ef5350" font-weight="bold">permissions</text><text x="545" y="195" font-size="13" fill="#bbb">what runs without asking</text>
+  <rect x="40" y="286" width="150" height="54" rx="12" fill="rgba(79,195,247,0.16)" stroke="#4fc3f7" stroke-width="2"/><text x="115" y="308" fill="#4fc3f7" font-weight="bold">logs</text><text x="115" y="328" font-size="13" fill="#bbb">what we can replay</text>
+  <rect x="450" y="286" width="150" height="54" rx="12" fill="rgba(79,195,247,0.16)" stroke="#4fc3f7" stroke-width="2"/><text x="525" y="308" fill="#4fc3f7" font-weight="bold">evals</text><text x="525" y="328" font-size="13" fill="#bbb">how we know it works</text>
+  <text x="320" y="44" font-size="15" fill="#9e9e9e">the harness: your code</text>
+</svg>
+                <p style="font-size: 0.45em; margin: 0.3em 0 0 0; text-align: left"><b class="accent">Workflow</b>: your code fixes the order of steps, the model fills in the text. <b class="accent">Agent</b>: the model picks the next step itself. Both run inside a harness.</p>
+              </div>
+              <div style="flex: 1; min-width: 0; text-align: left">
+                <p style="font-size: 0.55em; margin: 0 0 0.3em 0"><b>Same model, different harness, different product</b></p>
+                <table class="simple" style="font-size: 0.42em">
+                  <tr><th>Product</th><th>Harness</th></tr>
+                  <tr><td><b>ChatGPT</b></td><td>chat window, memory across chats, web search, file upload. Writes nothing on your side.</td></tr>
+                  <tr><td><b>Claude Code</b></td><td>file system, shell, git as tools; asks before deleting; keeps a memory file; logs every step.</td></tr>
+                  <tr><td><b>Your lab notebook</b></td><td>one system prompt, one tool (<code>get_order</code>), no memory, no approval step. <b>You are the harness.</b></td></tr>
+                </table>
+                <div class="takeaway" style="font-size: 0.5em">The model is rented and the same for everyone. The harness is yours: that is where the engineering, the risk and the quality live.</div>
+              </div>
+            </div>
+            <aside class="notes">
+              <ul>
+                <li>3 min</li>
+                <li>Exam: harness = everything around the model: prompt, tools, permissions, memory, logs, evals</li>
+                <li>Point at the ring: the model never changes, every box is your code</li>
+                <li>Three rows: same model class, three very different products</li>
+                <li>Last row = the lab: they will build the harness themselves this afternoon</li>
+                <li>Business: when buying an assistant, ask about the harness, not the model</li>
+                <li>Next: deep agents = a bigger harness, same picture</li>
+                <li>Abbr.: GPT = generative pre-trained transformer; evals = evaluations, automated test sets</li>
+              </ul>
+            </aside>
+          </section>
+
+          <section>
             <h3>Deep agents</h3>
             <div class="two-col" style="align-items: center">
               <div style="flex: 0 0 55%"><img class="fig" src="../assets/generative_ai_and_agents/imgs/imgs.018.png" alt="deep agents: planning, sub-agents, memory" style="max-height: 360px" /></div>
@@ -1091,6 +1142,7 @@ user: Can I return a laptop after 45 days?</div>
             <aside class="notes">
               <ul>
                 <li>2 min</li>
+                <li>Same ring as before, just more in it: planner, sub-agents, memory</li>
                 <li>2025 shift: one loop answering in seconds to orchestrated loops working for hours</li>
                 <li>Saturday's notebook hints were written this way</li>
                 <li>Longer chain = small errors compound; human on the approve button for writes</li>
