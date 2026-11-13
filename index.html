@@ -55,7 +55,7 @@
       background: white;
       border-radius: 8px;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      max-width: 30%;
+      max-width: 48%;
       min-width: 280px;
       /* Ensures content fits on small screens */
       margin-bottom: 0;
@@ -117,6 +117,74 @@
     }
 
     /* Responsive design for mobile */
+    /* day cards */
+    .section {
+      margin: 0 20px 6px 20px;
+      font-size: 1.5rem;
+      color: #555;
+      font-weight: normal;
+    }
+
+    .days {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 20px;
+      padding: 0 20px 40px 20px;
+    }
+
+    .day {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 16px 20px 12px 20px;
+      border-top: 6px solid var(--day);
+      min-width: 0;
+    }
+
+    .day1 { --day: #ff5a5f; }
+    .day2 { --day: #f5a623; }
+    .day3 { --day: #2a9d8f; }
+    .day4 { --day: #5b6cff; }
+
+    .day-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 8px;
+      margin-bottom: 4px;
+    }
+
+    .day-name {
+      font-weight: bold;
+      color: var(--day);
+      font-size: 1.1rem;
+    }
+
+    .day-date {
+      color: #777;
+      font-size: 0.9rem;
+    }
+
+    .day ul { margin: 0; }
+    .day li { margin: 12px 0; line-height: 1.4; }
+    .day li.plain { color: #333; font-weight: bold; }
+    .day .sol { font-weight: normal; }
+    .day .note {
+      display: block;
+      font-size: 0.85rem;
+      color: #777;
+      font-weight: normal;
+    }
+
+    @media (max-width: 1100px) {
+      .days { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 600px) {
+      .days { grid-template-columns: 1fr; padding: 0 10px 30px 10px; }
+    }
+
     @media (max-width: 768px) {
       header {
         flex-direction: column;
@@ -173,249 +241,82 @@
     <img src="./slides/assets/cover/msb_logo.svg" alt="MSB Logo" class="logo" />
   </header>
 
-  <div class="container">
-    <div class="content">
-      <h3>Planning</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Date (9 AM - 5.45 PM CET)</th>
-            <th>Event</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>2026-10-15</td>
-            <td>              
-              L: Business Intelligence <br />
-              L: Python &amp; Pandas Basics <br />
-              PL: Python and Pandas Basics <br />
-              L: Pandas Data Aggregation &amp; Visualization <br />
-              L: (Database Architecture)
-            </td>
-          </tr>
-          <tr>
-            <td>2027-10-19</td>
-            <td>
-              L: Database Architecture <br />
-              PL: Database Architecture <br />              
-            </td>
-          </tr>
-          <tr>
-            <td>2026-11-14</td>            
-            <td>Mini-Exam (10 min) <br />
-                L: Data Management Part I<br />
-                PL: Data management - ETL by hand<br />
-                L: Data Management Part II<br />
-                PL: Data management - cost estimations<br />
-                L: A/B Testing: Statistics for Decisions Part I<br />
-                PL: A/B Testing - warm-up (15 min)<br />
-                L: A/B Testing: Statistics for Decisions Part II<br />
-                PL: A/B Testing - the ShopNow checkout experiment<br />
-              </td>
-          </tr>
-          <tr>
-            <td>2027-11-16</td>
-            <td>An introduction to AI <br />
-                Generative AI, Agent Based Systems and all that</td>
-          </tr>
-          <tr>
-            <td>tba</td>
-            <td>Exam</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="content">
-      <h3>Lecture Slides</h3>
+  <h2 class="section">Lectures</h2>
+  <div class="days">
+    <div class="day day1">
+      <div class="day-head"><span class="day-name">Day 1</span><span class="day-date">Thu 2026-10-15</span></div>
       <ul>
-        <!-- <li>
-          <a href="slides/introduction/index.html">
-            (0) Who am I? Introduction
-          </a>
-        </li> -->
-        <li>
-          <a href="slides/business_intelligence/index.html">
-            (I) Business Intelligence
-          </a>
-        </li>
-        <li>
-          <a href="slides/python/index.html">
-            (II) Python &amp; Pandas Basics
-          </a>
-        </li>
-        <li>
-          <a href="slides/data_aggregation_visualization/index.html">
-            (II-b) Pandas Data Aggregation &amp; Visualization
-          </a>
-        </li>
-        <li>
-          <a href="slides/database_architectures/index.html">
-          (III) Database Architecture
-          </a>
-        </li>
-        <li>
-          <a href="slides/data_management/index.html">
-          (IV) Data Management
-          </a>
-        </li>
-        <li>
-          <a href="slides/ab_testing/index.html">
-          (V) A/B Testing: Statistics for Decisions
-          </a>
-        </li>
-        <li>
-          <a href="slides/introduction_to_ai/index.html">
-          (VI) An Introduction to AI
-          </a>
-        </li>
-        <li>
-          <a href="slides/neural_networks/index.html">
-          (VI-bonus) Neural Networks (self-study, not part of the exam)
-          </a>
-        </li>
-        <li>
-          <a href="slides/generative_ai_and_agents/index.html">
-          (VII) Generative AI & Agents Based Systems and all that
-          </a>
-        </li>
-        <!-- <li>
-          (VIII) Closing the AI - BI Circle: The AI Analyst of the future
-        </li> -->
+          <li><a href="slides/business_intelligence/index.html">(I) Business Intelligence</a></li>
+          <li><a href="slides/python/index.html">(II) Python &amp; Pandas Basics</a></li>
+          <li><a href="slides/data_aggregation_visualization/index.html">(II-b) Pandas Data Aggregation &amp; Visualization</a></li>
       </ul>
     </div>
-    <div class="content">
-      <h3>Python Labs / Exercises</h3>
+    <div class="day day2">
+      <div class="day-head"><span class="day-name">Day 2</span><span class="day-date">Mon 2026-10-19</span></div>
       <ul>
-        <li>
-          <a
-            href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/python_basics_pandas.ipynb">
-            Python and Pandas Basics
-          </a>
-          <a
-            href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/python_basics_pandas_solution.ipynb">
-            (Solution)
-          </a>
-        </li>
-        <li>
-          <a
-            href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/python_pandas_visualization.ipynb">
-            Pandas Data Aggregation and Visualization
-          </a>
-          <a
-            href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/python_pandas_visualization_solution.ipynb">
-            (Solution)
-          </a>
-        </li>
-        <li>
-          <a
-            href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/database_architecture.ipynb">
-            Database Architecture
-          </a>
-          <a
-            href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/database_architecture_solution.ipynb">
-            (Solution)
-          </a>
-        </li>
-        <li>
-          <a
-            href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/data_management_etl.ipynb">
-            Data management - ETL by hand
-          </a>
-          <a
-            href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/data_management_etl_solution.ipynb">
-            (Solution)
-          </a>
-        </li>
-        <li>
-          <a
-            href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/data_management_architecture.ipynb">
-            Data management - cost estimations
-          </a>
-          <a
-            href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/data_management_architecture_solution.ipynb">
-            (Solution)
-          </a>
-          </li>
-        <li>
-          <a
-            href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/ab_testing_warmup.ipynb">
-            A/B Testing - warm-up (15 min)
-          </a>
-          <a
-            href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/ab_testing_warmup_solution.ipynb">
-            (Solution)
-          </a>
-        </li>
-        <li>
-          <a
-            href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/ab_testing.ipynb">
-            A/B Testing - the ShopNow checkout experiment
-          </a>
-          <a
-            href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/ab_testing_solution.ipynb">
-            (Solution)
-          </a>
-        </li>
+          <li><a href="slides/database_architectures/index.html">(III) Database Architecture</a></li>
+      </ul>
+    </div>
+    <div class="day day3">
+      <div class="day-head"><span class="day-name">Day 3</span><span class="day-date">Sat 2026-11-14</span></div>
+      <ul>
+          <li class="plain">Entry test<span class="note">20 multiple-choice questions on days 1 and 2, on paper, 15 min, no notes</span></li>
+          <li class="plain">Code walkthrough<span class="note">the solution of <em>Pandas Data Aggregation and Visualization</em>, one line of code per person</span></li>
+          <li><a href="slides/data_management/index.html">(IV) Data Management</a></li>
+          <li><a href="slides/ab_testing/index.html">(V) A/B Testing: Statistics for Decisions</a></li>
+      </ul>
+    </div>
+    <div class="day day4">
+      <div class="day-head"><span class="day-name">Day 4</span><span class="day-date">Mon 2026-11-16</span></div>
+      <ul>
+          <li><a href="slides/introduction_to_ai/index.html">(VI) An Introduction to AI</a></li>
+          <li><a href="slides/generative_ai_and_agents/index.html">(VII) Generative AI &amp; Agent Based Systems and all that</a></li>
+          <li><a href="slides/neural_networks/index.html">(VI-bonus) Neural Networks</a><span class="note">self-study, not part of the exam</span></li>
+      </ul>
+    </div>
+  </div>
 
-          <li>
-          <a
-            <a href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/introduction_ai.ipynb">
-            An Introduction to AI
-          </a>
-          <a
-            href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/introduction_ai_solution.ipynb">
-            (Solution)
-          </a>
-        </li>
-
-        <li>
-          <a
-            href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/classification_leaderboard.ipynb">
-            Classification leaderboard (fraud on ShopNow orders, group competition)
-          </a>
-        </li>
-
-        <li>
-          <a
-            href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/agents_and_vector_databases.ipynb">
-            Agents and Vector Databases
-          </a>
-          <a
-            href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/agents_and_vector_databases_solution.ipynb">
-            (Solution)
-          </a>
-        </li>
-        </li>
+  <h2 class="section">Exercises (Google Colab)</h2>
+  <div class="days">
+    <div class="day day1">
+      <div class="day-head"><span class="day-name">Day 1</span><span class="day-date">Thu 2026-10-15</span></div>
+      <ul>
+          <li><a href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/python_basics_pandas.ipynb">Python and Pandas Basics</a> <a class="sol" href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/python_basics_pandas_solution.ipynb">(Solution)</a></li>
+          <li><a href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/python_pandas_visualization.ipynb">Pandas Data Aggregation and Visualization</a> <a class="sol" href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/python_pandas_visualization_solution.ipynb">(Solution)</a><span class="note">open the solution again at the start of day 3</span></li>
+      </ul>
+    </div>
+    <div class="day day2">
+      <div class="day-head"><span class="day-name">Day 2</span><span class="day-date">Mon 2026-10-19</span></div>
+      <ul>
+          <li><a href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/database_architecture.ipynb">Database Architecture</a> <a class="sol" href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/database_architecture_solution.ipynb">(Solution)</a></li>
+      </ul>
+    </div>
+    <div class="day day3">
+      <div class="day-head"><span class="day-name">Day 3</span><span class="day-date">Sat 2026-11-14</span></div>
+      <ul>
+          <li><a href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/data_management_etl.ipynb">Data management - ETL by hand</a> <a class="sol" href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/data_management_etl_solution.ipynb">(Solution)</a></li>
+          <li><a href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/data_management_architecture.ipynb">Data management - cost estimations</a> <a class="sol" href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/data_management_architecture_solution.ipynb">(Solution)</a></li>
+          <li><a href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/ab_testing.ipynb">A/B Testing - the ShopNow checkout experiment</a> <a class="sol" href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/ab_testing_solution.ipynb">(Solution)</a></li>
+          <li><a href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/ab_testing_warmup.ipynb">A/B Testing - warm-up</a> <a class="sol" href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/ab_testing_warmup_solution.ipynb">(Solution)</a><span class="note">optional, 15 min</span></li>
+      </ul>
+    </div>
+    <div class="day day4">
+      <div class="day-head"><span class="day-name">Day 4</span><span class="day-date">Mon 2026-11-16</span></div>
+      <ul>
+          <li><a href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/classification_leaderboard.ipynb">Classification leaderboard</a><span class="note">fraud on ShopNow orders, group competition</span></li>
+          <li><a href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/agents_and_vector_databases.ipynb">Agents and Vector Databases</a> <a class="sol" href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/agents_and_vector_databases_solution.ipynb">(Solution)</a></li>
+          <li><a href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/introduction_ai.ipynb">An Introduction to AI</a> <a class="sol" href="https://colab.research.google.com/github/styx0r/msb_lecture_data_management_and_business_intelligence_2026/blob/main/colab/introduction_ai_solution.ipynb">(Solution)</a><span class="note">optional</span></li>
       </ul>
     </div>
   </div>
 
   <div class="container">
     <div class="content">
-      <h3>Homework</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Date (9 AM - 5.45 PM CET)</th>
-            <th>Event</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>2027-10-19</td>
-            <td>              
-              PL: finish Python and Pandas Basics <br />
-              PL: Pandas Data Aggregation and Visualization
-            </td>
-          </tr>          
-        </tbody>
-      </table>
-    </div>
-    <div class="content">
       <h3>Exam</h3>
       <ul>
-        <li>more information will be added soon</li>
+        <li>Date: tba</li>
+        <li>Multiple choice, same style as the quiz questions used in class</li>
+        <li>Not part of the exam: Neural Networks (bonus deck)</li>
       </ul>
     </div>
     <div class="content">
