@@ -402,11 +402,11 @@
                 </ul>
               </div>
               <div>
-                <h4 class="muted">More of the same</h4>
+                <h4 class="muted">Three more dashboards, same trap</h4>
                 <ul>
-                  <li>"app users spend 2x more" (loyal customers install the app)</li>
-                  <li>"customers with a coupon churn less" (coupons went to active users)</li>
-                  <li>"stores with more staff sell more" (busy stores get more staff)</li>
+                  <li>"App users spend twice as much." But it is the loyal customers who install the app. <em>App or loyalty?</em></li>
+                  <li>"Customers with a coupon churn less." But the coupons were sent to active customers. <em>Coupon or activity?</em></li>
+                  <li>"Stores with more staff sell more." But busy stores get more staff. <em>Staff or location?</em></li>
                 </ul>
               </div>
             </div>
@@ -414,6 +414,13 @@
               <span class="accent">Correlation is not causation.</span>
               A dashboard can show you a difference, it cannot tell you what caused it.
             </div>
+            <aside class="notes">
+              Two minutes. Left: the checkout case. The new checkout went to logged-in users, and logged-in users buy
+              more anyway, so the 12% could be the checkout or the customers; the two explanations are confounded. Right:
+              the same trap in three dashboards every company has. Read each as a pair: the claim the dashboard makes,
+              then the hidden reason that chose who got the treatment. Ask the room for a fourth example before the
+              takeaway. Click: correlation is not causation. The dashboard shows a difference, it cannot say what caused it.
+            </aside>
           </section>
 
           <section>
@@ -600,11 +607,37 @@
               <div>
                 <h4 class="accent">Why revenue per user is harder</h4>
                 <ul>
-                  <li>most users spend 0, a few spend a lot: very skewed, noisy</li>
-                  <li>needs many more users than a conversion rate</li>
+                  <li>most users spend 0, a few spend a lot</li>
+                  <li>next slide: what that does to the number you measure</li>
                 </ul>
               </div>
             </div>
+          </section>
+
+          <section>
+            <h3>Two metrics, two shapes</h3>
+            <p class="lead muted" style="margin: 0 0 0.2em 0; font-size: 0.55em">The same 5,000 visitors, measured two ways. Left: did they buy? Right: how much did they spend?</p>
+            <canvas id="shape-canvas" class="sim" width="1800" height="560"></canvas>
+            <div class="ctrl">
+              <button class="btn primary" id="shape-new">new sample of 5,000 visitors</button>
+            </div>
+            <div class="simout" id="shape-out"></div>
+            <div class="takeaway fragment" style="margin-top: 0.3em">
+              Every experiment gives you <span class="accent">one number</span> per metric: a rate or a mean. The wider the distribution behind it,
+              the larger that number's <span class="accent">standard error</span>, how much it varies from sample to sample. Next: watch it vary, a thousand times.
+            </div>
+            <aside class="notes">
+              Three minutes. Left: a 0/1 metric can only have two bars, 95 and 5. Its mean is the conversion rate, and
+              its standard error is fixed by p alone, the square root of p(1−p)/n: with 5% and 5,000 visitors the rate
+              sits within about 0.3 points of the truth. Say the words once: the standard deviation of the visitors
+              divided by the square root of n is the standard error of the mean, and that is the "±" on the slide. Right: the same visitors, now spend in euros. The 0-bar is cut off, it is the same 95%. The rest
+              is a long tail: most baskets 20 to 100 euros, a few at 300, 500, occasionally 1,000. The mean is revenue
+              per visitor, and the tail drags it around: the relative standard error is two to three times larger. Press "new sample"
+              three or four times and read both numbers aloud: the rate barely moves, the revenue jumps. Summary line:
+              same precision costs about 3x the visitors, which is why revenue is a secondary metric at ShopNow. Bridge:
+              each click was one experiment. The next slide reruns the experiment a thousand times and draws the
+              histogram of that one number.
+            </aside>
           </section>
         </section>
 

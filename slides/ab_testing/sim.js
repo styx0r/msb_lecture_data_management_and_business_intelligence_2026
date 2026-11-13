@@ -294,6 +294,74 @@
   const N_STEPS = [500, 1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000];
   const redraws = {}; // canvas id -> draw(), redrawn when the slide is shown
 
+  // ================================================================ 0. two metrics, two shapes
+  // One sample of visitors: "did they buy" (0/1) next to "spend per visitor" (0 for most, long tail for buyers).
+  function simShapes() {
+    if (!$("shape-canvas")) return;
+    const c = canvas("shape-canvas");
+    const N = 5000, MU = Math.log(45), SIG = 1.1; // order value: lognormal, median 45 EUR, heavy tail
+    let sample = null;
+    function drawSample() {
+      const buy = new Array(N), spend = new Array(N);
+      for (let i = 0; i < N; i++) {
+        buy[i] = Math.random() < P0 ? 1 : 0;
+        spend[i] = buy[i] ? Math.min(1500, Math.exp(MU + SIG * gauss())) : 0; // baskets capped at 1,500 EUR
+      }
+      sample = { buy, spend };
+    }
+    function stats() {
+      const { buy, spend } = sample;
+      const p = buy.reduce((a, b) => a + b, 0) / N;
+      const mean = spend.reduce((a, b) => a + b, 0) / N;
+      const sd = Math.sqrt(spend.reduce((a, v) => a + (v - mean) * (v - mean), 0) / (N - 1));
+      return { p, seP: Math.sqrt((p * (1 - p)) / N), mean, sd, seM: sd / Math.sqrt(N), max: Math.max(...spend) };
+    }
+    function draw() {
+      if (!sample) drawSample();
+      clear(c);
+      const st = stats();
+      const { ctx } = c;
+      const mid = c.W / 2;
+      // ---- left: Bernoulli, two bars
+      const pl = plot(c, { left: 0, right: mid - 20, ml: 70, mr: 20, mt: 36, mb: 50, x0: -0.6, x1: 1.6, y0: 0, y1: 100 });
+      axes(pl, { xticks: [0, 1], xfmt: (v) => (v ? "bought (1)" : "did not buy (0)"), yticks: [0, 25, 50, 75, 100], yfmt: (v) => v + "%", ygrid: true, ylabel: "share of visitors", title: "Primary metric: did they buy? Per visitor: 0 or 1" });
+      [[0, 1 - st.p, COL.blue], [1, st.p, COL.accent]].forEach(([x, h, col]) => {
+        ctx.fillStyle = col;
+        ctx.fillRect(pl.x(x - 0.3), pl.y(h * 100), pl.x(x + 0.3) - pl.x(x - 0.3), pl.bottom - pl.y(h * 100));
+        text(ctx, (h * 100).toFixed(1) + "%", pl.x(x), pl.y(h * 100) - 8, { align: "center", bold: true, size: 15 });
+      });
+      text(ctx, "mean = conversion rate", pl.x(1), pl.y(68), { align: "center", size: 14, color: COL.muted });
+      text(ctx, `${(st.p * 100).toFixed(2)}%  ±  ${(st.seP * 100).toFixed(2)} pp`, pl.x(1), pl.y(57), { align: "center", bold: true, size: 17, color: COL.accent });
+      text(ctx, `standard error = √(p(1−p)/n), ± ${((st.seP / st.p) * 100).toFixed(0)}% of the rate`, pl.x(1), pl.y(47), { align: "center", size: 13 });
+      // ---- right: spend histogram, 0-bar cut
+      const XMAX = 400, BIN = 20, YCAP = 3;
+      const pr = plot(c, { left: mid + 20, right: c.W, ml: 70, mr: 20, mt: 36, mb: 50, x0: -BIN, x1: XMAX, y0: 0, y1: YCAP });
+      axes(pr, { xticks: [0, 100, 200, 300, 400], xfmt: (v) => v + " €", yticks: [0, 1, 2, 3], yfmt: (v) => v + "%", ygrid: true, ylabel: "share of visitors (axis cut)", title: "Secondary metric: spend per visitor, in €" });
+      const bins = new Array(XMAX / BIN).fill(0);
+      let zero = 0, over = 0;
+      sample.spend.forEach((v) => { if (v === 0) zero++; else if (v >= XMAX) over++; else bins[Math.floor(v / BIN)]++; });
+      ctx.fillStyle = COL.blue;
+      ctx.fillRect(pr.x(-BIN) + 2, pr.top, pr.x(0) - pr.x(-BIN) - 4, pr.bottom - pr.top);
+      text(ctx, `← ${((zero / N) * 100).toFixed(0)}% spend 0 (bar cut off)`, pr.x(5), pr.top + 16, { size: 13, color: COL.blue });
+      ctx.fillStyle = COL.accent;
+      bins.forEach((k, i) => {
+        const h = Math.min((k / N) * 100, YCAP);
+        ctx.fillRect(pr.x(i * BIN) + 1, pr.y(h), pr.x((i + 1) * BIN) - pr.x(i * BIN) - 2, pr.bottom - pr.y(h));
+      });
+      text(ctx, `${over} visitors above 400 € →`, pr.right - 6, pr.y(2.55), { align: "right", size: 13, color: COL.muted });
+      text(ctx, "mean = revenue per visitor", pr.x(230), pr.y(2.05), { align: "center", size: 14, color: COL.muted });
+      text(ctx, `${st.mean.toFixed(2)} €  ±  ${st.seM.toFixed(2)} €`, pr.x(230), pr.y(1.72), { align: "center", bold: true, size: 17, color: COL.accent });
+      text(ctx, `standard error = sd / √n, ± ${((st.seM / st.mean) * 100).toFixed(0)}% of the mean`, pr.x(230), pr.y(1.42), { align: "center", size: 13 });
+      const ratio = Math.pow(st.seM / st.mean / (st.seP / st.p), 2);
+      $("shape-out").innerHTML =
+        `One sample of <b>${fmtInt(N)}</b> visitors. "±" is the <b>standard error</b>: the standard deviation of the one number across samples, sd of the visitors / √n.` +
+        ` Same relative precision for revenue needs about <b>${ratio.toFixed(1)}×</b> the visitors, because a few big baskets (largest here ${st.max.toFixed(0)} €) pull the mean around.`;
+    }
+    onClick("shape-new", () => { drawSample(); draw(); });
+    redraws["shape-canvas"] = draw;
+    draw();
+  }
+
   // ================================================================ 1. noise
   // A/A (or A/B) test repeated many times: histogram of the observed lift
   function simNoise() {
@@ -886,6 +954,7 @@
 
   // ------------------------------------------------------------------ init
   function init() {
+    simShapes();
     simNoise();
     simPvalue();
     simErrors();
