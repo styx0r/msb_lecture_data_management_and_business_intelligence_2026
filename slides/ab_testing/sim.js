@@ -493,7 +493,8 @@
         : `<b>${fmtInt(N)}</b> experiment${N === 1 ? "" : "s"}, B really is <b>${fmtPP(d, 2)}</b> better. Observed lifts ranged from <b>${fmtPP(lo, 2)}</b> to <b>${fmtPP(hi, 2)}</b>. ` +
           `The test found it (outside the band) in <b>${fmtPct(s, 1)}</b> of them: that is the power at this sample size and lift.`;
       $("noise-stats").innerHTML = first + `<br/>` +
-        `last one: A ${fmtInt(last.a)} / ${fmtInt(last.n)} = ${fmtPct(l.pa, 2)}, B ${fmtInt(last.b)} / ${fmtInt(last.n)} = ${fmtPct(l.pb, 2)}, lift ${fmtPP(l.diff * 100, 2)}, ${fmtP(l.p)}`;
+        `last one: A ${fmtInt(last.a)} / ${fmtInt(last.n)} = ${fmtPct(l.pa, 2)}, B ${fmtInt(last.b)} / ${fmtInt(last.n)} = ${fmtPct(l.pb, 2)}, lift ${fmtPP(l.diff * 100, 2)}, ${fmtP(l.p)}: ` +
+        `if nothing changed, noise alone gives a lift at least ${Math.abs(l.diff * 100).toFixed(2)} pp away from zero, in either direction, in ${fmtPct(l.p, 0)} of experiments (two-sided).`;
     }
 
     onClick("noise-run1", () => run(1));

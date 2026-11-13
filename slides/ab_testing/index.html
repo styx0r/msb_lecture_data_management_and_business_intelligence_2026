@@ -718,7 +718,11 @@
               count in one bar. Then +1000: the histogram. Read the range out loud: nothing changed, and still we saw
               anything between about -1.3 and +1.4 pp. Then back to the checkout: +3 pp is far outside the band, so it is
               not noise, but that only helps if the two groups were random (they were not, logged-in users only).
-              Orange bars are p below 0.05, about 5% of them: that is alpha, before we even define it.
+              Orange bars are p below 0.05, about 5% of them: that is alpha, before we even define it. If an experiment
+              lands left of zero and someone asks what its p-value means: the test is two-sided, so p is the share of
+              A/A experiments that land at least this far from zero on either side, left or right. Read it as "if
+              nothing changed, noise alone produces a difference at least this big in 31% of experiments". Two-sided
+              because B can also be worse than A, and we want to catch that too; the band is symmetric for the same reason.
               Now users to 50,000: the grey band and the histogram narrow. The band is the only "noise knob" there is:
               for yes/no data the spread is fixed by n and the baseline rate b, SE = sqrt(2 b (1-b) / n).
               Say where the band comes from in two sentences: each visitor is a coin with 5% heads, add up 5,000
