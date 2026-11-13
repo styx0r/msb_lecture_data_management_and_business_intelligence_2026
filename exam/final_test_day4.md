@@ -189,7 +189,7 @@
 31. What does `df.dtypes` show?
    A. The number of rows per column
    B. The first 5 rows of the DataFrame
-   C. The data type of each column, for example `int64`, `float64` or `object`
+   C. The data type of each column, for example `int64`, `float64`, `object` or `str`
    D. The unique values of each column
 
 32. What is `[p * 2 for p in [1, 2, 3] if p > 1]`?
@@ -213,7 +213,7 @@
 35. In Lab 1, battery capacity was stored as `'95'`, `'59'`, ... and we ran `df["BatteryCapacity_kWh"].astype(float)` before dividing. Why was this necessary?
    A. `astype(float)` removes missing values before division
    B. pandas can only divide columns that have the same name
-   C. The column contained text (dtype `object`), and you cannot divide text by numbers
+   C. The column contained text (dtype `object` or `str`), and you cannot divide text by numbers
    D. Floats are faster than integers in pandas
 
 36. For `ev = {"Tesla": 575, "Leaf": 340}`, what does `print("Leaf" in ev)` print?

@@ -66,7 +66,7 @@
    C. The total revenue as a single number
    D. An error, because `agg` needs a list
 
-11. A column `order_date` with values like `2024/10/01` has dtype `object`. What is true?
+11. A column `order_date` with values like `2024/10/01` has dtype `object` (or `str`). What is true?
    A. pandas already treats it as a date, you can group by month
    B. It is text. You need `pd.to_datetime` before you can work with it as a date
    C. `object` means the column contains numbers
