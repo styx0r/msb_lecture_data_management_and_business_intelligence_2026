@@ -296,15 +296,16 @@
 
   // ================================================================ 0. two metrics, two shapes
   // One sample of visitors: "did they buy" (0/1) next to "spend per visitor" (0 for most, long tail for buyers).
+  // Uses its own buy rate (3%) so it is not confused with the 5% checkout baseline of the later slides.
   function simShapes() {
     if (!$("shape-canvas")) return;
     const c = canvas("shape-canvas");
-    const N = 5000, MU = Math.log(45), SIG = 1.1; // order value: lognormal, median 45 EUR, heavy tail
+    const N = 5000, P = 0.03, MU = Math.log(45), SIG = 1.1; // order value: lognormal, median 45 EUR, heavy tail
     let sample = null;
     function drawSample() {
       const buy = new Array(N), spend = new Array(N);
       for (let i = 0; i < N; i++) {
-        buy[i] = Math.random() < P0 ? 1 : 0;
+        buy[i] = Math.random() < P ? 1 : 0;
         spend[i] = buy[i] ? Math.min(1500, Math.exp(MU + SIG * gauss())) : 0; // baskets capped at 1,500 EUR
       }
       sample = { buy, spend };
@@ -318,46 +319,60 @@
     }
     function draw() {
       if (!sample) drawSample();
+      const log = $("shape-log").checked;
       clear(c);
       const st = stats();
       const { ctx } = c;
       const mid = c.W / 2;
       // ---- left: Bernoulli, two bars
-      const pl = plot(c, { left: 0, right: mid - 20, ml: 70, mr: 20, mt: 36, mb: 50, x0: -0.6, x1: 1.6, y0: 0, y1: 100 });
+      const pl = plot(c, { left: 0, right: mid - 20, ml: 70, mr: 20, mt: 36, mb: 50, x0: -0.6, x1: 1.75, y0: 0, y1: 112 });
       axes(pl, { xticks: [0, 1], xfmt: (v) => (v ? "bought (1)" : "did not buy (0)"), yticks: [0, 25, 50, 75, 100], yfmt: (v) => v + "%", ygrid: true, ylabel: "share of visitors", title: "Primary metric: did they buy? Per visitor: 0 or 1" });
       [[0, 1 - st.p, COL.blue], [1, st.p, COL.accent]].forEach(([x, h, col]) => {
         ctx.fillStyle = col;
         ctx.fillRect(pl.x(x - 0.3), pl.y(h * 100), pl.x(x + 0.3) - pl.x(x - 0.3), pl.bottom - pl.y(h * 100));
         text(ctx, (h * 100).toFixed(1) + "%", pl.x(x), pl.y(h * 100) - 8, { align: "center", bold: true, size: 15 });
       });
-      text(ctx, "mean = conversion rate", pl.x(1), pl.y(68), { align: "center", size: 14, color: COL.muted });
-      text(ctx, `${(st.p * 100).toFixed(2)}%  ±  ${(st.seP * 100).toFixed(2)} pp`, pl.x(1), pl.y(57), { align: "center", bold: true, size: 17, color: COL.accent });
-      text(ctx, `standard error = √(p(1−p)/n), ± ${((st.seP / st.p) * 100).toFixed(0)}% of the rate`, pl.x(1), pl.y(47), { align: "center", size: 13 });
-      // ---- right: spend histogram, 0-bar cut
-      const XMAX = 400, BIN = 20, YCAP = 3;
-      const pr = plot(c, { left: mid + 20, right: c.W, ml: 70, mr: 20, mt: 36, mb: 50, x0: -BIN, x1: XMAX, y0: 0, y1: YCAP });
-      axes(pr, { xticks: [0, 100, 200, 300, 400], xfmt: (v) => v + " €", yticks: [0, 1, 2, 3], yfmt: (v) => v + "%", ygrid: true, ylabel: "share of visitors (axis cut)", title: "Secondary metric: spend per visitor, in €" });
+      const cx = pl.x(1.05);
+      text(ctx, "mean = conversion rate", cx, pl.y(74), { align: "center", size: 14, color: COL.muted });
+      text(ctx, `${(st.p * 100).toFixed(2)}%  ±  ${(st.seP * 100).toFixed(2)} pp`, cx, pl.y(63), { align: "center", bold: true, size: 17, color: COL.accent });
+      text(ctx, "standard error = √(p(1−p)/n)", cx, pl.y(52), { align: "center", size: 13 });
+      text(ctx, `= ± ${((st.seP / st.p) * 100).toFixed(0)}% of the rate`, cx, pl.y(43), { align: "center", size: 13 });
+      // ---- right: spend histogram, linear or log y-axis
+      const XMAX = 400, BIN = 20;
       const bins = new Array(XMAX / BIN).fill(0);
       let zero = 0, over = 0;
       sample.spend.forEach((v) => { if (v === 0) zero++; else if (v >= XMAX) over++; else bins[Math.floor(v / BIN)]++; });
-      ctx.fillStyle = COL.blue;
-      ctx.fillRect(pr.x(-BIN) + 2, pr.top, pr.x(0) - pr.x(-BIN) - 4, pr.bottom - pr.top);
-      text(ctx, `← ${((zero / N) * 100).toFixed(0)}% spend 0 (bar cut off)`, pr.x(5), pr.top + 16, { size: 13, color: COL.blue });
-      ctx.fillStyle = COL.accent;
-      bins.forEach((k, i) => {
-        const h = Math.min((k / N) * 100, YCAP);
-        ctx.fillRect(pr.x(i * BIN) + 1, pr.y(h), pr.x((i + 1) * BIN) - pr.x(i * BIN) - 2, pr.bottom - pr.y(h));
-      });
-      text(ctx, `${over} visitors above 400 € →`, pr.right - 6, pr.y(2.55), { align: "right", size: 13, color: COL.muted });
-      text(ctx, "mean = revenue per visitor", pr.x(230), pr.y(2.05), { align: "center", size: 14, color: COL.muted });
-      text(ctx, `${st.mean.toFixed(2)} €  ±  ${st.seM.toFixed(2)} €`, pr.x(230), pr.y(1.72), { align: "center", bold: true, size: 17, color: COL.accent });
-      text(ctx, `standard error = sd / √n, ± ${((st.seM / st.mean) * 100).toFixed(0)}% of the mean`, pr.x(230), pr.y(1.42), { align: "center", size: 13 });
+      const toY = log ? (pct) => Math.log10(pct) : (pct) => pct; // data value on the y scale
+      const pr = plot(c, { left: mid + 20, right: c.W, ml: 70, mr: 20, mt: 36, mb: 50, x0: -BIN, x1: XMAX, y0: log ? -2 : 0, y1: log ? 2.1 : 112 });
+      const yt = log ? [-2, -1, 0, 1, 2] : [0, 25, 50, 75, 100];
+      axes(pr, { xticks: [0, 100, 200, 300, 400], xfmt: (v) => v + " €", yticks: yt, yfmt: (v) => (log ? [0.01, 0.1, 1, 10, 100][v + 2] : v) + "%", ygrid: true,
+        ylabel: log ? "share of visitors (log scale)" : "share of visitors", title: "Secondary metric: spend per visitor, in €" });
+      const bar = (x0, x1, pct, col) => {
+        if (pct <= 0) return;
+        const y = pr.y(toY(pct));
+        ctx.fillStyle = col;
+        ctx.fillRect(pr.x(x0) + 1, y, pr.x(x1) - pr.x(x0) - 2, pr.bottom - y);
+        return y;
+      };
+      const zeroPct = (zero / N) * 100;
+      const yz = bar(-BIN, 0, zeroPct, COL.blue);
+      text(ctx, `← ${zeroPct.toFixed(0)}% spend 0`, pr.x(0) + 6, Math.max(yz - 6, pr.top + 14), { size: 13, color: COL.blue, bold: true });
+      bins.forEach((k, i) => bar(i * BIN, (i + 1) * BIN, (k / N) * 100, COL.accent));
+      if (!log) text(ctx, "buyers = the flat orange line. Tick the box →", pr.right - 6, pr.y(14), { align: "right", size: 13, color: COL.muted });
+      text(ctx, `${over} visitors above 400 € →`, pr.right - 6, pr.top + 16, { align: "right", size: 13, color: COL.muted });
+      // stats block at fixed pixel positions (independent of the y scale)
+      const rx = pr.x(255), ry = pr.top + 44;
+      text(ctx, "mean = revenue per visitor", rx, ry, { align: "center", size: 14, color: COL.muted });
+      text(ctx, `${st.mean.toFixed(2)} €  ±  ${st.seM.toFixed(2)} €`, rx, ry + 22, { align: "center", bold: true, size: 17, color: COL.accent });
+      text(ctx, "standard error = sd / √n", rx, ry + 42, { align: "center", size: 13 });
+      text(ctx, `= ± ${((st.seM / st.mean) * 100).toFixed(0)}% of the mean`, rx, ry + 59, { align: "center", size: 13 });
       const ratio = Math.pow(st.seM / st.mean / (st.seP / st.p), 2);
       $("shape-out").innerHTML =
-        `One sample of <b>${fmtInt(N)}</b> visitors. "±" is the <b>standard error</b>: the standard deviation of the one number across samples, sd of the visitors / √n.` +
-        ` Same relative precision for revenue needs about <b>${ratio.toFixed(1)}×</b> the visitors, because a few big baskets (largest here ${st.max.toFixed(0)} €) pull the mean around.`;
+        `One sample of <b>${fmtInt(N)}</b> visitors. "±" = <b>standard error</b> = sd of the visitors / √n: how much this one number varies across samples.` +
+        ` Same relative precision for revenue needs about <b>${ratio.toFixed(1)}×</b> the visitors (largest basket here ${st.max.toFixed(0)} €).`;
     }
     onClick("shape-new", () => { drawSample(); draw(); });
+    $("shape-log").addEventListener("change", draw);
     redraws["shape-canvas"] = draw;
     draw();
   }

@@ -620,6 +620,7 @@
             <canvas id="shape-canvas" class="sim" width="1800" height="560"></canvas>
             <div class="ctrl">
               <button class="btn primary" id="shape-new">new sample of 5,000 visitors</button>
+              <label><input type="checkbox" id="shape-log" /> logarithmic y-axis on the right</label>
             </div>
             <div class="simout" id="shape-out"></div>
             <div class="takeaway fragment" style="margin-top: 0.3em">
@@ -627,12 +628,16 @@
               the larger that number's <span class="accent">standard error</span>, how much it varies from sample to sample. Next: watch it vary, a thousand times.
             </div>
             <aside class="notes">
-              Three minutes. Left: a 0/1 metric can only have two bars, 95 and 5. Its mean is the conversion rate, and
-              its standard error is fixed by p alone, the square root of p(1−p)/n: with 5% and 5,000 visitors the rate
-              sits within about 0.3 points of the truth. Say the words once: the standard deviation of the visitors
-              divided by the square root of n is the standard error of the mean, and that is the "±" on the slide. Right: the same visitors, now spend in euros. The 0-bar is cut off, it is the same 95%. The rest
+              Three minutes. This slide uses a 3% buy rate on purpose, so nobody confuses it with the 5% checkout
+              baseline that runs through the rest of the deck. Left: a 0/1 metric can only have two bars, 97 and 3. Its
+              mean is the conversion rate, and its standard error is fixed by p alone, the square root of p(1−p)/n: with
+              3% and 5,000 visitors the rate sits within about 0.25 points of the truth. Say the words once: the standard deviation of the visitors
+              divided by the square root of n is the standard error of the mean, and that is the "±" on the slide. Right: the same visitors, now spend in euros. The 0-bar is the same 97%. The rest
               is a long tail: most baskets 20 to 100 euros, a few at 300, 500, occasionally 1,000. The mean is revenue
-              per visitor, and the tail drags it around: the relative standard error is two to three times larger. Press "new sample"
+              per visitor, and the tail drags it around: the relative standard error is clearly larger. On the linear
+              scale the 0-bar is all you see and the buyers are a flat line, that is the honest picture of the data. Tick
+              the box: logarithmic y-axis, now the tail appears, most baskets 20 to 100 euros, a few at 300 and beyond.
+              Press "new sample"
               three or four times and read both numbers aloud: the rate barely moves, the revenue jumps. Summary line:
               same precision costs about 3x the visitors, which is why revenue is a secondary metric at ShopNow. Bridge:
               each click was one experiment. The next slide reruns the experiment a thousand times and draws the
