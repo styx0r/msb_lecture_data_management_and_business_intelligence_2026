@@ -293,10 +293,14 @@
             <span class="accent">Decisions</span> ask "do we ship it?". A/B testing is the bridge between the two.
           </p>
           <aside class="notes">
-            30 seconds. The same stack as in every deck. This morning we were on the warehouse layer. Now we jump
-            up: the data is clean, the dashboard exists, and somebody has to decide. The analysis layer is where
-            the test is computed, the decision layer is where the result is used. And the decision produces new
-            raw data, next slide.
+            <ul>
+              <li>30 seconds</li>
+              <li>Same stack as every deck; this morning: warehouse layer</li>
+              <li>Now jump up: data clean, dashboard exists, somebody must decide</li>
+              <li>Analysis layer computes the test, decision layer uses it</li>
+              <li>Next: the decision produces new raw data</li>
+              <li>Abbr.: A/B = A vs B; AI = artificial intelligence; ETL/ELT = extract-transform-load / extract-load-transform</li>
+            </ul>
           </aside>
         </section>
 
@@ -312,11 +316,14 @@
             </div>
           </div>
           <aside class="notes">
-            The OODA loop from the BI deck (day 1). Point at "Testing hypotheses" under Decide: that was a
-            placeholder then, today we fill it. Orient is what BI does (analysis, classify findings), Decide is
-            where this module sits, Act is the ship decision, Observe is the new raw data after the ship. Emphasise
-            the last line: the dashboard shows a change, the experiment shows causation. That is the whole module
-            in one sentence.
+            <ul>
+              <li>Loop from the business intelligence deck, day 1</li>
+              <li>Point at "Testing hypotheses" under Decide: placeholder then, filled today</li>
+              <li>Orient = dashboards; Decide = this module; Act = ship; Observe = new data</li>
+              <li>Emphasise last line: dashboard shows change, experiment shows causation</li>
+              <li>That sentence is the whole module</li>
+              <li>Abbr.: OODA = observe, orient, decide, act</li>
+            </ul>
           </aside>
         </section>
 
@@ -350,9 +357,13 @@
             Today's version: how do companies decide what to ship?
           </div>
           <aside class="notes">
-            Bridge module: BI is descriptive, AI is predictive, A/B testing is the
-            one place in the course where we talk about causality. Keep the maths
-            light, the goal is intuition and one tool (statsmodels).
+            <ul>
+              <li>Bridge module: Business Intelligence describes, AI predicts, A/B testing explains causes</li>
+              <li>Only place in the course about causality</li>
+              <li>Keep maths light: intuition plus one tool, statsmodels</li>
+              <li>Click: module description, today's version: how do companies decide what to ship?</li>
+              <li>Abbr.: KPI = key performance indicator; A/B = A vs B; AI = artificial intelligence</li>
+            </ul>
           </aside>
         </section>
         </section>
@@ -382,10 +393,13 @@
               <span class="green">Would you ship it?</span>
             </p>
             <aside class="notes">
-              The slide says "some customers" on purpose and not who: that is the
-              question of the next slide. Let them vote. Then ask: who saw the new checkout? Usually: beta
-              users, app users, logged-in customers, people who opted in. Those
-              people buy more anyway.
+              <ul>
+                <li>"Some customers" is deliberate: who is the next slide</li>
+                <li>Click "Would you ship it?": let the room vote</li>
+                <li>Then ask: who saw the new checkout?</li>
+                <li>Usual answers: beta, app, logged-in, opt-in users</li>
+                <li>Those people buy more anyway</li>
+              </ul>
             </aside>
           </section>
 
@@ -415,11 +429,15 @@
               A dashboard can show you a difference, it cannot tell you what caused it.
             </div>
             <aside class="notes">
-              Two minutes. Left: the checkout case. The new checkout went to logged-in users, and logged-in users buy
-              more anyway, so the 12% could be the checkout or the customers; the two explanations are confounded. Right:
-              the same trap in three dashboards every company has. Read each as a pair: the claim the dashboard makes,
-              then the hidden reason that chose who got the treatment. Ask the room for a fourth example before the
-              takeaway. Click: correlation is not causation. The dashboard shows a difference, it cannot say what caused it.
+              <ul>
+                <li>2 min</li>
+                <li>Left: logged-in users got the new checkout, they buy more anyway</li>
+                <li>Checkout or loyal customers? Cannot tell: confounded</li>
+                <li>Right: three dashboards, read each as claim, then hidden selection</li>
+                <li>Ask the room for a fourth example</li>
+                <li>Click: correlation is not causation</li>
+                <li>Dashboard shows a difference, never its cause</li>
+              </ul>
             </aside>
           </section>
 
@@ -449,9 +467,13 @@
               </div>
             </div>
             <aside class="notes">
-              Same idea as clinical trials: placebo vs drug. Randomization
-              removes confounders on average, it does not remove noise. That is
-              what statistics is for.
+              <ul>
+                <li>Like clinical trials: placebo vs drug</li>
+                <li>Randomization removes confounders on average</li>
+                <li>It does not remove noise; that is what statistics is for</li>
+                <li>Point at the pills: all names for the same thing</li>
+                <li>Abbr.: A/B = control A vs variant B</li>
+              </ul>
             </aside>
           </section>
 
@@ -517,9 +539,15 @@
             </div>
             <div class="cite">Reconstructed from the description in Kohavi &amp; Thomke (2017), not the original screenshot. Prices and shop are made up.</div>
             <aside class="notes">
-              One minute. Ask the room first: which one would you have shipped? Most say "no difference" or "A looks cleaner".
-              Then the number. Point: the idea is trivial, the effect is huge, and nobody saw it coming, it sat in the backlog for
-              six months. The expensive part of A/B testing is not the test, it is believing the result over your intuition.
+              <ul>
+                <li>1 min</li>
+                <li>Ask first: which one would you have shipped?</li>
+                <li>Most say "no difference" or "A looks cleaner"</li>
+                <li>Click: +12% revenue, about 100 M$ per year</li>
+                <li>Trivial idea, huge effect, six months in the backlog</li>
+                <li>Expensive part: believing the result over your intuition</li>
+                <li>Abbr.: M$ = million US dollars; US = United States</li>
+              </ul>
             </aside>
           </section>
         </section>
@@ -628,20 +656,15 @@
               the larger that number's <span class="accent">standard error</span>, how much it varies from sample to sample. Next: watch it vary, a thousand times.
             </div>
             <aside class="notes">
-              Three minutes. This slide uses a 3% buy rate on purpose, so nobody confuses it with the 5% checkout
-              baseline that runs through the rest of the deck. Left: a 0/1 metric can only have two bars, 97 and 3. Its
-              mean is the conversion rate, and its standard error is fixed by p alone, the square root of p(1−p)/n: with
-              3% and 5,000 visitors the rate sits within about 0.25 points of the truth. Say the words once: the standard deviation of the visitors
-              divided by the square root of n is the standard error of the mean, and that is the "±" on the slide. Right: the same visitors, now spend in euros. The 0-bar is the same 97%. The rest
-              is a long tail: most baskets 20 to 100 euros, a few at 300, 500, occasionally 1,000. The mean is revenue
-              per visitor, and the tail drags it around: the relative standard error is clearly larger. On the linear
-              scale the 0-bar is all you see and the buyers are a flat line, that is the honest picture of the data. Tick
-              the box: logarithmic y-axis, now the tail appears, most baskets 20 to 100 euros, a few at 300 and beyond.
-              Press "new sample"
-              three or four times and read both numbers aloud: the rate barely moves, the revenue jumps. Summary line:
-              same precision costs about 3x the visitors, which is why revenue is a secondary metric at ShopNow. Bridge:
-              each click was one experiment. The next slide reruns the experiment a thousand times and draws the
-              histogram of that one number.
+              <ul>
+                <li>3 min; 3% buy rate on purpose, not the 5% baseline</li>
+                <li>Left: bars 97 and 3, rate within ±0.25 points of truth</li>
+                <li>Say once: standard deviation / root n = standard error, the "±"</li>
+                <li>Right: euros, long tail 20 to 100, a few 300 to 1,000</li>
+                <li>Tick "logarithmic y-axis": tail appears. Press "new sample" 3-4 times</li>
+                <li>Read both numbers aloud: rate barely moves, revenue jumps; 3x visitors for revenue</li>
+                <li>Next: rerun 1,000 times, histogram of that one number</li>
+              </ul>
             </aside>
           </section>
         </section>
@@ -688,14 +711,15 @@
               <span class="accent">a real effect found 80% of the time</span>.
             </div>
             <aside class="notes">
-              This is the bridge for beginners, do not skip it. Card 1: an experiment is one run of the test, two
-              numbers, one difference. Make them compute the lift once. Card 2: the thought experiment of a time
-              machine, same two weeks with different people. Ask: would the number be exactly the same? Why not?
-              Card 3: the simulator is that time machine. Say explicitly: x-axis = the lift one rerun showed, bar
-              height = how many reruns showed that lift. Takeaway: we only ever get one bar's worth of information
-              in reality, so we design the test (number of users) such that the invisible histogram has the
-              properties we want: 5% and 80% are design targets, not results. Then go to the live slide and press
-              "1 experiment" three times before pressing +1000.
+              <ul>
+                <li>Do not skip: the bridge for beginners</li>
+                <li>Card 1: let them compute the lift once (5.24 - 5.00)</li>
+                <li>Click card 2: time machine. Ask: same number again? Why not?</li>
+                <li>Click card 3: x-axis = lift per rerun, bar height = count</li>
+                <li>Click takeaway: 5% and 80% are design targets, not results</li>
+                <li>Next: press "1 experiment" three times before +1000</li>
+                <li>Abbr.: pp = percentage points; A/B = control A vs variant B</li>
+              </ul>
             </aside>
           </section>
 
@@ -712,25 +736,15 @@
             <canvas id="noise-canvas" class="sim" width="1800" height="680"></canvas>
             <div class="simout" id="noise-stats"></div>
             <aside class="notes">
-              Key intuition for the whole lecture, so take 5 minutes here.
-              Script: lift 0, 5,000 users. Click "1 experiment" a few times: every run shows a different lift,
-              nothing was changed. The small marker shows where the last experiment landed, so one click = one
-              count in one bar. Then +1000: the histogram. Read the range out loud: nothing changed, and still we saw
-              anything between about -1.3 and +1.4 pp. Then back to the checkout: +3 pp is far outside the band, so it is
-              not noise, but that only helps if the two groups were random (they were not, logged-in users only).
-              Orange bars are p below 0.05, about 5% of them: that is alpha, before we even define it. If an experiment
-              lands left of zero and someone asks what its p-value means: the test is two-sided, so p is the share of
-              A/A experiments that land at least this far from zero on either side, left or right. Read it as "if
-              nothing changed, noise alone produces a difference at least this big in 31% of experiments". Two-sided
-              because B can also be worse than A, and we want to catch that too; the band is symmetric for the same reason.
-              Now users to 50,000: the grey band and the histogram narrow. The band is the only "noise knob" there is:
-              for yes/no data the spread is fixed by n and the baseline rate b, SE = sqrt(2 b (1-b) / n).
-              Say where the band comes from in two sentences: each visitor is a coin with 5% heads, add up 5,000
-              coins and you get a bell curve whose width is known in advance (the dashed green line). The band is the
-              middle 95% of that bell curve, computed before any experiment ran. The bars are the check: the reruns
-              fill the curve.
-              Then lift to +1 pp: the green line leaves the band, the orange share is the power.
-              Every observed difference is effect + noise. Statistics quantifies how big noise alone can be.
+              <ul>
+                <li>5 min, key intuition. Lift 0, 5,000 users: "1 experiment" a few times, then +1000</li>
+                <li>Read the range aloud: -1.3 to +1.4 pp, nothing changed</li>
+                <li>Checkout +3 pp: outside the band, but groups were not random</li>
+                <li>Orange bars = p below 0.05, about 5%: that is alpha</li>
+                <li>p is two-sided: share of A/A runs at least this far from 0, either side</li>
+                <li>Users 50,000: band narrows. Lift +1 pp: green leaves band, orange = power</li>
+                <li>Abbr.: A/A = same variant in both groups; pp = percentage points</li>
+              </ul>
             </aside>
           </section>
 
@@ -780,15 +794,15 @@
               3. <span class="red">p</span> &lt; <span class="accent">α</span> (5%, fixed before the test): statistically significant, we reject H0.
             </div>
             <aside class="notes">
-              This slide only adds one thing to the noise slide: our real experiment, the orange line. Say it slowly:
-              in reality we run the test once and get one number, +0.9 pp. The 1,000 blue reruns are the time machine
-              where nothing changed. Red = the reruns that landed at least 0.9 pp away from zero, on either side (a
-              big negative lift would surprise us just as much). Count them: 41 of 1,000, that is p. The formula gives
-              the same number without rerunning anything. Alpha is the other thing on the slide: the band we fixed
-              before the test, 5%. Orange bars on the noise slide were exactly the reruns outside this band.
-              Script: slide to +0.5, p = 25%, inside the band, noise does this all the time. Slide to +3.0 (the
-              checkout story): no rerun ever got there, p under 0.01%, which is why the dashboard number looked so
-              convincing. The problem there was the groups, not the statistics. Then alpha to 1%: the band widens.
+              <ul>
+                <li>New here: orange line = our one real experiment, +0.9 pp</li>
+                <li>Red = reruns at least 0.9 away, either side: 41 of 1,000 = p</li>
+                <li>Formula gives the same p without reruns; alpha = band fixed before, 5%</li>
+                <li>Slide lift to +0.5: p = 25%, inside band, plain noise</li>
+                <li>Slide to +3.0: p under 0.01%, the checkout story; problem was the groups</li>
+                <li>Alpha to 1%: band widens</li>
+                <li>Abbr.: H0 = null hypothesis; p = p-value; α = significance level</li>
+              </ul>
             </aside>
           </section>
 
@@ -880,15 +894,15 @@
               the ones left inside the band are missed effects (β). The band decides what we <em>say</em>, the world decides whether we were <em>right</em>.
             </div>
             <aside class="notes">
-              Start with true lift 0: this is the p-value picture again, blue reruns, red ones outside the band are
-              the false alarms, alpha. Then turn the true lift up to +1.0: the bars move right and turn green, this is
-              the world where B really works. Grey = the reruns that still land inside the band, we would say "not
-              significant" although B works: beta. The H0 curve stays as a dashed line with red tails: alpha is a
-              property of the band, it does not change when the truth changes. Then the orange line, our one real
-              experiment: at +0.7 inside the band. With true lift 0 that verdict is right, with true lift +1.0 it is a
-              type II error. Slide it to +1.2: now "significant", a false alarm at true lift 0, right at +1.0. We never
-              know which world we are in. Let a student drive: alpha to 10%: band narrower, less beta, more alpha.
-              Users up: everything narrows, beta shrinks. This trade-off is why sample size matters, next section.
+              <ul>
+                <li>True lift 0: p-value picture, red outside band = alpha</li>
+                <li>True lift +1.0: bars move right, green; grey inside band = beta</li>
+                <li>Dashed null curve stays: alpha belongs to the band, not the truth</li>
+                <li>Orange +0.7: correct at lift 0, type II at +1.0; slide to +1.2: reversed</li>
+                <li>Student drives: alpha 10% = narrower band, less beta; users up = less beta</li>
+                <li>Next: this trade-off is why sample size matters</li>
+                <li>Abbr.: α = false alarm rate; β = missed effect rate</li>
+              </ul>
             </aside>
           </section>
         </section>
@@ -929,14 +943,15 @@
               effects this small are invisible to you. Lowering the power until the number fits is not planning, it is deciding the answer first.
             </div>
             <aside class="notes">
-              The order matters: baseline is measured, the MDE is the one business decision, alpha and power are conventions,
-              users and days fall out. Students (and product teams) tend to run it backwards: "we have two weeks, which
-              parameters make two weeks enough?" Say why that is self-deception: power down to 60% means you miss a real
-              effect in 40% of the cases and only feel like you planned; MDE up to +1 pp means you are no longer testing the
-              question you had. The sample size is the number you get, not the number you want. The two practical cases:
-              big shop and a bold change, the test is over in days, do not run it longer than needed. Small shop or a
-              subtle change, the formula says months; then test bigger changes or be honest that this test cannot answer
-              the question. The next slides give the formula, the numbers and the live planner.
+              <ul>
+                <li>Order: baseline measured, MDE decided, α/power conventions, users result</li>
+                <li>Warn: teams run it backwards ("we have two weeks")</li>
+                <li>Power 60% = miss real effects 40% of the time</li>
+                <li>MDE up to +1 pp = a different question</li>
+                <li>Click: big shop, bold change = days; small shop, subtle change = months</li>
+                <li>Next: formula, numbers, live planner</li>
+                <li>Abbr.: MDE minimum detectable effect; α significance level; pp percentage points; BI business intelligence</li>
+              </ul>
             </aside>
           </section>
 
@@ -953,9 +968,15 @@
               reason small shops cannot test small changes.
             </div>
             <aside class="notes">
-              This is Lehr's rule. Full version: n = (z_{1-α/2} + z_{1-β})² · 2·b(1-b) / δ². Textbooks write p for the baseline rate, we use b so it does not collide with the p-value.
-              With z = 1.96 and 0.84 the squared sum is 7.85, times 2 is about 16.
-              We will not derive it, the notebook uses statsmodels.
+              <ul>
+                <li>Name it: Lehr's rule of thumb</li>
+                <li>Full version: (z_α + z_β)² · 2b(1−b) / δ²</li>
+                <li>z = 1.96 and 0.84: squared sum 7.85, times 2 ≈ 16</li>
+                <li>b, not p: avoids collision with the p-value</li>
+                <li>Click: halve the effect, quadruple the users</li>
+                <li>No derivation; the notebook uses statsmodels</li>
+                <li>Abbr.: α = significance level; MDE = minimum detectable effect</li>
+              </ul>
             </aside>
           </section>
 
@@ -986,13 +1007,14 @@
             <canvas id="plan-canvas" class="sim" width="1800" height="640"></canvas>
             <div class="simout" id="plan-stats"></div>
             <aside class="notes">
-              Pick your MDE, go right until you hit 80%, read off the users per group. That is the whole planning step.
-              Then the reality check: marketing wants an answer in 7 days. Move "days you have" and watch the blue line:
-              the text says which lift 7 days can show at all. The answer to "can we do it in a week" is either "yes, we
-              only need 3 days" or "a week shows +1.2 pp or more, nothing smaller", never "let's lower the power".
-              Halve the MDE: the orange line moves four times to the right.
-              This slide also solves tasks 1 and 2 of "Your turn" (baseline 2%, MDE +0.4 pp, 3,000 visitors/day),
-              let them verify their notebook numbers here.
+              <ul>
+                <li>Pick MDE, go right to 80%, read users per group</li>
+                <li>Reality check: move "days you have" to 7, watch blue line</li>
+                <li>Answer: "yes, 3 days" or "a week shows +1.2 pp minimum"; never lower power</li>
+                <li>Halve MDE: orange line moves four times right</li>
+                <li>Later: verify "Your turn" tasks 1-2 here (2%, +0.4 pp, 3,000/day)</li>
+                <li>Abbr.: MDE = minimum detectable effect</li>
+              </ul>
             </aside>
           </section>
 
@@ -1067,10 +1089,15 @@ print(f"{n_per_group:,.0f} users per group")
               into about <span class="red">25-30%</span>. The p-value is only valid for the sample size you planned.
             </div>
             <aside class="notes">
-              Lift 0, so there is nothing to find. Click "1 test" a few times: the p-value random-walks, some paths dip
-              below 0.05 and come back. Then +100 twice: right bars. Deciding once at the end gives the promised 5%,
-              stopping at the first dip gives 25-30%. More days: it gets worse, not better.
-              Looking at the dashboard is fine; deciding based on it is not. Peeking by design: sequential testing (outlook).
+              <ul>
+                <li>Lift 0: nothing to find</li>
+                <li>Click "1 test" a few times: p random-walks, dips below 0.05</li>
+                <li>+100 twice: right bars. Once at end 5%, first dip 25-30%</li>
+                <li>More days: worse, not better</li>
+                <li>Looking at the dashboard is fine; deciding on it is not</li>
+                <li>Peeking by design = sequential testing (outlook)</li>
+                <li>Abbr.: p = p-value</li>
+              </ul>
             </aside>
           </section>
         </section>
@@ -1098,11 +1125,14 @@ print(f"{n_per_group:,.0f} users per group")
               <tr class="fragment"><td>3. How <b>sure</b> are we about that size?</td><td>the <span class="accent">confidence interval</span>: +0.36 to +1.07 pp. New, next slides</td></tr>
             </table>
             <aside class="notes">
-              This is the moment after the test. Two numbers come back from the dashboard. Ask the room what they would
-              report to the product team: most say "+0.72 pp". Then the three questions. The p-value answers only the
-              first one, and by now they can read it: +0.72 is far outside the ±0.35 band for 31,000 users per group.
-              The second is just subtraction. The third is the new thing: the same number could have been +0.5 or
-              +0.9 in a rerun, and the business wants to know how far off we might be. That is the confidence interval.
+              <ul>
+                <li>Ask: what would you report to product? Most: "+0.72 pp"</li>
+                <li>Click 1: p answers "real": +0.72 far outside ±0.35 band</li>
+                <li>Click 2: lift, just subtraction, about 14% more buyers</li>
+                <li>Click 3: how sure? A rerun could give +0.5 or +0.9</li>
+                <li>Next: that is the confidence interval</li>
+                <li>Abbr.: pp = percentage points; p = p-value</li>
+              </ul>
             </aside>
           </section>
 
@@ -1130,9 +1160,14 @@ lo, hi = confint_proportions_2indep(
               gives the same answer. The t-test is the same idea for means (revenue per user): <code>scipy.stats.ttest_ind</code>.
             </div>
             <aside class="notes">
-              Do not derive the test statistic. Say: it is the observed difference
-              divided by the noise level from the A/A slide. z = 3 means "3 noise
-              units away from zero".
+              <ul>
+                <li>Do not derive the test statistic</li>
+                <li>z = observed difference divided by noise level (A/A slide)</li>
+                <li>z = 3 means "3 noise units from zero"</li>
+                <li>Step through highlights: inputs, z-test, interval</li>
+                <li>Chi-squared on 2x2 gives the same; t-test for means</li>
+                <li>Abbr.: CI = confidence interval; pp = percentage points; p = p-value</li>
+              </ul>
             </aside>
           </section>
 
@@ -1151,17 +1186,15 @@ lo, hi = confint_proportions_2indep(
               If it does not contain 0, the result is significant, and the interval tells the business how big the effect could be.
             </div>
             <aside class="notes">
-              Nothing new is computed here. The band width is the noise level from the A/A slide, ±1.96 SE. What "95%
-              confident" means precisely: if we reran the experiment many times and built this band around each result,
-              19 of 20 of those bands would contain the true lift. We get one of them and do not know whether it is one
-              of the 19, we only know that misses are rare. Say it once, then use the plain reading on the slide. Top row:
-              the band around 0, the p-value view. Bottom row: the same band around our observed +0.72, the interval
-              view. Both say the same thing about significance (0 is outside the orange band exactly when +0.72 is
-              outside the grey band), but the interval also says how big the effect could plausibly be: anywhere from
-              +0.36 to +1.07, most likely near +0.72. Slide the observed lift to +0.3: the orange band now contains 0,
-              not significant, and the business sees that the true effect could be zero or even negative. Users down
-              to 5,000: both bands widen. statsmodels uses the observed rates for the width, which is why its interval
-              differs in the second decimal.
+              <ul>
+                <li>Nothing new computed: same band, ±1.96 standard errors</li>
+                <li>Say once: 19 of 20 such bands contain the true lift</li>
+                <li>Top row: band around 0, p-value view; bottom: around +0.72</li>
+                <li>Interval adds the size: +0.36 to +1.07</li>
+                <li>Slide lift to +0.3: interval contains 0, not significant</li>
+                <li>Users to 5,000: both bands widen</li>
+                <li>statsmodels uses observed rates, hence second-decimal difference</li>
+              </ul>
             </aside>
           </section>
 
@@ -1228,9 +1261,14 @@ lo, hi = confint_proportions_2indep(
             <span class="muted">(the hints in the notebook name the functions you need)</span>
           </p>
           <aside class="notes">
-            Short break from the slides. Expected answers: about 21,000 users per group, 14 days;
-            in 7 days only about +0.6 pp is detectable; the result is +0.41 pp with CI [0.23, 0.60] and p far below 0.05, so ship.
-            Discuss task 2: what do you tell marketing?
+            <ul>
+              <li>15 min, in pairs</li>
+              <li>Task 1: about 21,000 users per group, 14 days</li>
+              <li>Task 2: in 7 days only about +0.6 pp detectable</li>
+              <li>Task 3: +0.41 pp, interval [0.23, 0.60], p well below 0.05: ship</li>
+              <li>Discuss task 2: what do you tell marketing?</li>
+              <li>Abbr.: pp = percentage points; α = significance level</li>
+            </ul>
           </aside>
         </section>
 
@@ -1279,10 +1317,14 @@ lo, hi = confint_proportions_2indep(
               Fix: one primary metric decided upfront. Everything else is exploration, not evidence.
             </div>
             <aside class="notes">
-              Nothing works in this dashboard, every metric is pure noise. Slide the metric count up and watch
-              tiles light up. "New dashboard" rolls again: a different metric wins every time, that is the point.
-              The fix is not a stricter threshold (there are corrections for that, we skip them), it is deciding one
-              primary metric before the test. Everything else on the dashboard is for finding ideas, not for shipping.
+              <ul>
+                <li>Nothing works here: every metric is pure noise</li>
+                <li>Slide "metrics tested" up: tiles light up</li>
+                <li>Press "new dashboard" repeatedly: a different winner each time</li>
+                <li>Fix: one primary metric before the test, not a stricter threshold</li>
+                <li>Corrections exist, we skip them; rest of dashboard = ideas, not evidence</li>
+                <li>Abbr.: α = significance level per metric</li>
+              </ul>
             </aside>
           </section>
 
@@ -1307,8 +1349,13 @@ lo, hi = confint_proportions_2indep(
               ramp-ups per platform, or observational data. Proper randomization prevents it, segment checks detect it.
             </div>
             <aside class="notes">
-              First click: only the segments. Ask: B wins on mobile and on desktop, so what does B do overall? Everyone
-              says "wins". Second click: it loses. Let that sit, then the next slide shows why with the counts.
+              <ul>
+                <li>First click: segments only</li>
+                <li>Ask: B wins on mobile and desktop, so overall?</li>
+                <li>Everyone says "wins"</li>
+                <li>Second click: B loses overall. Let it sit</li>
+                <li>Next: the counts explain why</li>
+              </ul>
             </aside>
           </section>
 
@@ -1341,11 +1388,14 @@ lo, hi = confint_proportions_2indep(
               With a coin flip per user both groups get the same mix, and the winner of every segment also wins overall.
             </div>
             <aside class="notes">
-              Walk through the buyers, not the rates: 30 + 320 against 140 + 90. The rates per segment favour B, the
-              counts favour A, because the counts carry the mix. Then the last row: it is the mix that differs, not the
-              checkout. Back to randomization: a coin flip per user gives both groups the same mix, so this cannot happen
-              in a clean A/B test. It happens in ramp-ups per platform and whenever people compare observational data.
-              The segment check in the SQL slide later is how you detect it.
+              <ul>
+                <li>Walk through buyers, not rates: 30 + 320 vs 140 + 90</li>
+                <li>Rates favour B, counts favour A: counts carry the mix</li>
+                <li>Click last row: the mix differs, not the checkout</li>
+                <li>Coin flip per user: same mix, cannot happen in a clean test</li>
+                <li>Happens in platform ramp-ups and observational data</li>
+                <li>Later: the segment check on the SQL slide detects it</li>
+              </ul>
             </aside>
           </section>
         </section>

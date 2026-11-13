@@ -176,10 +176,13 @@
               And by the end of the afternoon it will read your documents and call your tools.
             </p>
             <aside class="notes">
-              30 seconds. Same stack as in every deck. This morning we opened the AI bar and found machines that predict:
-              a regression line, a fraud classifier, k-means groups. This afternoon the same bar, but the output is new
-              content. Everything this afternoon stands on this morning: a language model is the classifier from the
-              leaderboard with a million classes, one per word.
+              <ul>
+                <li>30 sec</li>
+                <li>Same stack, same orange AI bar as every deck</li>
+                <li>Morning: predicts (regression, fraud, k-means); now: generates content</li>
+                <li>Red thread: language model = leaderboard classifier with a million classes</li>
+                <li>Abbr.: AI = artificial intelligence; ETL = extract-transform-load; ELT = extract-load-transform</li>
+              </ul>
             </aside>
           </section>
 
@@ -227,9 +230,15 @@
               The red thread: an LLM only ever <b class="accent">predicts the next token</b>. Everything else, chat, knowledge, tools, agents, is built around that one trick.
             </div>
             <aside class="notes">
-              One minute. Four parts with a short break in the middle. Announce the lab: in pairs, a vector database
-              of ShopNow products, you search it, you ground an assistant with it, and then you try to break it. The
-              debate at the end uses what you found. Say the red thread now, repeat it in every part.
+              <ul>
+                <li>1 min</li>
+                <li>Four parts, short break in the middle</li>
+                <li>Announce lab: pairs, ShopNow vector database, search it, ground assistant, break it</li>
+                <li>Debate at the end uses the lab findings</li>
+                <li>Say the red thread now; repeat it in every part</li>
+                <li>Abbr.: GAN = generative adversarial network; LLM = large language model; GPU = graphics processing unit</li>
+                <li>Abbr.: API = application programming interface; RAG = retrieval-augmented generation; MCP = model context protocol</li>
+              </ul>
             </aside>
           </section>
         </section>
@@ -245,10 +254,13 @@
               You just did what a language model does: given the text so far, rank every possible next word. The model does it with a probability for each of ~100,000 tokens, picks one, and repeats.
             </div>
             <aside class="notes">
-              Two minutes. Collect five or six words from the room, write them on the board with a rough count:
-              "powerful" 6, "complex" 3, "hard" 2. Then click: the model's distribution looks like your tally. Second
-              click: the sentence to remember. This is the whole afternoon in one slide. Every chat answer is this loop
-              run a few hundred times.
+              <ul>
+                <li>2 min</li>
+                <li>Collect 5-6 words, tally on board: powerful 6, complex 3, hard 2</li>
+                <li>Click: model's distribution looks like your tally</li>
+                <li>Click: the sentence to remember</li>
+                <li>Whole afternoon in one slide: every chat answer = this loop, hundreds of times</li>
+              </ul>
             </aside>
           </section>
 
@@ -296,13 +308,15 @@
               The model never "knows" it is done. Every step asks "what comes next?", and one possible answer is "nothing". The answer ends when that token wins.
             </div>
             <aside class="notes">
-              Two minutes. Ask the room first: the model produces one token at a time, so who decides that the answer is
-              over? Let them guess, you will hear "when the sentence ends", "a full stop", "a timer". Click: the sentence
-              grows token by token. Click: the last token is not a word, it is the end token. It is in the vocabulary like
-              any other token, and during training every document ended with it, so the model learned where texts end.
-              Click: the three ways generation stops in practice. The stop token is the natural one; max_tokens is the
-              safety net you always set in the API; stop sequences are for templates. Click: the takeaway. Nice side
-              effect: if an answer is cut mid-sentence, you hit max_tokens, not a bug in the model.
+              <ul>
+                <li>2 min</li>
+                <li>Ask first: who decides the answer is over? Expect "full stop", "timer"</li>
+                <li>Click: sentence grows token by token</li>
+                <li>Click: end token, in the vocabulary; every training document ended with it</li>
+                <li>Click: three stops: token natural, max_tokens always set, sequences for templates</li>
+                <li>Click: takeaway. Cut mid-sentence = max_tokens, not a model bug</li>
+                <li>Abbr.: API = application programming interface</li>
+              </ul>
             </aside>
           </section>
 
@@ -338,9 +352,13 @@
               <p style="text-align: left; margin: 0">The orange core of this morning's map. Generative AI is deep learning whose output is new content. The word "generative" says what the model does, not how smart it is: remember "generative or general?".</p>
             </div>
             <aside class="notes">
-              Two minutes. Exam: generative AI creates synthetic data or content. The contrast to this morning is the
-              output space: a classifier chooses between two labels, a language model chooses between 100,000 tokens,
-              a few hundred times in a row. Same training loop, same gradient descent, much bigger network.
+              <ul>
+                <li>2 min</li>
+                <li>Exam: generative AI creates synthetic data or content</li>
+                <li>Contrast: classifier picks between 2 labels; language model among 100,000 tokens</li>
+                <li>Same training loop, same gradient descent, much bigger network</li>
+                <li>Abbr.: AI = artificial intelligence</li>
+              </ul>
             </aside>
           </section>
 
@@ -353,10 +371,14 @@
               <div><p>Counterfeiter vs. police: both improve until fakes pass. The image generator of 2014 to 2021; diffusion models replaced it, the idea stays in the exam.</p></div>
             </div>
             <aside class="notes">
-              Two minutes. Exam: a GAN has a generator and a discriminator. Tell it as a story: the counterfeiter prints
-              money, the police checks, every arrest teaches the counterfeiter. Nobody labels "good fake", the
-              discriminator's errors are the label. Mention that Midjourney and friends are diffusion models now, a
-              different trick, same goal: learn what images look like, then make new ones.
+              <ul>
+                <li>2 min</li>
+                <li>Exam: GAN = generator plus discriminator</li>
+                <li>Story: counterfeiter prints, police checks, every arrest teaches the counterfeiter</li>
+                <li>Nobody labels "good fake": the discriminator's errors are the label</li>
+                <li>Midjourney etc. are diffusion models now; different trick, same goal</li>
+                <li>Abbr.: GAN = generative adversarial network</li>
+              </ul>
             </aside>
           </section>
 
@@ -368,10 +390,13 @@
               A <b class="accent">pair</b>: input and the wanted output. Noisy photo and clean photo. German sentence and English sentence. Question and answer. The encoder squeezes the input into a few numbers, the decoder builds the output from them.
             </div>
             <aside class="notes">
-              Two minutes. Ask the room before clicking, the answer is "pairs". Exam: encoder-decoder models map an
-              input sequence to an output sequence, translation is the classic case. The bottleneck is the interesting
-              part: whatever survives it is the meaning. Keep that word, the embedding later is exactly such a
-              bottleneck vector.
+              <ul>
+                <li>2 min</li>
+                <li>Ask before clicking: what is one training row? Answer: pairs</li>
+                <li>Exam: encoder-decoder maps input sequence to output sequence; translation is classic</li>
+                <li>Bottleneck: whatever survives it is the meaning</li>
+                <li>Later: the embedding in Part 4 is exactly this bottleneck vector</li>
+              </ul>
             </aside>
           </section>
 
@@ -396,12 +421,15 @@
             </div>
             <p class="cite">Vaswani et al. (2017), Attention Is All You Need. The figure is the original architecture; today's LLMs use the right-hand half (decoder) only.</p>
             <aside class="notes">
-              Three minutes. Exam: transformers use attention to capture dependencies and focus on relevant tokens.
-              Click the two endings: the same word "they" in the same position gets a different meaning, and the
-              weights move from "shoes" to "customer". Older models (RNNs) read left to right and forgot; attention
-              looks everywhere at once and can be computed in parallel. Parallel means GPUs, GPUs mean scale, scale
-              is Part 2. The weights shown are hand-made for teaching, real models have dozens of such attention maps
-              per layer.
+              <ul>
+                <li>3 min</li>
+                <li>Exam: transformers use attention to capture dependencies, focus on relevant tokens</li>
+                <li>Click both endings: same "they", weights move from shoes to customer</li>
+                <li>Older models read left to right and forgot; attention looks everywhere, in parallel</li>
+                <li>Parallel = GPUs = scale: that is Part 2</li>
+                <li>Weights hand-made for teaching; real models have dozens of maps per layer</li>
+                <li>Abbr.: GPU = graphics processing unit; LLM = large language model</li>
+              </ul>
             </aside>
           </section>
 
@@ -427,9 +455,14 @@
               </div>
             </div>
             <aside class="notes">
-              Two minutes. Exam: an LLM predicts the next token. Tokens are the unit of everything: price, context,
-              speed. The strawberry story: the model sees "str" "aw" "berry" as three ids, not eleven letters, so letter
-              counting is genuinely hard for it. Next slide: you become the model.
+              <ul>
+                <li>2 min</li>
+                <li>Exam: an LLM predicts the next token</li>
+                <li>Tokens are the unit of everything: price, context, speed</li>
+                <li>Strawberry: model sees "str" "aw" "berry", three ids, not eleven letters</li>
+                <li>Next: you become the model</li>
+                <li>Abbr.: LLM = large language model</li>
+              </ul>
             </aside>
           </section>
 
@@ -447,14 +480,15 @@
             <div class="nw-bars" id="nw-bars"></div>
             <p class="simout" id="nw-level"></p>
             <aside class="notes">
-              Five minutes, this is the demo of the afternoon. Script: temperature 1, start "the coffee", click
-              "sample one" a few times and read the bars: these are the probabilities, the model counted how often each
-              word followed the last two. "Let it write": a fluent review that nobody wrote. Then temperature 0: always
-              the top word, the same sentence every time, boring. Temperature 2.5: garbage. Then start "the laptop" and
-              let it write: it will happily produce "the laptop is loud but the coffee is great", a hallucination, fluent
-              and wrong, because it only knows which words follow which. Three facts: it has no idea what is true, it
-              never says "I don't know", and temperature trades creativity for reliability. A real LLM is this with a
-              context of 100,000 words instead of two and a trillion parameters instead of a lookup table.
+              <ul>
+                <li>5 min, the demo of the afternoon</li>
+                <li>Temperature 1, start "the coffee", "sample one" a few times; bars = probabilities</li>
+                <li>"Let it write": fluent review nobody wrote. Temperature 0: same sentence. 2.5: garbage</li>
+                <li>Start "the laptop", let it write: "loud but the coffee is great" = hallucination</li>
+                <li>Three facts: no truth, never "I don't know", temperature trades creativity vs reliability</li>
+                <li>Real LLM: same trick, 100,000-word context, trillion parameters, no lookup table</li>
+                <li>Abbr.: LLM = large language model</li>
+              </ul>
             </aside>
           </section>
 
@@ -473,10 +507,13 @@
               </div>
             </div>
             <aside class="notes">
-              One minute here, then two for the next three. Step 1 is our trigram model at planetary scale: the whole
-              internet, books, code. The cost: tens of millions of dollars of GPU time. The result is a base model: ask
-              it "What is an LLM?" and it continues with more questions, because that is what text on the internet
-              looks like.
+              <ul>
+                <li>1 min here, then 2 min for the next three</li>
+                <li>Step 1 = our trigram model at planetary scale: internet, books, code</li>
+                <li>Cost: tens of millions of dollars of GPU time</li>
+                <li>Base model: ask "What is an LLM?", it continues with more questions</li>
+                <li>Abbr.: RLHF = reinforcement learning from human feedback</li>
+              </ul>
             </aside>
           </section>
 
@@ -485,7 +522,11 @@
             <img class="fig" src="../assets/generative_ai_and_agents/animations/llm_training_step_2.gif" alt="instruction fine-tuning" style="max-height: 380px" />
             <div class="takeaway">Tens of thousands of hand-written question and answer pairs. Same training loop, tiny dataset. Now it answers instead of continuing.</div>
             <aside class="notes">
-              Supervised fine-tuning. People wrote the pairs. This is the encoder-decoder "pairs" idea from before.
+              <ul>
+                <li>Supervised fine-tuning; people wrote the pairs</li>
+                <li>Same training loop, tiny dataset: now it answers instead of continuing</li>
+                <li>Same "pairs" idea as encoder-decoder</li>
+              </ul>
             </aside>
           </section>
 
@@ -497,10 +538,14 @@
             </div>
             <div class="takeaway">Humans pick the better of two answers. A reward model learns the taste, the LLM is trained to please it: <b class="accent">RLHF</b>. This is where "helpful, harmless, polite" comes from, and the tendency to agree with you.</div>
             <aside class="notes">
-              Two minutes. The screenshot on the right is what you see in ChatGPT when it shows two answers: you are
-              the labeller. Reinforcement learning from human feedback: the reward is a thumbs up, the policy is the
-              model. Bridge to this morning: the third way to learn. Side effect worth naming: models trained to please
-              become sycophantic, they tell you what you want to hear.
+              <ul>
+                <li>2 min</li>
+                <li>Right screenshot: ChatGPT showing two answers; you are the labeller</li>
+                <li>RLHF: reward = thumbs up, policy = the model</li>
+                <li>Bridge to this morning: the third way to learn</li>
+                <li>Side effect: models trained to please become sycophantic</li>
+                <li>Abbr.: RLHF = reinforcement learning from human feedback; LLM = large language model</li>
+              </ul>
             </aside>
           </section>
 
@@ -509,9 +554,12 @@
             <img class="fig" src="../assets/generative_ai_and_agents/animations/llm_training_step_4.gif" alt="reasoning fine-tuning" style="max-height: 360px" />
             <div class="takeaway">Since 2024: tasks with a checkable answer (math, code, logic). The model writes its reasoning out, gets a reward when the answer is right. "Thinking" models: o1, DeepSeek-R1, and everything since.</div>
             <aside class="notes">
-              One minute. The newest step and the reason 2025 models solve math olympiad problems. No human labels
-              needed when the answer can be checked by a program, so this scales. Then the break, or straight into
-              Part 2, depending on time.
+              <ul>
+                <li>1 min</li>
+                <li>Newest step; why 2025 models solve olympiad math</li>
+                <li>No human labels when a program checks the answer: it scales</li>
+                <li>Next: break, or straight into Part 2, depending on time</li>
+              </ul>
             </aside>
           </section>
         </section>
@@ -528,13 +576,15 @@
             </div>
             <p class="simout" id="scale-out"></p>
             <aside class="notes">
-              Three minutes. Click through. GPT-2 to GPT-3: 100 times bigger in one year, and the jump in quality came
-              with it, that is the "scaling law" bet the whole industry made. GPT-4: OpenAI stopped publishing sizes,
-              1.8 trillion is the community estimate, and from here the circles have an orange core: not all parameters
-              work on every token. Then the open-weights wave: Llama, DeepSeek, Kimi, even OpenAI's own gpt-oss. Green
-              you can download and run yourself, blue you can only rent through an API. Parameter counts: GPT-2 1.5 B,
-              GPT-3 175 B, Llama 3.1 405 B, DeepSeek-V3 671 B / 37 B active, Kimi K2 1 T / 32 B active, gpt-oss-120b
-              117 B / 5 B active, all from the model cards; GPT-4 is an estimate.
+              <ul>
+                <li>3 min, click through</li>
+                <li>GPT-2 to GPT-3: 100x in one year, quality jumped: the scaling-law bet</li>
+                <li>GPT-4: size unpublished, 1.8 trillion estimate; orange core = active parameters</li>
+                <li>Open-weights wave: Llama, DeepSeek, Kimi, gpt-oss. Green download, blue API only</li>
+                <li>Numbers: GPT-2 1.5B, GPT-3 175B, Llama 3.1 405B; GPT-4 is an estimate</li>
+                <li>DeepSeek-V3 671B/37B active, Kimi K2 1000B/32B active, gpt-oss-120b 117B/5B active</li>
+                <li>Abbr.: GPT = generative pre-trained transformer; B = billion; API = application programming interface</li>
+              </ul>
             </aside>
           </section>
 
@@ -577,10 +627,14 @@
               </div>
             </div>
             <aside class="notes">
-              Two minutes. Click "next token" three or four times. The trick that made trillion-parameter models
-              affordable: you store everything, you compute a fraction. The labels are a teaching fiction, in a real
-              model the experts learn their own, often strange, division of labour. Bridge: "stored" means memory,
-              and memory means GPUs, next slide.
+              <ul>
+                <li>2 min</li>
+                <li>Click "next token" three or four times</li>
+                <li>Store everything, compute a fraction: that made trillion-parameter models affordable</li>
+                <li>Labels are a teaching fiction; real experts learn strange divisions of labour</li>
+                <li>Next: "stored" means memory, memory means GPUs</li>
+                <li>Abbr.: B = billion</li>
+              </ul>
             </aside>
           </section>
 
@@ -602,11 +656,16 @@
               <div class="card blue"><h4>Why MoE matters here</h4><ul><li>memory is for <b>all</b> parameters, speed depends on the <b>active</b> ones</li><li>DeepSeek-V3 needs 17 cards of memory but runs like a 37 B model</li></ul></div>
             </div>
             <aside class="notes">
-              Three minutes. Move the slider. 671 B at 16-bit: 1,342 GB, 17 to 21 cards, half a million dollars, or
-              about 35 k$ a month rented. That is the entry ticket for running a frontier open model yourself. Then
-              8 B at 4-bit: one laptop. The business point: for most companies the API is cheaper than the hardware,
-              unless data must not leave the house, which is the debate later. Prices: H100 about 25 to 30 k$ to buy,
-              2 to 3 $ per hour to rent in 2026, both falling.
+              <ul>
+                <li>3 min, move the slider</li>
+                <li>671B at 16-bit: 1,342 GB, 17-21 cards, half a million dollars, ~35 k$/month rented</li>
+                <li>That is the entry ticket for running a frontier open model yourself</li>
+                <li>8B at 4-bit: one laptop</li>
+                <li>Business point: API cheaper than hardware, unless data must stay in-house (debate)</li>
+                <li>Prices: H100 25-30 k$ to buy, 2-3 dollars per hour to rent, both falling</li>
+                <li>Abbr.: GPU = graphics processing unit; B = billion; GB = gigabyte; KV = key-value (cache)</li>
+                <li>Abbr.: k$ = thousand dollars; MoE = mixture of experts; GPT = generative pre-trained transformer</li>
+              </ul>
             </aside>
           </section>
 
@@ -632,9 +691,13 @@
             </div>
             <img class="fig" src="../assets/generative_ai_and_agents/imgs/imgs.012.png" alt="chat app calls the API" style="max-height: 230px; margin-top: 0.4em" />
             <aside class="notes">
-              Two minutes. The most common confusion in companies: "we have ChatGPT" means somebody has a browser tab.
-              Building something means the API: your code, your prompt, your data, per-token billing. The picture: the
-              chat app is a thin layer, the model behind it is the same one you can rent.
+              <ul>
+                <li>2 min</li>
+                <li>Common confusion: "we have ChatGPT" = somebody has a browser tab</li>
+                <li>Building = the API: your code, your prompt, your data, per-token billing</li>
+                <li>Picture: chat app is a thin layer, same model you can rent</li>
+                <li>Abbr.: API = application programming interface; AI = artificial intelligence</li>
+              </ul>
             </aside>
           </section>
 
@@ -667,10 +730,15 @@ print(response.choices[0].message.content)
               </div>
             </div>
             <aside class="notes">
-              Two minutes. Ten lines, this is a complete AI application. Point at the three roles. The system prompt
-              is where the business rules go, and where, in the lab, you will try to break out of. Ask: what does the
-              model answer here? It does not know ShopNow's return policy, so it will either guess (hallucination) or
-              say so. That is Part 3.
+              <ul>
+                <li>2 min</li>
+                <li>Ten lines = a complete application</li>
+                <li>Point at the three roles</li>
+                <li>System prompt: business rules live here; in the lab you try to break out</li>
+                <li>Ask: what does the model answer? No ShopNow policy: guess (hallucination) or admit</li>
+                <li>Next: that is Part 3</li>
+                <li>Abbr.: API = application programming interface</li>
+              </ul>
             </aside>
           </section>
 
@@ -696,14 +764,15 @@ print(response.choices[0].message.content)
             </div>
             <p class="simout" id="ctx-out"></p>
             <aside class="notes">
-              Four minutes. Script with the tiny window: "my name is Anna", then order, grinder, returns, then "what is
-              my name?". Watch the bar fill and the first message fall out, struck through. The model answers "I do not
-              know your name": it did not forget, the message was never sent. Then switch to 2,000 tokens and repeat:
-              it remembers, but look at the cost line, every turn resends everything. Three exam facts: the API is
-              stateless, the context window is the amount of text the model can use at once, and you pay for the whole
-              window on every call. Real windows in 2026 are 200,000 to a million tokens, a few hundred pages, which
-              is why "just paste the whole contract" works now and did not in 2023. The replies here are canned, the
-              window mechanics are real.
+              <ul>
+                <li>4 min</li>
+                <li>Tiny window: "my name is Anna", order, grinder, returns, "what is my name?"</li>
+                <li>Watch bar fill, first message drops, struck through: never sent, not forgotten</li>
+                <li>Switch to 2,000 tokens, repeat: remembers; cost line: every turn resends everything</li>
+                <li>Exam: API stateless; window = text usable at once; pay whole window every call</li>
+                <li>Real windows 2026: 200,000 to a million tokens. Replies canned, mechanics real</li>
+                <li>Abbr.: API = application programming interface</li>
+              </ul>
             </aside>
           </section>
         </section>
@@ -737,10 +806,14 @@ GDP is a macroeconomic indicator.</div>
             </div>
             <div class="takeaway">Every answer mixes the two, and the model does not tell you which part came from where.</div>
             <aside class="notes">
-              Two minutes. This distinction is the key to the whole of Part 4. World knowledge is why it writes good
-              English and knows what GDP is. Context is the only way your data gets in. When people say "train the
-              model on our data" they almost always mean "put our data into the context", which is cheaper, faster,
-              and reversible.
+              <ul>
+                <li>2 min</li>
+                <li>Key distinction for the whole of Part 4</li>
+                <li>World knowledge: good English, knows what GDP is</li>
+                <li>Context: the only way your data gets in</li>
+                <li>"Train on our data" almost always means "put it in context": cheaper, faster, reversible</li>
+                <li>Abbr.: M = million; EUR = euro; GDP = gross domestic product</li>
+              </ul>
             </aside>
           </section>
 
@@ -761,9 +834,14 @@ GDP is a macroeconomic indicator.</div>
               B is the default. The number is a plausible next token, the sentence is fluent, and nothing in the training rewards "I don't know". That is a <b class="accent">hallucination</b>: confident, fluent, wrong. You saw it with the trigram model: "the laptop is loud but the coffee is great".
             </div>
             <aside class="notes">
-              Two minutes. Vote by hands. Then click. Exam: a hallucination is confident but incorrect output. Link
-              back to the live demo: the trigram model never said "I don't know" either, it is structurally the same
-              failure. Preference tuning reduces it, because people prefer A, but does not remove it.
+              <ul>
+                <li>2 min</li>
+                <li>Vote by hands, then click</li>
+                <li>Exam: hallucination = confident but incorrect output</li>
+                <li>Link to demo: trigram model never said "I don't know" either, same failure</li>
+                <li>Preference tuning reduces it (people prefer A), does not remove it</li>
+                <li>Abbr.: Q4 = fourth quarter; M = million; EUR = euro</li>
+              </ul>
             </aside>
           </section>
 
@@ -786,10 +864,16 @@ GDP is a macroeconomic indicator.</div>
                 <div class="a"><span class="tag half">stale</span> whatever it says is from the training cutoff. For anything with a date you need a tool or a search result in the context.</div></div>
             </div>
             <aside class="notes">
-              Four minutes. Go card by card, hands first. The lesson is the pattern, not the six facts: it is reliable
-              on famous, stable facts; it invents specifics (citations, numbers, your company's rules); it fails on
-              letters and arithmetic for structural reasons; and it is frozen in time. Each of the three failure
-              modes gets its own fix in Part 4: your facts via retrieval, time via tools, counting via tools.
+              <ul>
+                <li>4 min</li>
+                <li>Card by card: hands up first, then click the card</li>
+                <li>Lesson is the pattern, not the six facts</li>
+                <li>Reliable on famous stable facts; invents specifics: citations, numbers, company rules</li>
+                <li>Fails on letters and arithmetic structurally; frozen in time</li>
+                <li>Next: each failure gets a fix in Part 4: retrieval, tools, tools</li>
+                <li>Abbr.: BI = business intelligence; EUR = euro; USD = US dollar</li>
+                <li>Abbr.: A/B = split test of variants A and B</li>
+              </ul>
             </aside>
           </section>
 
@@ -803,8 +887,12 @@ GDP is a macroeconomic indicator.</div>
             </table>
             <div class="takeaway">None of these is a bug that the next model version will fix. They follow from "predict the next token from the context". The engineering around the model is where the value is.</div>
             <aside class="notes">
-              Two minutes. Exam: hallucination, context window, training cutoff. The last sentence is the business
-              message: the model is a commodity you rent, the context engineering is what you own.
+              <ul>
+                <li>2 min</li>
+                <li>Exam: hallucination, context window, training cutoff</li>
+                <li>Business message: model is a rented commodity, context engineering is what you own</li>
+                <li>Abbr.: API = application programming interface; RAG = retrieval-augmented generation; GPT = generative pre-trained transformer</li>
+              </ul>
             </aside>
           </section>
 
@@ -836,10 +924,14 @@ Answer:  "Laptops have a 30-day window,
             </div>
             <p class="bigq fragment" style="font-size: 0.9em; margin-top: 0.5em">But how does the app find the <span class="accent">relevant</span> part among 10,000 documents?</p>
             <aside class="notes">
-              Two minutes. The right card is the whole architecture of a company assistant: the answer is only as good
-              as the retrieved snippet. The question at the bottom is the bridge to Part 4: we need search that
-              understands meaning, because "return a laptop" and "Returns policy, laptops" share no useful keyword
-              with "send back my notebook".
+              <ul>
+                <li>2 min</li>
+                <li>Right card = the whole architecture of a company assistant</li>
+                <li>Answer is only as good as the retrieved snippet</li>
+                <li>Click: bottom question is the bridge to Part 4</li>
+                <li>Next: semantic search: "send back my notebook" must find "Returns policy, laptops"</li>
+                <li>Abbr.: PDF = portable document format; Q4 = fourth quarter</li>
+              </ul>
             </aside>
           </section>
         </section>
@@ -854,9 +946,13 @@ Answer:  "Laptops have a 30-day window,
               <div class="card green"><h4>Why it is useful</h4><ul><li>texts with <b>similar meaning get nearby vectors</b>: "canine companions" lands next to "dogs", in any language</li><li>similarity becomes a distance you can compute and sort by</li></ul></div>
             </div>
             <aside class="notes">
-              Two minutes. Exam: an embedding is a high-dimensional vector representation of data. The two example
-              texts share no word, and their vectors are almost identical, because the model learned that "canine
-              companions" and "feline friends" play the same role in sentences. Next: the famous arithmetic.
+              <ul>
+                <li>2 min</li>
+                <li>Exam: embedding = high-dimensional vector representation of data</li>
+                <li>The two example texts share no word, vectors almost identical</li>
+                <li>Model learned "canine companions" and "feline friends" play the same sentence role</li>
+                <li>Next: the famous arithmetic</li>
+              </ul>
             </aside>
           </section>
 
@@ -866,8 +962,11 @@ Answer:  "Laptops have a 30-day window,
             <div class="takeaway">Word vectors from 2013 (word2vec): <b class="accent">king − man + woman ≈ queen</b>. The "royal" direction and the "gender" direction are separate axes in the space. Today's embeddings do this for whole sentences and documents.</div>
             <p class="cite">Mikolov et al. (2013), Efficient Estimation of Word Representations in Vector Space.</p>
             <aside class="notes">
-              One minute. Nobody programmed "royal" or "gender", the directions emerge from predicting neighbouring
-              words. This is the moment people usually believe that numbers can carry meaning.
+              <ul>
+                <li>1 min</li>
+                <li>Nobody programmed "royal" or "gender"; directions emerge from predicting neighbours</li>
+                <li>The moment people believe numbers can carry meaning</li>
+              </ul>
             </aside>
           </section>
 
@@ -877,14 +976,15 @@ Answer:  "Laptops have a 30-day window,
             <canvas id="emap" class="sim" width="1000" height="470"></canvas>
             <p class="simout" id="emap-out"></p>
             <aside class="notes">
-              Three minutes. Click "Kaffeemühle": its neighbours are "coffee grinder" and "espresso machine", the
-              embedding model is multilingual, the German word lands in the coffee corner without any translation
-              step. Click "for coffee lovers": it sits between gifts and coffee, a query like that finds grinders
-              although no product is called "for coffee lovers". Click "Rückgabe": return policy, refund. Then say
-              what a vector database is: this picture with 3,000 dimensions and a million points, plus an index that
-              finds the nearest points fast. Exam: vector databases exist for semantic similarity search in
-              embeddings. The positions here are hand-placed to match what a real model does, the lab uses real
-              embeddings.
+              <ul>
+                <li>3 min</li>
+                <li>Click "Kaffeemühle": neighbours "coffee grinder", "espresso machine"; multilingual, no translation step</li>
+                <li>Click "for coffee lovers": between gifts and coffee; finds grinders without that name</li>
+                <li>Click "Rückgabe": return policy, refund</li>
+                <li>Vector database = this picture with 3,000 dimensions, a million points, fast index</li>
+                <li>Exam: vector databases do semantic similarity search in embeddings. Lab uses real embeddings</li>
+                <li>Abbr.: 2D = two-dimensional</li>
+              </ul>
             </aside>
           </section>
 
@@ -898,10 +998,13 @@ Answer:  "Laptops have a 30-day window,
             </div>
             <p class="cite">Tools: pgvector (Postgres), Chroma, Qdrant, Weaviate, Pinecone, Elasticsearch. The lab uses twenty lines of numpy, which is the same thing without the index.</p>
             <aside class="notes">
-              Two minutes. Stress "same model": a query embedded with a different model lands in a different space,
-              nothing matches. And "chunks": a 300-page manual becomes 2,000 paragraphs, each its own point. Keyword
-              search is not dead, most production systems combine both (hybrid search), but the semantic part is what
-              makes "send back my notebook" find "Returns policy, laptops".
+              <ul>
+                <li>2 min</li>
+                <li>Stress "same model": different model = different space, nothing matches</li>
+                <li>Chunks: 300-page manual becomes 2,000 paragraphs, each its own point</li>
+                <li>Keyword search not dead: production combines both (hybrid search)</li>
+                <li>Semantic part makes "send back my notebook" find "Returns policy, laptops"</li>
+              </ul>
             </aside>
           </section>
 
@@ -926,10 +1029,15 @@ user: Can I return a laptop after 45 days?</div>
               </div>
             </div>
             <aside class="notes">
-              Three minutes. Step through the trace. Exam: RAG = retrieve, augment, generate. The system line "answer
-              only from the context" is the hallucination brake: it is not perfect, but with the policy in the prompt
-              the plausible next token is the real number. The lab is exactly this trace with real products: embed,
-              search, prompt, answer. Then: RAG answers questions. It does not do anything. Next: agents.
+              <ul>
+                <li>3 min, step through the trace</li>
+                <li>Exam: RAG = retrieve, augment, generate</li>
+                <li>System line "answer only from the context" = hallucination brake, not perfect</li>
+                <li>With the policy in the prompt, the plausible next token is the real number</li>
+                <li>Lab = exactly this trace with real products: embed, search, prompt, answer</li>
+                <li>Next: RAG answers questions, does not act: agents</li>
+                <li>Abbr.: RAG = retrieval-augmented generation; FAQ = frequently asked questions</li>
+              </ul>
             </aside>
           </section>
 
@@ -955,10 +1063,14 @@ user: Can I return a laptop after 45 days?</div>
               </div>
             </div>
             <aside class="notes">
-              Three minutes. Step through. Exam: a ReAct agent combines reasoning and acting with observations; the
-              loop is goal, plan, tools, feedback; tool calls are function interfaces the model can invoke. The model
-              never executes anything, it emits a structured request and your code decides. The last card is the
-              debate: an assistant with write access to customer data.
+              <ul>
+                <li>3 min, step through</li>
+                <li>Exam: ReAct agent combines reasoning and acting with observations</li>
+                <li>Exam: loop = goal, plan, tools, feedback; tool call = function interface</li>
+                <li>Model never executes: it emits a structured request, your code decides</li>
+                <li>Red card = the debate: assistant with write access to customer data</li>
+                <li>Abbr.: ReAct = reasoning and acting; DHL = parcel carrier; ID = identifier</li>
+              </ul>
             </aside>
           </section>
 
@@ -977,10 +1089,12 @@ user: Can I return a laptop after 45 days?</div>
               </div>
             </div>
             <aside class="notes">
-              Two minutes. The 2025 shift: from one loop that answers in seconds to orchestrated loops that work for
-              hours. The ETL hints in Saturday's notebook were written that way. Honest note: the longer the chain,
-              the more a small error compounds, which is why every serious deployment keeps a human on the approve
-              button for anything that writes.
+              <ul>
+                <li>2 min</li>
+                <li>2025 shift: one loop answering in seconds to orchestrated loops working for hours</li>
+                <li>Saturday's notebook hints were written this way</li>
+                <li>Longer chain = small errors compound; human on the approve button for writes</li>
+              </ul>
             </aside>
           </section>
 
@@ -1027,11 +1141,16 @@ user: Can I return a laptop after 45 days?</div>
             </div>
             <p class="cite"><a href="https://modelcontextprotocol.io">modelcontextprotocol.io</a>. Related: A2A (Google, 2025) for agent-to-agent communication.</p>
             <aside class="notes">
-              Three minutes. Exam: MCP = Model Context Protocol, a standard way to connect apps to tools and context.
-              The analogy: USB-C for AI tools. Before MCP every app wrote its own glue for every tool, n times m
-              integrations; now a tool is written once as a server and every MCP app can use it. Step through the
-              flow: discover, call, result. The model only ever sees the tool list and the results, the app does
-              the talking.
+              <ul>
+                <li>3 min</li>
+                <li>Exam: MCP = Model Context Protocol, standard to connect apps to tools and context</li>
+                <li>Analogy: USB-C for AI tools</li>
+                <li>Before: every app wrote glue for every tool, n times m; now written once</li>
+                <li>Step through: discover, call, result</li>
+                <li>Model only sees tool list and results; the app does the talking</li>
+                <li>Abbr.: MCP = model context protocol; AI = artificial intelligence; API = application programming interface</li>
+                <li>Abbr.: A2A = agent-to-agent protocol; SAP = enterprise software vendor; ID = identifier</li>
+              </ul>
             </aside>
           </section>
 
@@ -1048,10 +1167,15 @@ user: Can I return a laptop after 45 days?</div>
             </table>
             <p class="cite">Names change every few months, the layers do not. For the exam: the concepts in the left column.</p>
             <aside class="notes">
-              Two minutes. Do not read the table, point at the columns: for every layer there is a rented option and
-              an open option, and the open one is a few months behind. The business decision is rarely "which model"
-              and mostly "which data may leave the house", which is the debate. Say the date out loud: this is
-              mid-2026 and will be wrong by the time they take the exam, the layers will not.
+              <ul>
+                <li>2 min</li>
+                <li>Don't read the table, point at the columns</li>
+                <li>Every layer: a rented option and an open option, open a few months behind</li>
+                <li>Business decision: rarely "which model", mostly "which data may leave the house": debate</li>
+                <li>Say the date aloud: mid-2026, names wrong at exam time, layers not</li>
+                <li>Abbr.: API = application programming interface; GPT = generative pre-trained transformer; SDK = software development kit</li>
+                <li>Abbr.: MCP = model context protocol; A2A = agent-to-agent protocol; AI = artificial intelligence</li>
+              </ul>
             </aside>
           </section>
 
@@ -1073,9 +1197,13 @@ user: Can I return a laptop after 45 days?</div>
             </div>
             <div class="takeaway">Same three questions as this morning: where is the data from, what is in the context, how was it tested. In the lab, you are the attacker.</div>
             <aside class="notes">
-              Two minutes. These three are the red-teaming targets in the lab: make the assistant invent a product,
-              leak another customer's order, or follow an injected instruction. Also the EU AI Act angle from this
-              morning: a customer-facing assistant must say it is an AI, and decisions with legal effect need a human.
+              <ul>
+                <li>2 min</li>
+                <li>These three = the red-teaming targets in the lab</li>
+                <li>Lab: invent a product, leak another customer's order, follow an injected instruction</li>
+                <li>EU AI Act: assistant must disclose being AI; legal-effect decisions need a human</li>
+                <li>Abbr.: ID = identifier</li>
+              </ul>
             </aside>
           </section>
         </section>
@@ -1095,10 +1223,15 @@ user: Can I return a laptop after 45 days?</div>
               <p class="muted" style="margin: 0.3em 0 0 0">You need the API key from the board. The first cells run as they are, your work starts at "Your turn". Using an LLM to write the code is allowed, this is an LLM course.</p>
             </div>
             <aside class="notes">
-              45 minutes including red teaming. Write the key on the board, remind them to not commit it anywhere.
-              Walk around during task 1 and ask for the query that beats keyword search; the typical one is German
-              ("Kaffeemühle") or descriptive ("something to make espresso at home"). Collect the red-team findings
-              on the board, they are the material for the debate. Stop at the time, not when everyone is done.
+              <ul>
+                <li>45 min including red teaming</li>
+                <li>Write the key on the board; remind: never commit it</li>
+                <li>Walk around during task 1; ask for the query that beats keyword search</li>
+                <li>Typical: German ("Kaffeemühle") or descriptive ("something to make espresso at home")</li>
+                <li>Collect red-team findings on the board: material for the debate</li>
+                <li>Stop at the time, not when everyone is done</li>
+                <li>Abbr.: API = application programming interface; LLM = large language model</li>
+              </ul>
             </aside>
           </section>
 
@@ -1111,10 +1244,16 @@ user: Can I return a laptop after 45 days?</div>
               <div class="card"><h4>Format</h4><ul><li>two groups, positions drawn by lot, the rest is the jury</li><li>preparation, opening statements, open exchange, closing words</li><li>jury votes before and after; whoever moves more votes wins</li></ul></div>
             </div>
             <aside class="notes">
-              25 minutes. Draw the two groups and the positions. During preparation, the jury writes two questions
-              each. Moderate only, keep the time, three sentences of facts at the end: what is technically solvable
-              (retrieval scoped to the logged-in user, read-only tools, logging), what is not (hallucination to
-              zero), and what the law says (AI Act transparency, GDPR purpose limitation).
+              <ul>
+                <li>25 min</li>
+                <li>Draw the two groups and positions by lot</li>
+                <li>Preparation: jury writes two questions each</li>
+                <li>Moderate only, keep the time</li>
+                <li>Closing facts, three sentences: solvable = scoped retrieval, read-only tools, logging</li>
+                <li>Not solvable: hallucination to zero. Law: AI Act transparency, GDPR purpose limitation</li>
+                <li>Abbr.: LLM = large language model; FAQ = frequently asked questions</li>
+                <li>Abbr.: GDPR = General Data Protection Regulation</li>
+              </ul>
             </aside>
           </section>
 
@@ -1131,7 +1270,14 @@ user: Can I return a laptop after 45 days?</div>
             </ul>
             <div class="takeaway">Every line is an exam question. The engineering around the model is what you own; the model you rent.</div>
             <aside class="notes">
-              Two minutes, read the bold words. Then the exam quiz, part 2, and the wrap-up of the course.
+              <ul>
+                <li>2 min, read the bold words</li>
+                <li>Every line is an exam question</li>
+                <li>Next: exam quiz part 2, then course wrap-up</li>
+                <li>Abbr.: AI = artificial intelligence; GAN = generative adversarial network; LLM = large language model</li>
+                <li>Abbr.: RLHF = reinforcement learning from human feedback; API = application programming interface</li>
+                <li>Abbr.: RAG = retrieval-augmented generation; MCP = model context protocol</li>
+              </ul>
             </aside>
           </section>
 
@@ -1140,7 +1286,12 @@ user: Can I return a laptop after 45 days?</div>
             <img class="fig" src="../assets/generative_ai_and_agents/imgs/imgs.019.png" alt="LLM glossary mind map" style="max-height: 500px" />
             <p class="cite">For self-study. You met the yellow, purple, green and most of the blue boxes today. The red training boxes (LoRA, distillation, quantisation) are not in the exam.</p>
             <aside class="notes">
-              Leave it on screen during the break or point to it on the course page.
+              <ul>
+                <li>Self-study slide, no talk</li>
+                <li>Leave on screen during the break, or point to it on the course page</li>
+                <li>Red training boxes (LoRA, distillation, quantisation) are not in the exam</li>
+                <li>Abbr.: LoRA = low-rank adaptation</li>
+              </ul>
             </aside>
           </section>
         </section>

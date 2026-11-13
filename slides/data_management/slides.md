@@ -107,8 +107,11 @@ table.tbl th {
 
 Note:
 
-- 30 seconds only. Same stack as in the BI deck, today we are on the orange layer and the arrow next to it. AI spans all layers: it needs this layer as much as a dashboard does, and it increasingly builds this layer (more on that at the end).
-- Anna, the coffee grinder and the five source systems with three different IDs are from the BI walkthrough on day 1. That mess is where today starts.
+- 30 s
+- Same stack as BI deck; today: orange layer plus the arrow
+- AI spans all layers: needs this layer, increasingly builds it
+- Anna, coffee grinder, five sources, three IDs: day 1 mess, today's start
+- Abbr.: AI: artificial intelligence; ETL: extract, transform, load; ELT: extract, load, transform
 
 ---
 
@@ -124,7 +127,10 @@ Note:
 
 Note:
 
-- Lecturer talks for about 15 minutes in total today. Everything else is the students. Keep it that way, even when the solutions look tempting to present.
+- Lecturer talks about 15 min total today
+- Everything else is the students; keep it that way
+- Do not present the solutions, even if tempting
+- Abbr.: ETL: extract, transform, load; AI: artificial intelligence
 
 ---
 
@@ -147,11 +153,13 @@ ShopNow wants a daily funnel dashboard: sessions → add to cart → orders, per
 
 Note:
 
-- Start the timer visibly. Walk around. Typical sticking points: date parsing format string, the groupby/agg syntax (each step has an example on a different table in the notebook), merge with how="left".
-- Using an LLM is explicitly allowed (it says so on the slide and in the notebook). The check afterwards matters more than the typing: ask pairs who used one whether the row count is right.
-- Do not help with the concepts, only with syntax. The goal is that they feel the three steps, not that everybody finishes.
-- Guiding question while walking: "Which of these steps would you want to run every night automatically?" (all of them, that is the pipeline).
-- Paper fallback: ask for the columns of the dashboard table and how each column is computed from the raw tables.
+- 15 min; start timer visibly, walk around
+- Sticking points: date format string, groupby/agg (examples in notebook), merge how="left"
+- LLM allowed; ask pairs who used one: row count right?
+- Help with syntax only, not concepts; feeling three steps beats finishing
+- Ask while walking: "Which steps run every night automatically?" All: the pipeline
+- Paper fallback: dashboard columns, how each is computed from raw tables
+- Abbr.: ETL: extract, transform, load; EUR: euro; AI: artificial intelligence
 
 --
 
@@ -180,8 +188,11 @@ Note:
 
 Note:
 
-- Collect three answers from the plenum before showing the answer slide: two time formats (and both are text), several rows per session, cents in two currencies.
-- Fourth one nobody names: nothing here says what a "session" or a "bounce" is. Business definitions live in the transform step.
+- Collect three answers from the room before the answer slide
+- Expected: two text time formats, several rows per session, cents in two currencies
+- Fourth, nobody names it: no definition of "session" or "bounce"
+- Business definitions live in the transform step
+- Abbr.: UTM: urchin tracking module (campaign tag); ID: identifier; EUR: euro; USD: US dollar
 
 --
 
@@ -211,8 +222,11 @@ Note:
 
 Note:
 
-- This is the method slide, show it before the solution. Every step maps to a cell in the solution notebook.
-- Step 1 is the one students skip: they start typing before they know that event_time is text. Make them run .dtypes.
+- Method slide: show before the solution
+- Every step maps to a cell in the solution notebook
+- Step 1 is the one they skip: make them run .dtypes
+- They start typing before knowing event_time is text
+- Abbr.: ETL: extract, transform, load
 
 --
 
@@ -240,7 +254,10 @@ Note:
 
 Note:
 
-- Ask: "Who else in the company could use stg_orders?" Finance (revenue per month), product (which products), customer service (orders per customer). That is why staging exists: clean once, use many times.
+- Ask: "Who else in the company could use stg_orders?"
+- Finance: revenue per month; product: which products; service: orders per customer
+- Point: clean once, use many times; that is why staging exists
+- Abbr.: ID: identifier; UTM: urchin tracking module; EUR: euro
 
 --
 
@@ -316,7 +333,10 @@ stg_orders = orders[["order_id", "date", "session_id", "revenue_eur"]]
 
 Note:
 
-- Six rows, that is the whole dashboard. Ask: "How many rows did we start with?" 259 events and 26 orders. ETL is compression into exactly the shape one question needs.
+- Six rows: that is the whole dashboard
+- Ask: "How many rows did we start with?" 259 events, 26 orders
+- ETL is compression into exactly the shape one question needs
+- Abbr.: UTM: urchin tracking module; EUR: euro
 
 --
 
@@ -366,7 +386,10 @@ mart_daily_funnel["conversion"] = (
 
 Note:
 
-- This is the only definition slide of the morning. Say it once, point back to what they did, move on.
+- Only definition slide of the morning
+- Say the definition once
+- Point at the table: E, T, L next to their own steps, move on
+- Abbr.: Q4: fourth quarter
 
 --
 
@@ -384,8 +407,11 @@ Note:
 
 Note:
 
-- Left: short-term persistence, the sources keep data only for a while (7-day logs, API limits). Middle: transform, nothing is stored. Right: long-term persistence, the warehouse keeps the marts. Then reporting.
-- Ask: "Where in this picture was your notebook?" In the middle box. In real life it runs every night, unattended.
+- Left: short-term persistence, sources keep data briefly (7-day logs, API limits)
+- Middle: transform, nothing stored. Right: long-term, warehouse keeps the marts
+- Then reporting
+- Ask: "Where in this picture was your notebook?" The middle box
+- Real life: runs every night, unattended
 
 --
 
@@ -403,9 +429,13 @@ Note:
 
 Note:
 
-- These are the four failure modes of every pipeline, told with the notebook they just wrote. Let them map: which row is Task 4, question 1 (CHF), which is question 3 (tracking outage)?
-- Point: a pipeline that runs without error is not the same as a pipeline that is correct. Row 1 and 2 produce no error at all. Row 3 produces an error that nobody sees. Row 4 is not even a bug, it is missing discipline.
-- Ask for the "where" before showing the next slide. Most say "check the dashboard", the answer is: as early as possible, before the bad data spreads.
+- Four failure modes of every pipeline, told with their notebook
+- Let them map: which row is Task 4 question 1 (CHF)? Question 3 (outage)?
+- Runs without error is not the same as correct
+- Rows 1, 2: no error. Row 3: error nobody sees. Row 4: missing discipline
+- Ask "where would you catch it?" before the next slide
+- Most say "check the dashboard"; answer: as early as possible
+- Abbr.: CEO: chief executive officer; CHF: Swiss franc; UTM: urchin tracking module
 
 --
 
@@ -424,10 +454,13 @@ Note:
 
 Note:
 
-- Walk the table row by row with the previous slide in mind: each practice has a row it would have caught.
-- "Between raw and staging" is not a convention, it is the cheapest place: data is still one table per source, the checks are trivial (count, nulls, allowed values), and nothing has been joined or aggregated yet, so a failure points to exactly one source. After the merge in Task 3, a wrong number could come from either table.
-- Task 4, question 3 asks exactly this. Take two answers, then show the table. Question 2 (finance report) belongs to the schema documentation row: finance can only reuse stg_orders if its columns are documented.
-- The next slide shows that dbt gives you rows 1, 2, 4 and 5 as a few lines of YAML next to the SQL.
+- Walk the table row by row: each practice catches one previous-slide row
+- Raw-to-staging is the cheapest place: one table per source, trivial checks
+- After the merge (Task 3), a wrong number could come from either table
+- Task 4 question 3 asks this: take two answers, then show table
+- Question 2 (finance report) = schema documentation row
+- Next: dbt gives rows 1, 2, 4, 5 as a few YAML lines
+- Abbr.: ETL: extract, transform, load; EUR: euro; USD: US dollar; CHF: Swiss franc; ID: identifier
 
 --
 
@@ -448,9 +481,12 @@ Note:
 
 Note:
 
-- Left: the project is folders and files under version control. The convention staging / intermediate / marts is exactly what they did by hand: Task 2 = staging, Task 3 = marts.
-- Right: no Python loop, no notebook. One SQL file per table, "with ... as" blocks, and ref() for every upstream table. That one function is the trick: dbt resolves it to the real table name, orders the build, and records the dependency.
-- Our notebook as a dbt project would be five files: stg_sessions.sql, stg_orders.sql, mart_daily_funnel.sql, plus a schema.yml per folder.
+- Left: folders and files under version control
+- staging / intermediate / marts = Task 2 (staging), Task 3 (marts)
+- Right: no Python, no notebook; one SQL file per table
+- ref() is the trick: resolves table name, orders build, records dependency
+- Our notebook as dbt: stg_sessions, stg_orders, mart_daily_funnel, schema.yml per folder
+- Abbr.: dbt: data build tool; SQL: structured query language
 
 --
 
@@ -487,10 +523,12 @@ models:
 
 Note:
 
-- Top: this is the dbt lineage view, generated, nothing drawn by hand. Walk it left to right: staging, intermediate, the orders mart, metrics. Ask: "stg_payments delivers garbage tonight, which boxes are wrong?" Everything to the right of it, nothing to the left.
-- Bottom left: the YAML is the whole test and documentation effort for one table. not_null, unique, accepted_values are built in. accepted_values on currency is exactly the CHF catch from Task 4.
-- Bottom right: dbt docs generates a website from these files: every table, every column, the lineage graph. That is the "schema documentation" row.
-- One sentence on ELT vs ETL: with cheap storage people load raw data first and transform inside the warehouse, dbt is built for that. Same steps, different order, the lake slides explain why.
+- Top: generated lineage view; walk left to right: staging, intermediate, orders mart, metrics
+- Ask: "stg_payments delivers garbage tonight, which boxes are wrong?" Everything right of it
+- Bottom left: YAML is all tests and docs; accepted_values on currency catches CHF
+- Bottom right: dbt docs generates a website; the schema documentation row
+- One sentence ELT vs ETL: load raw first, transform in warehouse; lake slides explain
+- Abbr.: dbt: data build tool; EUR: euro; USD: US dollar; CHF: Swiss franc; ID: identifier
 
 --
 
@@ -528,10 +566,13 @@ Note:
 
 Note:
 
-- 3 minutes, lecturer. Point at the warehouse picture while reading the four rows: sources on the left are short-term persistence, the gear in the middle is their notebook, the warehouse is the one long-term storage, reporting on the right.
-- Then the hook: the next pictures move the gear, add a storage, or merge two. When a group presents, make them say where the gear is and how many storages they count. If they can answer the "ask yourself" column, they understand their architecture.
-- The warehouse is the reference, not a group. Say its one weakness yourself: no raw data, so when the definition of "bounce" changes after a year, the history cannot be recomputed (the tracking tool keeps 7 days). The lakehouse group picks this up. The warehouse briefing and its ANSWER slide stay in the deck for the record, skip them in class.
-- Hand out the groups on the next slide right after this one, do not let the legend stand alone.
+- 3 min, lecturer
+- Point at picture per row: sources, gear (their notebook), one storage, reporting
+- Hook: later pictures move gear, add storages; presenters name gear position, storage count
+- Warehouse = reference, not a group; say its weakness yourself
+- Weakness: no raw data; bounce redefined after a year, history not recomputable (7-day tracking)
+- Lakehouse group picks that up; skip warehouse briefing and answer slide in class
+- Next: hand out groups right away, legend must not stand alone
 
 ---
 
@@ -568,10 +609,13 @@ Note:
 
 Note:
 
-- How a talk runs: step 1 is the legend applied to their picture, that is where you see whether they understood it. Step 2 is the transfer question. Step 3 forces them to derive pro and con from their own answer instead of reading the briefing. Step 4 anchors it. Interrupt only if step 1 is wrong (wrong number of storages, gear in the wrong place), everything else you correct at the end.
-- Three new groups for this block (with 15 to 20 people that is 5 to 7 per group, count off 1-2-3 around the room). Presentation order: lake (1), hybrid (2), lakehouse (3), each one against the warehouse from this morning. The later groups may build on the earlier ones ("hybrid is the warehouse plus a lake"). 3 x 5 min = 15 min.
-- During the 15 minutes go to groups 2 and 3 first, they have the hardest pictures. Group 3 has two questions, the bounce one is the bridge to the competition's extra question (who pays the data feed twice).
-- The answers are on hidden slides (ANSWER badge) under each briefing. They are hidden while `SHOW_SOLUTIONS` at the top of index.html is false; set it to true and commit after the lecture. After the three talks: correct only what was wrong, max 4 minutes, then the summary slide.
+- 15 + 5 min; count off 1-2-3, three new groups (5 to 7 each)
+- Order: lake, hybrid, lakehouse, each against the morning's warehouse; 3 x 5 min
+- Talk steps: 1 legend on picture, 2 question, 3 pro/con derived, 4 use case
+- Interrupt only if step 1 wrong (storage count, gear position); rest at the end
+- Visit groups 2, 3 first (hardest); group 3's bounce question bridges to competition extra question
+- Hidden ANSWER slides: SHOW_SOLUTIONS in index.html, set true and commit after lecture
+- After talks: correct errors only, max 4 min, then summary slide
 
 --
 
@@ -597,8 +641,12 @@ Note:
 
 Note:
 
-- Question: changing the definition of "bounce". Expected: the staging table stg_sessions and every mart built on it must be recomputed for the whole history (backfill). That needs the raw events of a year, which the warehouse does not keep; if the tracking tool keeps only 7 days, the old numbers can never be corrected. Cost drivers: schema changes, backfills, complex ETL, many marts.
-- Bonus they may find: the new and the old definition cannot be compared unless both are kept, so versioned marts.
+- Reference only, skip in class; answers kept for the record
+- Question: bounce redefined. Expected: recompute stg_sessions and all marts for whole history (backfill)
+- Needs a year of raw events; warehouse has none (tracking: 7 days), never correctable
+- Cost drivers: schema changes, backfills, complex ETL, many marts
+- Bonus: old vs new definition comparable only with versioned marts
+- Abbr.: SQL: structured query language; ETL: extract, transform, load; GB: gigabyte
 
 
 --
@@ -618,7 +666,9 @@ Note:
 
 Note:
 
-- Picture only, for the talk at the screen: the group explains, nobody reads. Legend terms: storages, gear, arrows.
+- Picture only, for the group's talk at the screen
+- Group explains, nobody reads
+- Listen for legend terms: storages, gear, arrows
 
 --
 
@@ -657,8 +707,11 @@ Note:
 
 Note:
 
-- Question: 400 folders, nobody knows the content. Expected: a data swamp, no structure or documentation was enforced, nobody owned the lake. Prevention: naming conventions, a catalog, ownership. Why every query is more expensive: the cleaning from Task 2 runs again on every read, on raw data, instead of once in ETL; plus no index, no curated marts.
-- Security point if they find it: hard to see what is sensitive in thousands of files of unknown format.
+- Question: 400 folders. Expected: data swamp, no structure, documentation or ownership enforced
+- Prevention: naming conventions, a catalog, ownership
+- Query cost: Task 2 cleaning reruns on every read; no index, no curated marts
+- Security, if they find it: sensitive data invisible in thousands of unknown files
+- Abbr.: GB: gigabyte; ML: machine learning; S3: simple storage service (AWS)
 
 
 --
@@ -678,7 +731,9 @@ Note:
 
 Note:
 
-- Picture only, for the talk at the screen: the group explains, nobody reads. Legend terms: storages, gear, arrows.
+- Picture only, for the group's talk at the screen
+- Group explains, nobody reads
+- Listen for legend terms: storages, gear, arrows
 
 --
 
@@ -716,7 +771,11 @@ Note:
 
 Note:
 
-- Question: where is storing twice still right? Expected: large companies where both are hard requirements: operational BI with many concurrent users needing sub-second answers (the warehouse), and ML or audit needs on raw history (the lake), and a team that can run two systems. Waste: a 30-person company with three dashboards and no data science; or any company that only wants one of the two uses. What decides: concurrent dashboard users, latency requirements, share of raw and unstructured data, team size.
+- Question: when is storing twice still right?
+- Right: large company needing both: sub-second BI for many users, ML/audit on raw history
+- Plus a team that can run two systems
+- Waste: 30-person company, three dashboards, no data science; or only one use needed
+- Decides: concurrent dashboard users, latency, share of raw/unstructured data, team size
 
 
 --
@@ -736,7 +795,9 @@ Note:
 
 Note:
 
-- Picture only, for the talk at the screen: the group explains, nobody reads. Legend terms: storages, gear, arrows.
+- Picture only, for the group's talk at the screen
+- Group explains, nobody reads
+- Listen for legend terms: storages, gear, arrows
 
 --
 
@@ -774,7 +835,13 @@ Note:
 
 Note:
 
-- Question, part 1: the changed definition of "bounce". Expected: in the warehouse the raw events are gone, so stg_sessions and the marts cannot be recomputed for the history; the lakehouse keeps raw and cleaned side by side, the transformation simply runs again (a backfill is a re-run, not a re-download). Part 2: what does it need that the warehouse includes? Expected: a query engine. A warehouse is storage and query engine in one product; a lakehouse is files on object storage, so a separate engine (Dremio, Trino, Spark, Databricks) must be run and tuned, and the table format must be managed. Skills: running that engine, the table format, and discipline to keep raw and cleaned areas apart, otherwise it is a lake with extra steps. Performance for many concurrent dashboard users is below a tuned warehouse.
+- Part 1, bounce redefined: warehouse lost the raw events, cannot recompute history
+- Lakehouse keeps raw and cleaned together: transformation reruns, backfill without re-download
+- Part 2: a query engine (Dremio, Trino, Spark, Databricks) to run and tune
+- Warehouse = storage plus engine in one product; lakehouse = files, engine separate
+- Also: manage table format; discipline to separate raw/cleaned, else lake with extra steps
+- Performance for many concurrent dashboard users below a tuned warehouse
+- Abbr.: S3: simple storage service (AWS); ELT: extract, load, transform
 
 
 --
@@ -794,7 +861,9 @@ Note:
 
 Note:
 
-- Picture only, for the talk at the screen: the group explains, nobody reads. Legend terms: storages, gear, arrows.
+- Picture only, for the group's talk at the screen
+- Group explains, nobody reads
+- Listen for legend terms: storages, gear, arrows
 
 --
 
@@ -826,7 +895,10 @@ Note:
 
 Note:
 
-- Show after the three talks. One minute. This is the exam-relevant summary.
+- 1 min; show after the three talks
+- Exam: this table is the exam-relevant summary
+- Abbr.: SQL: structured query language; ETL: extract, transform, load; ELT: extract, load, transform
+- Abbr.: BI: business intelligence
 
 --
 
@@ -869,10 +941,13 @@ Note:
 
 Note:
 
-- Two minutes, right before the competition. The left side is what they built this morning if they had used a database. The right side is the same mart as Parquet files, one folder per day.
-- Parquet: a column-oriented file format, compressed, with the schema inside the file. That is why a lake can hold "tables" without a database.
-- Iceberg or Delta: a few metadata files that say which Parquet files belong to which table and which version. Add an engine (Dremio, Trino, Spark) and you can run SQL on files: the lakehouse.
-- Bridge to the price table in the notebook: 0.30 $ per GB and month for the warehouse, 0.05 to 0.08 for lake and lakehouse, and the query price goes the other way.
+- 2 min, right before the competition
+- Left: morning mart in a database; right: same mart as Parquet, one folder per day
+- Parquet: columnar, compressed, schema inside: tables without a database
+- Iceberg/Delta: metadata lists which Parquet files form a table; plus engine (Dremio, Trino) = lakehouse
+- Next: notebook prices: 0.30 $/GB-month warehouse, 0.05 to 0.08 lake/lakehouse; query price reversed
+- Abbr.: SQL: structured query language; UTM: urchin tracking module; EUR: euro; S3: simple storage service
+- Abbr.: MB/GB: mega-/gigabyte; JSON: JavaScript object notation; CSV: comma-separated values
 
 --
 
@@ -920,8 +995,12 @@ compressed, column by column; date = folder</div>
 
 Note:
 
-- One minute. Left: what "raw" really looks like, the same messy rows they cleaned in Task 1. Right: the same mart as Parquet, typed and columnar; this is what pandas writes with `to_parquet`. The metadata file is the only thing Iceberg adds: a list of files, the schema, a version number. An engine reads it and treats the folder as a table.
-- If someone asks: JSON and CSV are row formats, Parquet is a column format. Analytics reads few columns over many rows, so Parquet is 5 to 10 times smaller and faster to scan.
+- 1 min
+- Left: what raw really looks like, the Task 1 rows
+- Right: same mart as Parquet, typed, columnar; pandas to_parquet writes this
+- Iceberg adds only metadata: file list, schema, version; engine treats folder as table
+- If asked: JSON/CSV = row formats, Parquet = columnar; few columns read, 5-10x smaller
+- Abbr.: JSON: JavaScript object notation; UTM: urchin tracking module; ID: identifier; EUR: euro
 
 --
 
@@ -942,10 +1021,13 @@ Note:
 
 Note:
 
-- Two minutes. Walk down the table: object store, block volume, database. Each step roughly 3 to 7 times the previous one. The notebook's price table (0.05 and 0.08 for lake and lakehouse, 0.30 for the warehouse) is the same ladder, rounded.
-- Hetzner Object Storage: 6.49 € per month includes 1 TB storage and 1 TB egress, extra storage 0.0087 € per TB-hour, so about 6.5 € per TB-month (hetzner.com/storage/object-storage). Cloud Volumes: 0.044 € per GB in the docs price table, 0.052 € on the cloud page; both net. AWS S3 Standard Frankfurt about 0.0245 $ for the first 50 TB, EBS gp3 about 0.08 $ (aws.amazon.com pricing pages, region prices vary).
-- Honest caveat if asked: Snowflake and BigQuery store on object storage themselves and charge about 0.02 $ per GB; their price sits in compute. The "database prices" in the table are a classic database on block storage with replica and backups, which is what a self-hosted warehouse on Kubernetes costs.
-- Then the competition: now they know why the lake and lakehouse rows are cheap on storage and why the warehouse is cheap on queries.
+- 2 min; walk down: object store, block volume, database; each step 3 to 7x
+- Hetzner object (hetzner.com): 6.49 €/month incl. 1 TB storage + egress; extra 0.0087 €/TB-hour
+- Hetzner volume: 0.044 € (docs) to 0.052 € (cloud page) per GB, net
+- AWS pricing pages: S3 Frankfurt ~0.0245 $ (first 50 TB), EBS gp3 ~0.08 $
+- If asked: Snowflake/BigQuery use object storage (~0.02 $/GB), charge compute; table shows self-hosted DB
+- Next: competition; notebook prices (0.05/0.08 lake/lakehouse, 0.30 warehouse) = this ladder, rounded
+- Abbr.: GB/TB: giga-/terabyte; AWS: Amazon Web Services; S3: Simple Storage Service; EBS: Elastic Block Store
 
 ---
 
@@ -966,11 +1048,13 @@ ShopNow runs the warehouse you built this morning. It costs <b>17,990 $</b> over
 
 Note:
 
-- Whiteboard table: rows = architectures, columns = acquisition, storage, transfer, queries, maintenance, total. Prepare it during the expert round with the warehouse row already filled in (12,103 / 1,800 / 1,821 / 1,066 / 1,200 / 17,990), the notebook shows the same numbers.
-- Reference numbers (solution notebook: 730 days, 104.3 weeks, 24 months): Lakehouse 16,723, Data Lake 17,077, Data Warehouse 17,990, Hybrid 18,770 dollars in 2 years. Acquisition (12,103, of which 9,600 is the purchased financial feed) and transfer (1,821) are identical for all, so the ranking comes from storage, queries and maintenance. The extra question is where the feed starts to matter: only the warehouse has to buy it again.
-- The notebook is a fill-in template: six steps, each line says what to compute. Acquisition and transfer must be identical across groups, so a group that deviates there made an assumption error. When a number is far off: that is the discussion. Typical causes: source B counted per day instead of per week, storage billed once instead of every month on the growing volume.
-- Recommendation round: the "not your own" rule forces them to use the other groups' arguments. Push for non-cost arguments: team skills, share of unstructured data, how often schemas change, how many dashboard users.
-- Wrap up in 3 sentences: cheapest on paper is the lakehouse, the warehouse buys speed and governance, hybrid only when both are hard requirements. Expensive purchased data is the strongest argument for keeping raw data somewhere. And: cost is never the only factor.
+- 10 + 2 min; whiteboard: architectures x components, prepare during expert round
+- Prefill warehouse: acq 12,103, storage 1,800, transfer 1,821, queries 1,066, maint 1,200 = 17,990
+- Reference totals (2 years, $): lakehouse 16,723; lake 17,077; warehouse 17,990; hybrid 18,770
+- Acquisition 12,103, transfer 1,821 same for all; errors: source B daily, storage billed once
+- Recommendations: push non-cost arguments: team skills, unstructured share, schema changes, dashboard users
+- Extra question: only warehouse rebuys the 9,600 feed; strongest case for keeping raw data
+- Wrap-up: lakehouse cheapest, warehouse buys speed/governance, hybrid only if both needed, never cost alone
 
 --
 
@@ -1009,9 +1093,13 @@ Note:
 
 Note:
 
-- Zuruf, 5 minutes. Extract and Load: dlt (dltHub) pulls from the ad platforms and tracking into raw data, Skupper connects the secured sources. Storage: MinIO filesystem, that is the lake. Transform: dbt builds the marts, Dremio is the query engine on Iceberg tables. Reporting: Superset. Orchestration: Argo on Kubernetes.
-- Architecture: a lakehouse. One storage, transformation inside, a query engine on top, no separate warehouse.
-- Ask: "Which of the four cost components from the competition would you worry about here?" Maintenance: self hosted on k8s means people, not a cloud bill.
+- 5 min, call-outs from the room
+- Extract/Load: dlt pulls ads and tracking into raw; Skupper connects secured sources
+- Storage: MinIO = the lake. Transform: dbt builds marts, Dremio queries Iceberg tables
+- Reporting: Superset; orchestration: Argo on Kubernetes
+- Architecture: lakehouse; one storage, transform inside, engine on top, no warehouse
+- Ask: "Which cost component worries you here?" Maintenance: self-hosted k8s = people
+- Abbr.: dbt: data build tool; k8: Kubernetes; BE: backend; SQL: structured query language
 
 --
 
@@ -1039,7 +1127,11 @@ Note:
 
 Note:
 
-- This is why the AI bar spans all layers in the stack. Keep it to one minute, it is a bridge to Monday.
+- 1 min
+- This is why the AI bar spans all layers in the stack
+- Bridge to Monday
+- Abbr.: AI: artificial intelligence; LLM: large language model
+- Abbr.: ETL: extract, transform, load; dbt: data build tool
 
 ---
 
@@ -1081,4 +1173,7 @@ Note:
 
 Note:
 
-- Only if there is time left. Producer writes events in real time, Kafka keeps them as a long-term log (the lake), consumers transform and load into a warehouse (here ArangoDB). Same ETL steps, but continuous instead of nightly.
+- Only if time is left
+- Producer writes events in real time; Kafka keeps them as long-term log (the lake)
+- Consumers transform and load into a warehouse (here ArangoDB)
+- Same ETL steps, continuous instead of nightly
