@@ -5,6 +5,7 @@
  *   invest  "Follow the money"      private AI investment 2013-2025, bar by bar (AI Index 2026)
  *   fit     "Fit the line yourself" linear regression by hand, then by gradient descent
  *   kmeans  "Find the groups"       k-means step by step on ShopNow customers
+ *   backprop "Training, live"       a 3-3-1 network on eight labelled orders, forward / compare / backward
  */
 (function () {
   "use strict";
@@ -388,12 +389,207 @@
     draw();
   }
 
+  // ------------------------------------------------------------ backprop: a 3-3-1 network, trained live
+  // Eight labelled ShopNow orders. Inputs scaled to 0..1: value / 1000 €, new customer (0/1), night order (0/1).
+  const BP_DATA = [
+    { x: [0.05, 0, 0], y: 0, t: "50 €, known customer, daytime" },
+    { x: [0.64, 1, 1], y: 1, t: "640 €, new customer, 03:14" },
+    { x: [0.12, 1, 0], y: 0, t: "120 €, new customer, daytime" },
+    { x: [0.75, 0, 1], y: 1, t: "750 €, known customer, 02:40" },
+    { x: [0.30, 0, 0], y: 0, t: "300 €, known customer, daytime" },
+    { x: [0.90, 1, 1], y: 1, t: "900 €, new customer, 01:05" },
+    { x: [0.20, 0, 1], y: 0, t: "200 €, known customer, 23:50" },
+    { x: [0.55, 1, 0], y: 1, t: "550 €, new customer, daytime" },
+  ];
+  const sig = (z) => 1 / (1 + Math.exp(-z));
+  function bpNet(seed) {
+    const rng = mulberry32(seed);
+    const r = () => (rng() * 2 - 1) * 0.8;
+    const net = {
+      W1: [[r(), r(), r()], [r(), r(), r()], [r(), r(), r()]], b1: [r(), r(), r()],
+      W2: [r(), r(), r()], b2: r(),
+    };
+    net.forward = (x) => {
+      const h = net.W1.map((w, j) => sig(w[0] * x[0] + w[1] * x[1] + w[2] * x[2] + net.b1[j]));
+      const o = sig(net.W2[0] * h[0] + net.W2[1] * h[1] + net.W2[2] * h[2] + net.b2);
+      return { h, o };
+    };
+    net.backward = (x, y, lr) => {
+      const { h, o } = net.forward(x);
+      const d = o - y; // gradient of the cross-entropy loss at the output
+      const dh = net.W2.map((w, j) => d * w * h[j] * (1 - h[j]));
+      const changes = { W2: [], W1: [[], [], []] };
+      for (let j = 0; j < 3; j++) { changes.W2[j] = -lr * d * h[j]; net.W2[j] += changes.W2[j]; }
+      net.b2 -= lr * d;
+      for (let j = 0; j < 3; j++) {
+        for (let i = 0; i < 3; i++) { changes.W1[j][i] = -lr * dh[j] * x[i]; net.W1[j][i] += changes.W1[j][i]; }
+        net.b1[j] -= lr * dh[j];
+      }
+      return { o, d, changes };
+    };
+    net.evaluate = () => {
+      let loss = 0, correct = 0;
+      BP_DATA.forEach((e) => {
+        const o = net.forward(e.x).o;
+        loss -= e.y ? Math.log(Math.max(o, 1e-9)) : Math.log(Math.max(1 - o, 1e-9));
+        if ((o >= 0.5) === (e.y === 1)) correct++;
+      });
+      return { loss: loss / BP_DATA.length, correct };
+    };
+    return net;
+  }
+  if (typeof module !== "undefined") module.exports = { bpNet, BP_DATA };
+
+  function backprop() {
+    const svg = $("bp-svg");
+    if (!svg) return;
+    const NS = "http://www.w3.org/2000/svg";
+    const LR = 1.0;
+    const IX = 230, HX = 540, OX = 850;
+    const IY = [100, 210, 320], HY = [80, 210, 340], OY = 210;
+    const INP = ["value", "new customer", "night order"];
+    let net, idx, phase, rounds, timer;
+    const el = (tag, attrs, parent) => {
+      const e = document.createElementNS(NS, tag);
+      Object.entries(attrs).forEach(([k, v]) => e.setAttribute(k, v));
+      (parent || svg).appendChild(e);
+      return e;
+    };
+    // --- build once
+    svg.innerHTML = "";
+    const edges1 = [], edges2 = [], back1 = [], back2 = [];
+    for (let j = 0; j < 3; j++) for (let i = 0; i < 3; i++) edges1.push(el("line", { x1: IX, y1: IY[i], x2: HX, y2: HY[j], "data-j": j, "data-i": i }));
+    for (let j = 0; j < 3; j++) edges2.push(el("line", { x1: HX, y1: HY[j], x2: OX, y2: OY, "data-j": j }));
+    for (let j = 0; j < 3; j++) for (let i = 0; i < 3; i++) back1.push(el("line", { x1: HX, y1: HY[j], x2: IX, y2: IY[i], class: "bp-back", "data-j": j, "data-i": i }));
+    for (let j = 0; j < 3; j++) back2.push(el("line", { x1: OX, y1: OY, x2: HX, y2: HY[j], class: "bp-back", "data-j": j }));
+    const node = (x, y, cls) => {
+      const g = el("g", { class: "bp-node " + cls });
+      el("circle", { cx: x, cy: y, r: 34 }, g);
+      const t = el("text", { x, y: y + 9, "text-anchor": "middle" }, g);
+      return { g, t, c: g.firstChild };
+    };
+    const inN = IY.map((y) => node(IX, y, "in")), hN = HY.map((y) => node(HX, y, "hid")), oN = node(OX, OY, "out");
+    const inLabel = IY.map((y, i) => { const t = el("text", { x: IX - 48, y: y + 8, "text-anchor": "end", class: "bp-lbl" }); t.textContent = INP[i]; return t; });
+    const inVal = IY.map((y) => el("text", { x: IX - 48, y: y + 36, "text-anchor": "end", class: "bp-val" }));
+    const outLbl = el("text", { x: OX, y: OY - 56, "text-anchor": "middle", class: "bp-lbl" }); outLbl.textContent = "P(fraud)";
+    const truth = el("text", { x: OX, y: OY + 80, "text-anchor": "middle", class: "bp-truth" });
+    const errT = el("text", { x: OX, y: OY + 118, "text-anchor": "middle", class: "bp-err" });
+    const hdr = [el("text", { x: IX, y: 30, "text-anchor": "middle", class: "bp-hdr" }), el("text", { x: HX, y: 30, "text-anchor": "middle", class: "bp-hdr" }), el("text", { x: OX, y: 30, "text-anchor": "middle", class: "bp-hdr" })];
+    hdr[0].textContent = "inputs"; hdr[1].textContent = "3 neurons"; hdr[2].textContent = "output";
+    const out = $("bp-out");
+    const fmt = (v) => v.toFixed(2);
+    const fmtS = (v) => (v >= 0 ? "+" : "") + v.toFixed(2);
+
+    function drawWeights(changes) {
+      edges1.forEach((e) => {
+        const w = net.W1[e.dataset.j][e.dataset.i];
+        e.setAttribute("stroke", w >= 0 ? COL.blue : COL.red);
+        e.setAttribute("stroke-width", 1 + Math.min(10, Math.abs(w) * 4));
+      });
+      edges2.forEach((e) => {
+        const w = net.W2[e.dataset.j];
+        e.setAttribute("stroke", w >= 0 ? COL.blue : COL.red);
+        e.setAttribute("stroke-width", 1 + Math.min(10, Math.abs(w) * 4));
+      });
+      const showBack = !!changes;
+      back1.forEach((e) => { e.style.opacity = showBack ? 1 : 0; if (showBack) e.setAttribute("stroke-width", 1 + Math.min(12, Math.abs(changes.W1[e.dataset.j][e.dataset.i]) * 60)); });
+      back2.forEach((e) => { e.style.opacity = showBack ? 1 : 0; if (showBack) e.setAttribute("stroke-width", 1 + Math.min(12, Math.abs(changes.W2[e.dataset.j]) * 60)); });
+    }
+    function act(n, v) {
+      // opaque fill so the weight lines stop at the node: blend background grey with the accent colour
+      const m = v == null ? 0 : v, mix = (a, b) => Math.round(a + (b - a) * m);
+      n.c.style.fill = `rgb(${mix(38, 255)}, ${mix(38, 167)}, ${mix(38, 38)})`;
+      n.t.style.fill = m > 0.5 ? "#111" : "#eee";
+      n.t.textContent = v == null ? "?" : fmt(v);
+    }
+    function showExample() {
+      const e = BP_DATA[idx];
+      inVal.forEach((t, i) => { t.textContent = i === 0 ? Math.round(e.x[0] * 1000) + " €" : e.x[i] ? "yes" : "no"; });
+      inN.forEach((n, i) => act(n, e.x[i]));
+      hN.forEach((n) => act(n, null));
+      act(oN, null);
+      truth.textContent = ""; errT.textContent = "";
+      drawWeights(null);
+    }
+    function status(msg) {
+      const ev = net.evaluate();
+      out.innerHTML = `${msg}<br><span class="muted">weights updated ${rounds} ${rounds === 1 ? "time" : "times"} · average loss <b>${fmt(ev.loss)}</b> · ${ev.correct} of ${BP_DATA.length} orders classified correctly</span>`;
+    }
+    function reset() {
+      clearInterval(timer);
+      net = bpNet(11); idx = 0; phase = 0; rounds = 0;
+      showExample();
+      status(`Random weights (blue positive, red negative, thicker = larger). Order 1: ${BP_DATA[0].t}. Press <b>1. forward</b>.`);
+    }
+    function forward() {
+      if (phase !== 0) return;
+      const e = BP_DATA[idx];
+      const { h, o } = net.forward(e.x);
+      hN.forEach((n, j) => act(n, h[j]));
+      act(oN, o);
+      phase = 1;
+      status(`Each neuron sums its inputs times its weights and squashes the result to 0..1. The output says <b>P(fraud) = ${fmt(o)}</b>. Now press <b>2. compare</b> with the label.`);
+    }
+    function compare() {
+      if (phase !== 1) return;
+      const e = BP_DATA[idx];
+      const o = net.forward(e.x).o;
+      truth.textContent = "label: " + (e.y ? "fraud" : "ok");
+      truth.setAttribute("fill", e.y ? COL.red : COL.green);
+      errT.textContent = "error " + fmtS(o - e.y);
+      phase = 2;
+      const big = Math.abs(o - e.y) > 0.4;
+      status(`The label from the past says <b>${e.y ? "fraud" : "ok"}</b> (${e.y ? 1 : 0}), the network said ${fmt(o)}: error <b>${fmtS(o - e.y)}</b>. ${big ? "A big miss." : "Not bad."} Press <b>3. backward</b>.`);
+    }
+    function backward() {
+      if (phase !== 2) return;
+      const e = BP_DATA[idx];
+      const { d, changes } = net.backward(e.x, e.y, LR);
+      rounds++;
+      drawWeights(changes);
+      phase = 3;
+      status(`The error travels backwards (orange). Every weight is nudged a little in the direction that makes <i>this</i> error smaller, the bigger the blame, the bigger the nudge (largest: ${fmtS(Math.max(...changes.W2.map(Math.abs), ...changes.W1.flat().map(Math.abs)) * (d > 0 ? -1 : 1))}). Press <b>next order</b>.`);
+    }
+    function next() {
+      if (phase === 1 || phase === 2) return;
+      idx = (idx + 1) % BP_DATA.length; phase = 0;
+      showExample();
+      status(`Order ${idx + 1}: ${BP_DATA[idx].t}. Press <b>1. forward</b>.`);
+    }
+    function train() {
+      clearInterval(timer);
+      let n = 0;
+      timer = setInterval(() => {
+        for (let k = 0; k < 4; k++) { net.backward(BP_DATA[idx].x, BP_DATA[idx].y, LR); rounds++; idx = (idx + 1) % BP_DATA.length; }
+        n += 4; phase = 0;
+        showExample();
+        const { h, o } = net.forward(BP_DATA[idx].x);
+        hN.forEach((nd, j) => act(nd, h[j])); act(oN, o);
+        drawWeights(null);
+        const ev = net.evaluate();
+        status(`Training: forward, compare, backward, next, over and over.`);
+        if (n >= 400 || (ev.correct === BP_DATA.length && ev.loss < 0.15)) {
+          clearInterval(timer);
+          status(`Done after ${rounds} updates. Nobody wrote a rule, the weights found it: value matters, and so does "new customer at night". Press <b>reset</b> to start from random weights again.`);
+        }
+      }, 120);
+    }
+    onClick("bp-fwd", forward);
+    onClick("bp-cmp", compare);
+    onClick("bp-back", backward);
+    onClick("bp-next", next);
+    onClick("bp-train", train);
+    onClick("bp-reset", reset);
+    reset();
+  }
+
   // ------------------------------------------------------------------ init
   function init() {
     game();
     invest();
     fit();
     kmeans();
+    backprop();
     if (window.Reveal && Reveal.on) {
       Reveal.on("slidechanged", (e) => {
         e.currentSlide.querySelectorAll("canvas").forEach((el) => redraws[el.id] && redraws[el.id]());

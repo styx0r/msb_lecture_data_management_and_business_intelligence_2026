@@ -133,6 +133,41 @@
       .reveal pre { width: 100%; font-size: 0.5em; box-shadow: none; }
       .reveal pre code { max-height: 480px; border-radius: 10px; }
 
+      /* ---------- supervised flow + data table ---------- */
+      .reveal .flow { display: flex; flex-direction: column; gap: 0.5em; font-size: 0.5em; }
+      .reveal .flow-row { display: flex; align-items: center; gap: 0.8em; position: relative; padding-top: 1.3em; }
+      .reveal .flow-tag { position: absolute; top: 0; left: 0; font-weight: 700; font-size: 0.95em; }
+      .reveal .flow-box { flex: 1; background: var(--card); border: 1px solid var(--card-border); border-radius: 14px; padding: 0.5em 0.8em; text-align: left; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 6.5em; box-sizing: border-box; }
+      .reveal .flow-box > b { display: block; margin-bottom: 0.3em; text-align: center; }
+      .reveal .flow-box.blue { border-color: var(--blue); } .reveal .flow-box.blue > b { color: var(--blue); }
+      .reveal .flow-box.green { border-color: var(--green); } .reveal .flow-box.green > b { color: var(--green); }
+      .reveal .flow-box.purple { border-color: var(--purple); } .reveal .flow-box.purple > b { color: var(--purple); }
+      .reveal .flow-box.red { border-color: var(--red); } .reveal .flow-box.red > b { color: var(--red); }
+      .reveal .flow-big { font-size: 1.5em; font-weight: 700; color: #eee; text-align: center; line-height: 1.15; }
+      .reveal .flow-arrow { flex: 0 0 12em; text-align: center; color: var(--accent); font-weight: 700; line-height: 1.25; position: relative; padding-bottom: 1.1em; }
+      .reveal .flow-arrow::after { content: "→"; display: block; font-size: 2.2em; line-height: 1; color: var(--muted); margin-top: 0.05em; }
+      .reveal .flow-arrow .muted { font-weight: 400; font-size: 0.85em; }
+      .reveal table.simple.mini { font-size: 0.85em; margin: 0; width: auto; }
+      .reveal table.simple.mini th, .reveal table.simple.mini td { padding: 0.1em 0.5em; }
+      .reveal table.simple.data { font-size: 0.5em; width: 66%; }
+      .reveal table.simple.data th, .reveal table.simple.data td { text-align: center; padding: 0.2em 0.6em; }
+      .reveal table.simple.data th.lbl, .reveal table.simple.data td.lbl { font-weight: 700; border-left: 2px solid var(--accent); }
+      .reveal table.simple.data th.lbl { color: var(--accent); }
+
+      /* ---------- backprop (ai.js) ---------- */
+      .reveal #bp-svg line { stroke-linecap: round; transition: stroke-width 0.4s, stroke 0.4s; }
+      .reveal #bp-svg line.bp-back { stroke: var(--accent); stroke-dasharray: 10 14; opacity: 0; transition: opacity 0.3s; }
+      .reveal #bp-svg .bp-node circle { stroke: #ddd; stroke-width: 3; fill: rgba(255,255,255,0.06); transition: fill 0.4s; }
+      .reveal #bp-svg .bp-node.in circle { stroke: var(--blue); }
+      .reveal #bp-svg .bp-node.hid circle { stroke: var(--purple); }
+      .reveal #bp-svg .bp-node.out circle { stroke: var(--red); }
+      .reveal #bp-svg .bp-node text { fill: #eee; font-size: 26px; font-weight: 700; font-family: monospace; }
+      .reveal #bp-svg .bp-lbl { fill: #ddd; font-size: 24px; font-weight: 700; }
+      .reveal #bp-svg .bp-val { fill: #bbb; font-size: 22px; }
+      .reveal #bp-svg .bp-hdr { fill: var(--muted); font-size: 22px; }
+      .reveal #bp-svg .bp-truth { font-size: 26px; font-weight: 700; }
+      .reveal #bp-svg .bp-err { fill: var(--accent); font-size: 26px; font-weight: 700; font-family: monospace; }
+
       /* ---------- interactive (ai.js) ---------- */
       .reveal .ctrl { display: flex; flex-wrap: wrap; gap: 0.3em 1.3em; align-items: center; justify-content: center; font-size: 0.42em; color: #ddd; margin: 0.1em 0 0.3em; }
       .reveal .ctrl label { display: flex; align-items: center; gap: 0.5em; white-space: nowrap; }
@@ -342,9 +377,11 @@
 
           <section>
             <h3>Generative or general?</h3>
-            <p class="lead muted" style="margin-bottom: 0.4em">Same first syllable, very different claim.</p>
-            <div class="cards">
-              <div class="card blue">
+            <p class="lead" style="margin-bottom: 0.4em">
+              Same first syllable. <b class="accent">What separates them, and what comes after?</b>
+            </p>
+            <div class="cards" style="gap: 0.7em; font-size: 0.9em">
+              <div class="card blue fragment" data-fragment-index="1">
                 <h4>Narrow AI</h4>
                 <div class="big">one job</div>
                 <ul>
@@ -353,35 +390,47 @@
                   <li>everything built from 1956 to 2021</li>
                 </ul>
               </div>
-              <div class="card active">
+              <div class="card active fragment" data-fragment-index="2">
                 <h4>Generative AI</h4>
                 <div class="big">creates</div>
                 <ul>
                   <li>produces text, images, code, audio</li>
-                  <li>one model, thousands of tasks: broad, not general</li>
-                  <li>still a machine learner: it learned from examples</li>
+                  <li>one model, many tasks: broad, not general</li>
+                  <li>still learned from examples</li>
                   <li>2022 (ChatGPT) to today</li>
                 </ul>
               </div>
-              <div class="card purple">
+              <div class="card purple fragment" data-fragment-index="3">
                 <h4>General AI (AGI)</h4>
                 <div class="big">anything</div>
                 <ul>
-                  <li>any intellectual task a human can do, as well as a human</li>
+                  <li>any intellectual task, as well as a human</li>
                   <li>does not exist (2026)</li>
                   <li>the bet behind the money on the next slides</li>
                 </ul>
               </div>
+              <div class="card red fragment" data-fragment-index="4">
+                <h4>Superintelligence</h4>
+                <div class="big">beyond</div>
+                <ul>
+                  <li>ASI: better than the best humans at everything, including building AI</li>
+                  <li>science fiction so far, stated goal of some labs</li>
+                  <li>why the safety debate is so loud</li>
+                </ul>
+              </div>
             </div>
-            <div class="takeaway">
-              Generative is not general. ChatGPT writes your cover letter and still cannot run ShopNow. Whether the second
-              follows from the first is the open question of the decade.
+            <div class="takeaway fragment" data-fragment-index="4">
+              Generative is not general. ChatGPT writes your cover letter and still cannot run ShopNow. Whether the next
+              two steps follow from the first is the open question of the decade.
             </div>
             <aside class="notes">
-              Two minutes. The pun is the memory hook: generative vs general. Narrow AI: one job, this is 99% of AI in
-              companies today, including ShopNow's fraud model. Generative AI: one model, many tasks, still learned from
-              data, still makes things up. General AI: the thing in the movies, does not exist, but it is what the investors
-              on the next slides are betting on. Keep this slide in mind for the debate this afternoon.
+              Three minutes. Start with the question and let the room answer before you click: what is the difference
+              between generative and general, and what would come after general? Then reveal the four boxes one by one.
+              Narrow AI: one job, this is 99% of AI in companies today, including ShopNow's fraud model. Generative AI: one
+              model, many tasks, still learned from data, still makes things up. General AI: the thing in the movies, does
+              not exist, but it is what the investors on the next slides are betting on. Superintelligence: beyond any
+              human, including at building AI. Science fiction so far, but OpenAI, Meta and others say it is their goal,
+              and it is why the safety debate is so loud. Keep this slide in mind for the debate this afternoon.
             </aside>
           </section>
         </section>
@@ -461,14 +510,18 @@
             <canvas id="inv-canvas" class="sim" width="1800" height="640"></canvas>
             <div class="simout" id="inv-out"></div>
             <p class="cite">Source: Stanford AI Index Report 2026, chapter 4 (data: Quid). Values before 2017 and the generative share before 2025 read from the charts, rounded.
+              Nominal US dollars, not adjusted for inflation (US prices rose about 40% from 2013 to 2025; in 2025 dollars the 2021 peak is about 175 bn, 2025 still doubles it).
               Total corporate investment (incl. mergers and acquisitions) 2025: 581.7 bn, up 130% in one year.</p>
             <aside class="notes">
               Four minutes. Ask for guesses first, write two or three on the board. Then play: the bars come year by year.
               Pause at 2021 (the pandemic tech boom, 145 bn), at 2022/23 (it went DOWN, interest rates, some said the hype was
               over), then 2025: 345 bn, more than double. Tick the checkbox: nearly half of it is generative AI companies,
               171 bn, up 200% in a year. In 2019 that share was 1 bn. The summary line under the chart does the arithmetic:
-              2025 alone is more than the first eight years (2013–2020) combined. Then: "and that is only start-ups. The big four spend
-              more on their own."
+              2025 alone is more than the first eight years (2013–2020) combined. If someone asks about inflation: these are
+              nominal dollars, the AI Index does not deflate them (Our World in Data republishes the same series CPI-adjusted).
+              US consumer prices rose about 40% over 2013–2025, so the early bars would be a bit taller in today's money, the
+              2021 peak about 175 bn instead of 145, and 2025 still more than doubles it. The shape of the story does not
+              change. Then: "and that is only start-ups. The big four spend more on their own."
             </aside>
           </section>
 
@@ -737,8 +790,57 @@ def is_fraud(o):
         <!-- ======================= 4. SUPERVISED, LIVE ======================= -->
         <section>
           <section>
-            <h3>4. Supervised: fit the line (live)</h3>
-            <p class="lead muted" style="margin: 0 0 0.2em 0; font-size: 0.6em">ShopNow deliveries: distance (x) and delivery time (y). Find the line, then let the machine try.</p>
+            <h3>4. Supervised: train, then predict</h3>
+            <div class="flow">
+              <div class="flow-row">
+                <div class="flow-tag blue">Phase 1: training, once</div>
+                <div class="flow-box blue">
+                  <b>past orders, with the answer</b>
+                  <table class="simple mini">
+                    <tr><th>value</th><th>new?</th><th>night?</th><th class="accent">fraud</th></tr>
+                    <tr><td>640 €</td><td>yes</td><td>yes</td><td class="accent">1</td></tr>
+                    <tr><td>50 €</td><td>no</td><td>no</td><td class="accent">0</td></tr>
+                    <tr><td colspan="4" class="muted">… thousands more</td></tr>
+                  </table>
+                </div>
+                <div class="flow-arrow">training<br /><span class="muted">predict, compare, update, repeat</span></div>
+                <div class="flow-box purple"><b>model</b><span class="flow-big">a set of numbers<br />(the weights)</span></div>
+              </div>
+              <div class="flow-row fragment" data-fragment-index="1">
+                <div class="flow-tag green">Phase 2: using it, every day</div>
+                <div class="flow-box green">
+                  <b>a new order, no answer</b>
+                  <table class="simple mini">
+                    <tr><th>value</th><th>new?</th><th>night?</th><th class="accent">fraud</th></tr>
+                    <tr><td>310 €</td><td>yes</td><td>no</td><td class="accent">?</td></tr>
+                  </table>
+                </div>
+                <div class="flow-arrow">prediction<br /><span class="muted">no more learning</span></div>
+                <div class="flow-box red"><b>answer</b><span class="flow-big">P(fraud) = 0.62</span></div>
+              </div>
+            </div>
+            <div class="takeaway fragment" data-fragment-index="2" style="margin-top: 0.3em">
+              Supervised means: for the past we know the answer. <b class="accent">Training</b> turns those examples into a model.
+              The model then answers for cases nobody has labelled yet. Two flavours: the answer is a <b>number</b>
+              (regression: delivery time) or a <b>category</b> (classification: fraud yes/no).
+            </div>
+            <aside class="notes">
+              Two minutes, the picture for the whole section. Top row: a table of past orders where the last column is
+              the answer, the label. Training reads the table over and over and adjusts the numbers inside the model
+              until its predictions match the labels. Click: the second row is what runs in production: a new order comes
+              in, the label is unknown, the trained model fills it in. No learning happens here, the numbers are frozen.
+              Click: the sentence, and the one distinction that matters: is the answer a number or a category? A number:
+              regression, like "how many minutes will delivery take". A category: classification, like "fraud or not".
+              Both use the same training loop, we start with the number because it fits on a chart.
+            </aside>
+          </section>
+
+          <section>
+            <h3>Regression: fit the line (live)</h3>
+            <p class="lead" style="margin: 0 0 0.2em 0; font-size: 0.55em">
+              <b class="accent">Regression:</b> the answer is a <b>number</b>. Distance to the customer (x) → delivery time in minutes (y).
+              <span class="muted">Find the line, then let the machine try.</span>
+            </p>
             <div class="ctrl">
               <label>slope w <input type="range" id="fit-w" min="0" max="5" step="0.1" value="1.0" /><span class="val" id="fit-w-v"></span></label>
               <label>intercept b <input type="range" id="fit-b" min="0" max="40" step="1" value="5" /><span class="val" id="fit-b-v"></span></label>
@@ -751,7 +853,8 @@ def is_fraud(o):
             <canvas id="fit-canvas" class="sim" width="1800" height="600"></canvas>
             <div class="simout" id="fit-out"></div>
             <aside class="notes">
-              Six minutes. Phase 1 (2 min): a student calls out w and b, you move the sliders, everyone watches the loss
+              Six minutes. Say the word regression once: the answer is a number, minutes, so the model is a line and
+              the error is a distance. Phase 1 (2 min): a student calls out w and b, you move the sliders, everyone watches the loss
               number. "Lower is better. Who beats 40?" Phase 2: press "1 step" three times and narrate: the machine
               computes in which direction w and b must move so the loss drops (the gradient), and takes a small step
               against it. Then "let the machine learn": it repeats until the loss stops improving. Phase 3: set the
@@ -797,19 +900,81 @@ def is_fraud(o):
           </section>
 
           <section>
+            <h3>The data: eight orders, one label</h3>
+            <table class="simple data">
+              <tr><th>#</th><th>order value</th><th>new customer?</th><th>night order?</th><th class="lbl">fraud</th></tr>
+                <tr><td class="muted">1</td><td>50 €</td><td>no</td><td>no</td><td class="lbl green">0</td></tr>
+                <tr><td class="muted">2</td><td>640 €</td><td>yes</td><td>yes</td><td class="lbl red">1</td></tr>
+                <tr><td class="muted">3</td><td>120 €</td><td>yes</td><td>no</td><td class="lbl green">0</td></tr>
+                <tr><td class="muted">4</td><td>750 €</td><td>no</td><td>yes</td><td class="lbl red">1</td></tr>
+                <tr><td class="muted">5</td><td>300 €</td><td>no</td><td>no</td><td class="lbl green">0</td></tr>
+                <tr><td class="muted">6</td><td>900 €</td><td>yes</td><td>yes</td><td class="lbl red">1</td></tr>
+                <tr><td class="muted">7</td><td>200 €</td><td>no</td><td>yes</td><td class="lbl green">0</td></tr>
+                <tr><td class="muted">8</td><td>550 €</td><td>yes</td><td>no</td><td class="lbl red">1</td></tr>
+            </table>
+            <p class="lead fragment" data-fragment-index="1" style="margin: 0.3em auto 0; font-size: 0.55em; width: 90%">
+              <b class="accent">Inputs:</b> what we know when the order arrives. <b class="accent">Label:</b> what we learned later.
+              1 = a chargeback arrived within 90 days, 0 = it did not. Nobody types the label in, it comes from the past.
+            </p>
+            <div class="takeaway fragment" data-fragment-index="2" style="margin-top: 0.3em">
+              Supervised learning's raw material. Eight rows so you can follow by eye, 4,000 in the leaderboard, 200,000 at a real ShopNow.
+            </div>
+            <aside class="notes">
+              Two minutes. Read the table out loud for two rows: order 2, 640 euros, new customer, at night, fraud. Order
+              1, 50 euros, known customer, daytime, fine. Ask: do you see the pattern? Big and new or big and at night.
+              Click: the words. Inputs are known at order time; the label arrives months later as a chargeback, so the
+              table can only be built from the past. Click: scale. The same eight rows train the network live in a minute.
+            </aside>
+          </section>
+
+          <section>
+            <h3>From the table to the model</h3>
+            <div class="flow" style="font-size: 0.62em">
+              <div class="flow-row">
+                <div class="flow-box blue" style="flex: 1.4">
+                  <b>the table</b>
+                  <table class="simple mini">
+                    <tr><th>value</th><th>new?</th><th>night?</th><th class="accent">fraud</th></tr>
+                    <tr><td>50 €</td><td>no</td><td>no</td><td class="accent">0</td></tr>
+                    <tr><td>640 €</td><td>yes</td><td>yes</td><td class="accent">1</td></tr>
+                    <tr><td>120 €</td><td>yes</td><td>no</td><td class="accent">0</td></tr>
+                    <tr><td colspan="4" class="muted">… 5 more</td></tr>
+                  </table>
+                </div>
+                <div class="flow-arrow"><b>training</b><br /><span class="muted">for every row:<br />predict, compare with the label, nudge the weights</span></div>
+                <div class="flow-box purple">
+                  <b>the model</b>
+                  <span class="flow-big">16 numbers</span>
+                  <span class="muted" style="font-size: 0.9em">3 inputs → 3 neurons → 1 output</span>
+                </div>
+              </div>
+            </div>
+            <div class="takeaway fragment" style="margin-top: 0.4em">
+              Training reads the table thousands of times and turns it into 16 numbers. Afterwards the table can go home.
+              The model is what stays, and what answers for new orders.
+            </div>
+            <aside class="notes">
+              One minute. The table on the left is the one you just saw; the box on the right is the network from the
+              slides before. The arrow is the training loop, nothing else: for every row, predict, compare with the label,
+              nudge the weights. Click: the table was needed once, the 16 numbers are the product. Next slide: the
+              product in action on a new order.
+            </aside>
+          </section>
+
+          <section>
             <h3>Classification: the same loop</h3>
 <svg viewBox="0 0 900 330" style="width: 70%; max-height: 300px; background: transparent; display: block; margin: 0 auto" font-family="Helvetica, Arial, sans-serif" font-size="27" fill="#ddd">
   <rect x="10" y="30" width="270" height="270" rx="14" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.2)"/>
-  <text x="145" y="72" text-anchor="middle" fill="#4fc3f7" font-weight="bold" font-size="30">inputs x</text>
-  <text x="30" y="118">value: 640.00 €</text><text x="30" y="160">new customer: yes</text><text x="30" y="202">failed payments: 2</text><text x="30" y="244">device: Tor browser</text><text x="30" y="286">hour: 03:14</text>
+  <text x="145" y="72" text-anchor="middle" fill="#4fc3f7" font-weight="bold" font-size="30">a new order</text>
+  <text x="30" y="135">value: 640 €</text><text x="30" y="195">new customer: yes</text><text x="30" y="255">night order: yes</text><text x="30" y="287" fill="#bbb" font-size="22">(placed at 03:14)</text>
   <path d="M290,165 H340" stroke="#9e9e9e" stroke-width="5"/><polygon points="340,152 364,165 340,178" fill="#9e9e9e"/>
   <rect x="372" y="105" width="170" height="120" rx="14" fill="rgba(206,147,216,0.18)" stroke="#ce93d8"/>
   <text x="457" y="158" text-anchor="middle" fill="#ce93d8" font-weight="bold" font-size="30">model</text>
-  <text x="457" y="196" text-anchor="middle" fill="#bbb" font-size="22">many w's, trained</text>
+  <text x="457" y="196" text-anchor="middle" fill="#bbb" font-size="22">16 numbers, trained</text>
   <path d="M552,165 H602" stroke="#9e9e9e" stroke-width="5"/><polygon points="602,152 626,165 602,178" fill="#9e9e9e"/>
   <rect x="634" y="30" width="256" height="270" rx="14" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.2)"/>
   <text x="762" y="72" text-anchor="middle" fill="#ffa726" font-weight="bold" font-size="30">output</text>
-  <text x="762" y="140" text-anchor="middle" font-size="40" fill="#ef5350" font-weight="bold">P(fraud) = 0.87</text>
+  <text x="762" y="140" text-anchor="middle" font-size="32" fill="#ef5350" font-weight="bold">P(fraud) = 0.87</text>
   <text x="762" y="200" text-anchor="middle">label: <tspan fill="#ef5350" font-weight="bold">fraud</tspan></text>
   <text x="762" y="256" text-anchor="middle" fill="#bbb" font-size="24">decision: manual review</text>
 </svg>
@@ -827,6 +992,123 @@ def is_fraud(o):
               Two minutes. Exam: regression outputs a number, classification outputs a category label. The picture is the
               fraud example from the game, now as a trained model. Point at the label definition: this is where business
               knowledge enters, a data scientist cannot define "fraud" alone. Bridge to the leaderboard after the break.
+            </aside>
+          </section>
+
+          <section>
+            <h3>One neuron = one regression</h3>
+<svg viewBox="0 0 1000 400" style="width: 86%; max-height: 360px; background: transparent; display: block; margin: 0 auto" font-family="Helvetica, Arial, sans-serif" font-size="26" fill="#ddd">
+  <!-- inputs -->
+  <g fill="#4fc3f7" font-weight="bold">
+    <text x="20" y="90">value: 640 €</text><text x="20" y="200">new customer: yes</text><text x="20" y="310">night order: yes</text>
+  </g>
+  <g fill="#bbb" font-size="22"><text x="20" y="118">x₁ = 0.64</text><text x="20" y="228">x₂ = 1</text><text x="20" y="338">x₃ = 1</text></g>
+  <!-- weighted arrows -->
+  <g stroke="#4fc3f7" fill="none">
+    <path d="M270,80 C380,80 400,180 500,190" stroke-width="8"/>
+    <path d="M270,190 C380,190 400,200 500,200" stroke-width="4"/>
+    <path d="M270,300 C380,300 400,220 500,210" stroke-width="6"/>
+  </g>
+  <g class="fragment" data-fragment-index="1" fill="#ffa726" font-size="24" font-weight="bold">
+    <text x="360" y="68">× w₁ = 3.0</text><text x="360" y="178">× w₂ = 0.8</text><text x="360" y="292">× w₃ = 1.2</text>
+  </g>
+  <!-- the neuron -->
+  <circle cx="590" cy="200" r="78" fill="rgba(206,147,216,0.18)" stroke="#ce93d8" stroke-width="4"/>
+  <text x="590" y="188" text-anchor="middle" fill="#ce93d8" font-weight="bold" font-size="26">sum + b</text>
+  <text x="590" y="222" text-anchor="middle" fill="#ce93d8" font-size="22">then squash</text>
+  <g class="fragment" data-fragment-index="2" font-size="22" fill="#bbb">
+    <text x="620" y="340" text-anchor="middle">3.0·0.64 + 0.8·1 + 1.2·1 − 2.5 = 1.42</text>
+    <text x="620" y="372" text-anchor="middle">squash(1.42) = 0.81</text>
+  </g>
+  <!-- output -->
+  <path d="M672,200 H730" stroke="#9e9e9e" stroke-width="5"/><polygon points="730,187 754,200 730,213" fill="#9e9e9e"/>
+  <text x="770" y="190" fill="#ef5350" font-weight="bold" font-size="30">P(fraud)</text>
+  <text x="770" y="232" fill="#ef5350" font-weight="bold" font-size="30" class="fragment" data-fragment-index="2">= 0.81</text>
+</svg>
+            <div class="takeaway fragment" data-fragment-index="3" style="margin-top: 0.2em">
+              This is <b class="accent">ŷ = w·x + b</b> with three x's instead of one, plus a squash to 0..1 so it reads as a probability.
+              One neuron = one regression. Four numbers to learn: w₁, w₂, w₃, b.
+            </div>
+            <aside class="notes">
+              Two minutes. Draw the link to the slider slide: there the line had one input, distance, and two numbers, w
+              and b. Here are three inputs and four numbers. Click: each input is multiplied by its own weight, the weight
+              says how much this input matters. Click: add them up, add b, and squash the result into 0..1 so it can be
+              read as a probability (the squash is the sigmoid function; the name is not in the exam). Click: the
+              sentence to remember. A neuron is nothing mysterious, it is the line from before with a squeeze at the end.
+            </aside>
+          </section>
+
+          <section>
+            <h3>Many neurons, stacked: a network</h3>
+<svg viewBox="0 0 1000 400" style="width: 86%; max-height: 330px; background: transparent; display: block; margin: 0 auto" font-family="Helvetica, Arial, sans-serif" font-size="24" fill="#ddd">
+  <g stroke="#4fc3f7" stroke-opacity="0.55" stroke-width="3">
+    <line x1="230" y1="100" x2="540" y2="80"/><line x1="230" y1="100" x2="540" y2="210"/><line x1="230" y1="100" x2="540" y2="340"/>
+    <line x1="230" y1="210" x2="540" y2="80"/><line x1="230" y1="210" x2="540" y2="210"/><line x1="230" y1="210" x2="540" y2="340"/>
+    <line x1="230" y1="320" x2="540" y2="80"/><line x1="230" y1="320" x2="540" y2="210"/><line x1="230" y1="320" x2="540" y2="340"/>
+  </g>
+  <g stroke="#ce93d8" stroke-opacity="0.7" stroke-width="3" class="fragment" data-fragment-index="2">
+    <line x1="540" y1="80" x2="850" y2="210"/><line x1="540" y1="210" x2="850" y2="210"/><line x1="540" y1="340" x2="850" y2="210"/>
+  </g>
+  <!-- highlight one neuron's inputs -->
+  <g class="fragment" data-fragment-index="1" stroke="#ffa726" stroke-width="7" fill="none">
+    <line x1="230" y1="100" x2="540" y2="210"/><line x1="230" y1="210" x2="540" y2="210"/><line x1="230" y1="320" x2="540" y2="210"/>
+    <circle cx="540" cy="210" r="40"/>
+  </g>
+  <g fill="#4fc3f7" font-weight="bold" text-anchor="end">
+    <text x="185" y="108">value</text><text x="185" y="218">new customer</text><text x="185" y="328">night order</text>
+  </g>
+  <g fill="rgba(79,195,247,0.2)" stroke="#4fc3f7" stroke-width="3">
+    <circle cx="230" cy="100" r="30"/><circle cx="230" cy="210" r="30"/><circle cx="230" cy="320" r="30"/>
+  </g>
+  <g fill="rgba(206,147,216,0.2)" stroke="#ce93d8" stroke-width="3">
+    <circle cx="540" cy="80" r="34"/><circle cx="540" cy="210" r="34"/><circle cx="540" cy="340" r="34"/>
+  </g>
+  <circle cx="850" cy="210" r="40" fill="rgba(239,83,80,0.2)" stroke="#ef5350" stroke-width="3" class="fragment" data-fragment-index="2"/>
+  <text x="850" y="282" text-anchor="middle" fill="#ef5350" font-weight="bold" class="fragment" data-fragment-index="2">P(fraud)</text>
+  <g fill="#9e9e9e" font-size="22" text-anchor="middle">
+    <text x="230" y="30">3 inputs</text><text x="540" y="30">3 neurons, a "layer"</text><text x="850" y="30" class="fragment" data-fragment-index="2">1 output neuron</text>
+  </g>
+  <g class="fragment" data-fragment-index="1" fill="#ffa726" font-size="22" text-anchor="middle">
+    <text x="540" y="392">each neuron: its own 3 weights + b, its own squashed sum</text>
+  </g>
+</svg>
+            <div class="takeaway fragment" data-fragment-index="3" style="margin-top: 0.2em">
+              Each neuron is the regression from the last slide. The output neuron takes the three neuron outputs as <i>its</i>
+              inputs. Numbers to learn: 3 × 4 + 4 = <b class="accent">16</b>. ChatGPT: the same picture with a trillion.
+            </div>
+            <aside class="notes">
+              Two minutes. The picture only: three inputs on the left, three neurons in the middle, every input connected
+              to every neuron. Click: pick one neuron. It is exactly the regression from the last slide, with its own
+              three weights and its own b. The two others are the same thing with different weights, so they learn to
+              watch for different combinations ("big and new", "big and at night"). Click: the output neuron does it once
+              more, but its inputs are the three neuron outputs. Click: count the numbers, 16. More neurons, more
+              layers, more numbers, same idea. "Deep" learning means many layers. How the 16 numbers are found: next slide.
+            </aside>
+          </section>
+
+          <section>
+            <h3>Training a network, live</h3>
+            <div class="ctrl">
+              <button class="btn" id="bp-fwd">1. forward</button>
+              <button class="btn" id="bp-cmp">2. compare</button>
+              <button class="btn" id="bp-back">3. backward</button>
+              <button class="btn" id="bp-next">next order</button>
+              <button class="btn primary" id="bp-train">train on all orders</button>
+              <button class="btn" id="bp-reset">reset</button>
+            </div>
+            <svg id="bp-svg" viewBox="0 0 1000 380" style="width: 80%; max-height: 330px; background: transparent; display: block; margin: 0 auto"></svg>
+            <div class="simout" id="bp-out"></div>
+            <aside class="notes">
+              Four minutes, the three buttons in order, twice. Random weights to start (thickness = size, blue positive,
+              red negative), nobody knows anything yet. Forward: order 1 goes in, every neuron computes its squashed sum,
+              out comes P(fraud) around 0.4. Compare: the label from the past says ok, so the error is +0.4. Backward:
+              the error is sent back through the network, every weight gets blamed in proportion to its share and is
+              nudged a little in the direction that would have made the error smaller: that is backpropagation. Big
+              error, big nudge. Next order, a fraud, the network says 0.4 again, error −0.6, backward. Then "train on
+              all orders": the same three steps, over and over, loss falls, after about a hundred updates all eight
+              orders are right. Point: nobody wrote the rule "big order, new customer, at night", the weights found it.
+              Repeat the loop: predict, compare, update, repeat. Same recipe as the line. Exam: supervised learning needs
+              labelled data, training minimises the loss, backpropagation computes how each weight must change.
             </aside>
           </section>
         </section>
