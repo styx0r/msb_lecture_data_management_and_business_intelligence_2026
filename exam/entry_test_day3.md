@@ -4,7 +4,7 @@
 
 ## Business Intelligence
 
-1. The BI stack from day 1 has five layers. Which order is correct, from bottom to top?
+1. The BI stack has five layers. Which order is correct, from bottom to top?
    A. Decisions, Reporting, Analysis, Warehousing, Raw data
    B. Raw data, Warehousing, Analysis, Reporting, Decisions
    C. Raw data, Reporting, Warehousing, Analysis, Decisions
@@ -22,7 +22,7 @@
    C. Data analysis and exploration
    D. Decisions
 
-4. Marketing keeps its own customer spreadsheet, support keeps another, and the numbers disagree. On day 1 we called this:
+4. Marketing keeps its own customer spreadsheet, support keeps another, and the numbers disagree. This is called:
    A. Operational BI
    B. A data silo
    C. A data-driven culture
@@ -34,7 +34,7 @@
    C. Predictive (what will happen?)
    D. None, BI never looks forward
 
-6. Of the four BI goals from day 1, which one is this: the emergency department plans staff per shift along the hourly patient curve?
+6. Of the four BI goals, which one is this: the emergency department plans staff per shift along the hourly patient curve?
    A. Decide better
    B. Earn more
    C. Run cheaper

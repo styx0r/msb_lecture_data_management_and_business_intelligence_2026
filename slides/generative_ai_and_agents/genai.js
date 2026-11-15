@@ -255,6 +255,52 @@
     draw();
   }
 
+  // ============================================================ 3b. estimates: closed models as dashed circles
+  const EST = [
+    { name: "Kimi K2", sub: "open, published", mid: 1000, lo: 1000, hi: 1000, open: true },
+    { name: "GPT-5.6 Sol", sub: "OpenAI, 2026", mid: 2000, lo: 800, hi: 4000 },
+    { name: "Claude Sonnet 5.5", sub: "Anthropic, 2026", mid: 1000, lo: 500, hi: 2500 },
+    { name: "Claude Opus 5.5", sub: "Anthropic, 2026", mid: 2500, lo: 1000, hi: 5000 },
+    { name: "Claude Fable 5.1", sub: "Anthropic, 2026", mid: 3000, lo: 1000, hi: 11000 },
+  ];
+  function initEst() {
+    const c = $("est-canvas");
+    if (!c) return;
+    const ctx = c.getContext("2d");
+    const W = c.width, H = c.height, y = 232;
+    const R = (p) => Math.sqrt(p / 11000) * 185;
+    const T = (p) => (p / 1000).toFixed(p % 1000 ? 1 : 0) + " T";
+    const gap = 36;
+    const total = EST.reduce((a, m) => a + 2 * R(m.hi), 0) + gap * (EST.length - 1);
+    let x = (W - total) / 2;
+    ctx.clearRect(0, 0, W, H);
+    ctx.textAlign = "left"; ctx.font = `22px ${FONT}`;
+    ctx.fillStyle = COL.green; ctx.fillText("solid: published", 40, 40);
+    ctx.fillStyle = COL.blue; ctx.fillText("dashed: estimate, filled = mid guess, ring = upper guess", 260, 40);
+    ctx.textAlign = "center";
+    EST.forEach((m) => {
+      const cx = x + R(m.hi); x += 2 * R(m.hi) + gap;
+      if (m.open) {
+        ctx.beginPath(); ctx.arc(cx, y, R(m.mid), 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(144,238,144,0.18)"; ctx.strokeStyle = COL.green; ctx.lineWidth = 3; ctx.setLineDash([]); ctx.fill(); ctx.stroke();
+      } else {
+        ctx.beginPath(); ctx.arc(cx, y, R(m.hi), 0, Math.PI * 2);
+        ctx.strokeStyle = "rgba(79,195,247,0.45)"; ctx.lineWidth = 2; ctx.setLineDash([10, 8]); ctx.stroke();
+        ctx.beginPath(); ctx.arc(cx, y, R(m.mid), 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(79,195,247,0.22)"; ctx.strokeStyle = COL.blue; ctx.lineWidth = 3; ctx.setLineDash([8, 6]); ctx.fill(); ctx.stroke();
+        ctx.setLineDash([]);
+      }
+      ctx.fillStyle = COL.text; ctx.font = `bold 24px ${FONT}`; ctx.fillText(m.name, cx, 430);
+      ctx.font = `20px ${FONT}`; ctx.fillStyle = COL.muted; ctx.fillText(m.sub, cx, 458);
+      ctx.fillStyle = COL.accent; ctx.font = `22px ${FONT}`;
+      if (m.open) { ctx.fillText(T(m.mid), cx, 490); }
+      else {
+        ctx.fillText("about " + T(m.mid) + " = " + (m.mid / 1000).toFixed(1).replace(/\.0$/, "") + "x Kimi K2", cx, 490);
+        ctx.fillStyle = COL.muted; ctx.font = `20px ${FONT}`; ctx.fillText("guesses from " + T(m.lo) + " to " + T(m.hi), cx, 518);
+      }
+    });
+  }
+
   // ============================================================ 4. mixture of experts router
   const MOE_TOKENS = [
     { t: "espresso", e: [2, 5], why: "food and products" },
@@ -447,7 +493,7 @@
   }
 
   function init() {
-    initNextword(); initAttention(); initScale(); initMoe(); initGpu(); initCtx(); initEmap(); initTraces(); initCards();
+    initNextword(); initAttention(); initScale(); initEst(); initMoe(); initGpu(); initCtx(); initEmap(); initTraces(); initCards();
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
 })();

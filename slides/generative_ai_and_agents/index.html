@@ -589,6 +589,23 @@
           </section>
 
           <section>
+            <h3>And GPT-5, Claude? Nobody says</h3>
+            <canvas id="est-canvas" class="sim" width="1400" height="530"></canvas>
+            <p class="simout" style="font-size: 0.5em">No lab has published a size since GPT-3. Mid guesses: 1 to 3x the largest open model, worst case 10x. Compare price, speed and quality instead, those are published.</p>
+            <aside class="notes">
+              <ul>
+                <li>1 min</li>
+                <li>Solid green = published (Kimi K2, 1 T). Dashed = guesses, nobody outside knows</li>
+                <li>Filled disc = mid estimate, dashed ring = upper estimate</li>
+                <li>How people guess: tokens per second and price give the active part, knowledge probes the total</li>
+                <li>Exam: closed-model sizes are unpublished; compare price, speed, context, quality</li>
+                <li>Next: how can trillions answer at that price? Mixture of experts</li>
+                <li>Abbr.: GPT = generative pre-trained transformer; T = trillion</li>
+              </ul>
+            </aside>
+          </section>
+
+          <section>
             <h3>Mixture of experts</h3>
             <div style="display: flex; gap: 1em; align-items: center">
 <svg id="moe" viewBox="0 0 700 330" style="flex: 0 0 58%; max-height: 330px; background: transparent" font-family="Helvetica, Arial, sans-serif" font-size="18" fill="#ddd" text-anchor="middle">
@@ -642,12 +659,16 @@
             <h3>Live: how many GPUs do we need?</h3>
             <p class="lead" style="font-size: 0.5em; margin: 0 0 0.3em 0">You want to run a model yourself, in your own data centre. Every parameter has to sit in GPU memory.</p>
             <div class="ctrl">
-              <label>parameters <input type="range" id="gpu-params" min="1" max="2000" step="1" value="671" /> <span class="val" id="gpu-pval"></span></label>
+              <label>parameters <input type="range" id="gpu-params" min="1" max="3000" step="1" value="671" /> <span class="val" id="gpu-pval"></span></label>
               <label>precision <select id="gpu-prec"><option value="2">16-bit (2 bytes)</option><option value="1">8-bit (1 byte)</option><option value="0.5">4-bit (0.5 byte)</option></select></label>
               <button class="btn" data-gpu="8">8 B (laptop class)</button>
               <button class="btn" data-gpu="117">gpt-oss-120b</button>
               <button class="btn" data-gpu="671">DeepSeek-V3</button>
               <button class="btn" data-gpu="1800">GPT-4 (est.)</button>
+              <button class="btn" data-gpu="1000">Sonnet 5.5 (est.)</button>
+              <button class="btn" data-gpu="2000">GPT-5.6 Sol (est.)</button>
+              <button class="btn" data-gpu="2500">Opus 5.5 (est.)</button>
+              <button class="btn" data-gpu="3000">Fable 5.1 (est.)</button>
             </div>
             <p class="simout" id="gpu-out" style="font-size: 0.55em; min-height: 4em"></p>
             <div class="cards" style="margin-top: 0.4em">
@@ -662,6 +683,7 @@
                 <li>That is the entry ticket for running a frontier open model yourself</li>
                 <li>8B at 4-bit: one laptop</li>
                 <li>Business point: API cheaper than hardware, unless data must stay in-house (debate)</li>
+                <li>Closed models: the four right buttons use the mid estimates from the previous slide; 3 T at 16-bit is 90 cards, 2.7 M$</li>
                 <li>Prices: H100 25-30 k$ to buy, 2-3 dollars per hour to rent, both falling</li>
                 <li>Abbr.: GPU = graphics processing unit; B = billion; GB = gigabyte; KV = key-value (cache)</li>
                 <li>Abbr.: k$ = thousand dollars; MoE = mixture of experts; GPT = generative pre-trained transformer</li>
