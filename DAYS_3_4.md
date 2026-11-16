@@ -79,7 +79,7 @@ Dozenten-Vortrag am Tag 3: ca. 2 h 10 min. Studierende aktiv: ca. 4 h 45 min (in
 
 ## Tag 4: Mo 2026-11-16 — Introduction to AI + Leaderboard + Generative AI & Agents (Neural Networks nur Selbststudium)
 
-Introduction to AI kommt als 75-min-Block an den Anfang (Deck am 2026-11-10 komplett neu gebaut, 33 Slides (Stand 2026-11-13),
+Introduction to AI kommt als 75-min-Block an den Anfang (Deck am 2026-11-10 komplett neu gebaut, 34 Slides (Stand 2026-11-16, neu: "Social scoring: what actually exists" hinter der EU-AI-Act-Slide),
 `slides/introduction_to_ai/index.html` + `ai.js`): Spiel "Is this AI?", Definition, Karte (AI > ML > DL > GenAI,
 Symbolic daneben), "Generative or general?", drei Akte, Investitionen 2013-2025 live (AI Index 2026), Big-Tech-Capex
 2026 vs. Apollo, EU AI Act, Use-Case-Pitch, Regression live (Linie per Slider, dann Gradient Descent), k-means live
